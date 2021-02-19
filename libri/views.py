@@ -16,8 +16,12 @@ class objlist():
         self.NomeAu = ""                            #NomeAu è riferito alla tabella TradAutCur
         self.CognomeAu = ""
         self.NazioneAu = ""
-        self.autPostfazione = ""
-        self.autPrefazione = ""
+        self.NomePo = ""
+        self.CognomePo = ""
+        self.NazionePo = ""
+        self.NomePr = ""
+        self.CognomePr = ""
+        self.NazionePr = ""
         self.Straniero = False
         self.TitoloOrig = ""
         self.Titolo = ""
@@ -40,7 +44,7 @@ class objlist():
         self.CognomeCu = ""
         self.NazioneCu = ""
     
-    def inserimento(CodLibro, NomeCo, Sede, NomeCa, NomeAu, CognomeAu, NazioneAu, autPostfazione, autPrefazione, Straniero, TitoloOrig, Titolo, Sottotitolo, AnnoEd, Illustrazioni, ISBN_ISSN, Genere, NumPub, CopertinaRigida, Ristampa, nRistampa, Edizione, NumPagine, Curatore, NomeTr, CognomeTr, NazioneTr, NomeCr, CognomeCr, NazioneCr)
+    def inserimento(CodLibro, NomeCo, Sede, NomeCa, NomeAu, CognomeAu, NazioneAu, NomePo, CognomePo, NazionePo, NomePr, CognomePr, NazionePr, Straniero, TitoloOrig, Titolo, Sottotitolo, AnnoEd, Illustrazioni, ISBN_ISSN, Genere, NumPub, CopertinaRigida, Ristampa, nRistampa, Edizione, NumPagine, Curatore, NomeTr, CognomeTr, NazioneTr, NomeCr, CognomeCr, NazioneCr)
         self.CodLibro = CodLibro
         self.NomeCo = NomeCo
         self.Sede = Sede
@@ -48,6 +52,12 @@ class objlist():
         self.NomeAu = NomeAu
         self.CognomeAu = CognomeAu
         self.NazioneAu = NazioneAu
+        self.NomePo = NomePo
+        self.CognomePo = CognomePo
+        self.NazionePo = NazionePo
+        self.NomePr = NomePr
+        self.CognomePr = CognomePr
+        self.NazionePr = NazionePr
         self.autPostfazione = autPostfazione
         self.autPrefazione = autPrefazione
         self.Straniero = Straniero
@@ -71,7 +81,6 @@ class objlist():
         self.NomeCu = NomeCu                  
         self.CognomeCu = CognomeCu
         self.NazioneCu = NazioneCu
-
 
 def inserimentoHome(Titolo, Autore, Genere):
     self.Titolo = Titolo
@@ -225,77 +234,122 @@ else:
     print("Errore")
 
 def LibroDetailView(request, Cod)
-if request.method == 'GET':             #controllo seriale o non seriale
-    cursor.execute("SELECT IDSeriale, IDNonseriale FROM Biblioteca_SingoliLibri WHERE CodLibro=%s", [Cod,])
-    ris = cursor.fetchall()
-    for record in ris:
-        IDSeriale = record.IDSeriale
-        IDNonseriale = record.IDNonseriale
-else:
-    print("Errore")
+    if request.method == 'GET':             #controllo seriale o non seriale
+        cursor.execute("SELECT IDSeriale, IDNonseriale FROM Biblioteca_SingoliLibri WHERE CodLibro=%s", [Cod,])
+        ris = cursor.fetchall()
+        for record in ris:
+            IDSeriale = record.IDSeriale
+            IDNonseriale = record.IDNonseriale
+    else:
+        print("Errore")
 
 
-if request.method == 'GET':
-    if IDSeriale is None:           #non seriale
-        cursor.execute("SELECT * FROM Biblioteca_NonSeriale WHERE IDNonseriale=%s", [IDNonseriale,])
-        risu = cursor.fetchall()
-        for record in ris:
-            CodLibro = record.CodLibro
-            IDCollana = record.IDCollana
-            IDCasaEd = record.IDCasaEd
-            IDAutoreCuratore = record.IDAutoreCuratore
-            IDPostPrefazione = record.IDPostPrefazione
-            Straniero = record.Straniero
-            TitoloOrig = record.TitoloOrig
-            Titolo = record.Titolo
-            Sottotitolo = record.Sottotitolo
-            AnnoEd = record.AnnoEd
-            Illustrazioni = record.Illustrazioni
-            ISBN = record.ISBN
-            Genere = record.Genere
-            NumPub = record.NumPub
-            CopertinaRigida = record.CopertinaRigida
-            Ristampa = record.Ristampa
-            nRistampa = record.nRistampa
-            Edizione = record.Edizione
-            NumPagine = record.NumPagine
-            Curatore = record.Curatore
-            Traduttore = record.Traduttore
-            Critico = record.Critico
-            elemento = objlist()
-            elemento.inserimento(record.CodLibro, record.IDCollana, record.IDCasaEd, record.IDAutoreCuratore, record.IDPostPrefazione, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.Traduttore, record.Critico)
-        return render(request, 'dettaglio.html', {'context':elemento})
-    else:                       #seriale
-        cursor.execute("SELECT * FROM Biblioteca_Seriale WHERE IDSeriale=%s", [IDSeriale,])
-        risu = cursor.fetchall()
-        for record in ris:
-            CodLibro = record.CodLibro
-            IDCollana = record.IDCollana
-            IDCasaEd = record.IDCasaEd
-            IDAutoreCuratore = record.IDAutoreCuratore
-            IDPostPrefazione = record.IDPostPrefazione
-            Straniero = record.Straniero
-            TitoloOrig = record.TitoloOrig
-            Titolo = record.Titolo
-            Sottotitolo = record.Sottotitolo
-            AnnoEd = record.AnnoEd
-            Illustrazioni = record.Illustrazioni
-            ISSN = record.ISSN
-            Genere = record.Genere
-            NumPub = record.NumPub
-            CopertinaRigida = record.CopertinaRigida
-            Ristampa = record.Ristampa
-            nRistampa = record.nRistampa
-            Edizione = record.Edizione
-            NumPagine = record.NumPagine
-            Curatore = record.Curatore
-            Traduttore = record.Traduttore
-            Critico = record.Critico
-            elemento = objlist()
-            elemento.inserimento(record.CodLibro, record.IDCollana, record.IDCasaEd, record.IDAutoreCuratore, record.IDPostPrefazione, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISSN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.Traduttore, record.Critico)
-        return render(request, 'dettaglio.html', {'context':elemento})
-else:
-    print("Errore")
+    if request.method == 'GET':
+        if IDSeriale is None:           #non seriale
+            for record in libri.objects.raw("SELECT * FROM libri_NonSeriale WHERE IDNonseriale=%s", [IDNonseriale,]"):
+                CodLibro = record.CodLibro
+                IDCollana = record.IDCollana
+                IDCasaEd = record.IDCasaEd
+                IDAutoreCuratore = record.IDAutoreCuratore
+                IDPostPrefazione = record.IDPostPrefazione
+                Straniero = record.Straniero
+                TitoloOrig = record.TitoloOrig
+                Titolo = record.Titolo
+                Sottotitolo = record.Sottotitolo
+                AnnoEd = record.AnnoEd
+                Illustrazioni = record.Illustrazioni
+                ISBN = record.ISBN
+                Genere = record.Genere
+                NumPub = record.NumPub
+                CopertinaRigida = record.CopertinaRigida
+                Ristampa = record.Ristampa
+                nRistampa = record.nRistampa
+                Edizione = record.Edizione
+                NumPagine = record.NumPagine
+                Curatore = record.Curatore
+                Traduttore = record.Traduttore
+                Critico = record.Critico
+            for record in libri.objects.raw("SELECT * FROM libri_Collane WHERE CodCollane=%s", [IDCollana]):
+                NomeCo = record.NomeCo
+            for record in libri.objects.raw("SELECT * FROM libri_CasaEditrice WHERE CodCasaEd=%s", [IDCasaEd]):
+                Sede = record.Sede
+                NomeCa = record.NomeCa
+            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [IDAutoreCuratore]):
+                NomeAu = record.NomeTr
+                CognomeAu = record.CognomeTr
+                NazioneAu = record.CognomeTr
+            for record in libri.objects.raw("SELECT * FROM libri_PostfazionePre WHERE CodPostfazione=%s", [IDPostPrefazione]):
+                autPostfazione = record.autPostfazione
+                autPrefazione = record.autPrefazione
+            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Traduttore]):
+                NomeTr = record.NomeTr
+                CognomeTr = record.CognomeTr
+                NazioneTr = record.NazioneTr
+            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Critico]):
+                NomeCu = record.NomeTr
+                CognomeCu = record.CognomeTr
+                NazioneCu = record.NazioneTr
+            for record in libri.objecrs.raw("")
+
+                
+
+                elemento = objlist()
+                elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
+            return render(request, 'dettaglio.html', {'context':elemento})
+        else:                       #seriale
+            for record in libri.objects.raw("SELECT * FROM libri_NonSeriale WHERE IDNonseriale=%s", [IDNonseriale,]"):
+                CodLibro = record.CodLibro
+                IDCollana = record.IDCollana
+                IDCasaEd = record.IDCasaEd
+                IDAutoreCuratore = record.IDAutoreCuratore
+                IDPostPrefazione = record.IDPostPrefazione
+                Straniero = record.Straniero
+                TitoloOrig = record.TitoloOrig
+                Titolo = record.Titolo
+                Sottotitolo = record.Sottotitolo
+                AnnoEd = record.AnnoEd
+                Illustrazioni = record.Illustrazioni
+                ISSN = record.ISSN
+                Genere = record.Genere
+                NumPub = record.NumPub
+                CopertinaRigida = record.CopertinaRigida
+                Ristampa = record.Ristampa
+                nRistampa = record.nRistampa
+                Edizione = record.Edizione
+                NumPagine = record.NumPagine
+                Curatore = record.Curatore
+                Traduttore = record.Traduttore
+                Critico = record.Critico
+            for record in libri.objects.raw("SELECT * FROM libri_Collane WHERE CodCollane=%s", [IDCollana]):
+                NomeCo = record.NomeCo
+            for record in libri.objects.raw("SELECT * FROM libri_CasaEditrice WHERE CodCasaEd=%s", [IDCasaEd]):
+                Sede = record.Sede
+                NomeCa = record.NomeCa
+            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [IDAutoreCuratore]):
+                NomeAu = record.NomeTr
+                CognomeAu = record.CognomeTr
+                NazioneAu = record.CognomeTr
+            for record in libri.objects.raw("SELECT * FROM libri_PostfazionePre WHERE CodPostfazione=%s", [IDPostPrefazione]):
+                autPostfazione = record.autPostfazione
+                autPrefazione = record.autPrefazione
+            
+            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Traduttore]):
+                NomeTr = record.NomeTr
+                CognomeTr = record.CognomeTr
+                NazioneTr = record.NazioneTr
+            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Critico]):
+                NomeCu = record.NomeTr
+                CognomeCu = record.CognomeTr
+                NazioneCu = record.NazioneTr
+
+
+
+
+                elemento = objlist()
+                elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISSN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
+            return render(request, 'dettaglio.html', {'context':elemento})
+    else:
+        print("Errore")
 
 
 def HomePageViewSeriale(request):
