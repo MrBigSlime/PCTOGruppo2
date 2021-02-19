@@ -58,8 +58,6 @@ class objlist():
         self.NomePr = NomePr
         self.CognomePr = CognomePr
         self.NazionePr = NazionePr
-        self.autPostfazione = autPostfazione
-        self.autPrefazione = autPrefazione
         self.Straniero = Straniero
         self.TitoloOrig = TitoloOrig
         self.Titolo = Titolo
