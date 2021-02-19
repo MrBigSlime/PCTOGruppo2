@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nuovo Libro</title>
+    <!--<link rel="stylesheet" href="styles.css">-->
+    <link rel="stylesheet" href="{% static './css/base_style.css' %}">
+    <link rel="stylesheet" href="{% static './css/ins_style.css' %}">
+</head>
+<body>
+    <nav>
+        <h2 style="color:red;">BIBLIOBASE</h2>
+        <div class="links">
+            <br><br>
+            <a href="{% url 'base' %}">HOME</a>
+            <br><br>
+            <a href="xxx">ABOUT</a>
+            <br><br>
+            <a href="{% url 'nuovo_libro' %}">NUOVO LIBRO</a>
+            <br><br>
+        </div>
+        <div class="cp">All Right Reserverd</div>
+    </nav>
+{% block content %}
+
+    <main class="ins-box">
+        <h1>Inserisci Libro</h1>
+        <form method="post">
+            {% csrf_token %}
+            <p> {{form.NomeAu}}</p>
+            <p> {{form.CognomeAu}}</p>
+            <p> {{form.NazioneAu}}</p>
+            <p> {{form.Titolo}}</p>
+            <p> {{form.Genere}}</p>
+            <p> {{form.NomeCa}}</p>
+            <p> {{form.NomeCo}}</p>
+            <input type="submit" value="Inserisci Libro" class="ingresso" onclick="Funzione()">
+        </form> 
+    </main>
+</body>
+    <script>
+		function Funzione() {
+			alert("Inserimento Effetuato!");
+		}
+	</script>
+{% endblock content %}
+</html>
