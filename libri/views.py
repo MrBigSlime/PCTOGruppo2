@@ -276,9 +276,6 @@ def LibroDetailView(request, Cod)
                 NomeAu = record.NomeTr
                 CognomeAu = record.CognomeTr
                 NazioneAu = record.CognomeTr
-            for record in libri.objects.raw("SELECT * FROM libri_PostfazionePre WHERE CodPostfazione=%s", [IDPostPrefazione]):
-                autPostfazione = record.autPostfazione
-                autPrefazione = record.autPrefazione
             for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Traduttore]):
                 NomeTr = record.NomeTr
                 CognomeTr = record.CognomeTr
@@ -287,9 +284,16 @@ def LibroDetailView(request, Cod)
                 NomeCu = record.NomeTr
                 CognomeCu = record.CognomeTr
                 NazioneCu = record.NazioneTr
-            for record in libri.objecrs.raw("")
+            for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_PostfazionePre ON p.autPostfazione = t.CodAutore JOIN libri_NonSeriale ON p.CodAutore = n.IDPostPrefazione ")
+                NomePo = record.NomeTr
+                CognomePo = record.CognomeTr
+                NazionePo = record.NazioneTr 
+            for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_PostfazionePre ON p.autPrefazione = t.CodAutore JOIN libri_NonSeriale ON p.CodAutore = n.IDPostPrefazione ")
+                NomePr = record.NomeTr
+                CognomePr = record.CognomeTr
+                NazionePr = record.NazioneTr    
 
-                
+
 
                 elemento = objlist()
                 elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
@@ -327,10 +331,6 @@ def LibroDetailView(request, Cod)
                 NomeAu = record.NomeTr
                 CognomeAu = record.CognomeTr
                 NazioneAu = record.CognomeTr
-            for record in libri.objects.raw("SELECT * FROM libri_PostfazionePre WHERE CodPostfazione=%s", [IDPostPrefazione]):
-                autPostfazione = record.autPostfazione
-                autPrefazione = record.autPrefazione
-            
             for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Traduttore]):
                 NomeTr = record.NomeTr
                 CognomeTr = record.CognomeTr
@@ -339,7 +339,14 @@ def LibroDetailView(request, Cod)
                 NomeCu = record.NomeTr
                 CognomeCu = record.CognomeTr
                 NazioneCu = record.NazioneTr
-
+            for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_TradAutCur ON p.autPostfazione = t.CodAutore JOIN libri_NonSeriale ON t.CodAutore = n.IDPostPrefazione ")
+                NomePo = record.NomeTr
+                CognomePo = record.CognomeTr
+                NazionePo = record.NazioneTr
+            for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_TradAutCur ON p.autPrefazione = t.CodAutore JOIN libri_NonSeriale ON t.CodAutore = n.IDPostPrefazione ")
+                NomePr = record.NomeTr
+                CognomePr = record.CognomeTr
+                NazionePr = record.NazioneTr 
 
 
 
