@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    font-family: Leelawadee;
+    display: flex;
+    min-height: 100vh;
+    /*altezza minima*/
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+.HolyGrail-body {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+nav {
+    flex-basis: 17vw;
+    padding: 20px;
+    background-color: rgba(91, 110, 155, 0.692);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.ms {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.box {
+    border: 2px solid black;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    margin: 20px;
+}
+
+
+/*.opz {
+    position: absolute;
+    left: 400px;
+    border: 1px solid red;
+    border-radius: 20px;
+    background-color: pink;
+    text-align: center;
+    width: 150px;
+    height: 30px;
+}*/
+
+
+/*--------------------*/
+
+.layout {
+    display: grid;
+}
+
+.child {
+    width: 200px;
+    height: 135px;
+    display: grid;
+    margin-bottom: 11px;
+}
+
+.child span {
+    display: flex;
+    background: rgba(91, 110, 155, 0.692);
+    box-shadow: 2px 3px rgba(43, 44, 46, 0.753);
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-right: 20px;
+    align-items: center;
+    /*centrare il testo nel box*/
+    justify-content: center;
+    /*centrare il testo nel box*/
+}
+
+.child a{
+    display: flex;
+    background: rgba(91, 110, 155, 0.692);
+    box-shadow: 2px 3px rgba(43, 44, 46, 0.753);
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-right: 20px;
+    align-items: center;
+    /*centrare il testo nel box*/
+    justify-content: center;
+    /*centrare il testo nel box*/
+    transition: all .3s ease 0s;
+}
+
+.child a:hover {
+    box-shadow: none;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    padding: 10px;
+}
+
+.ns{
+    color: red;
+    padding: 70px;
+}
