@@ -183,7 +183,7 @@ def inserimento(request):
         obj=objlist()
 
         if form.is_valid():
-            idetificatore=request.POST.get("IsSerial")
+            identificatore=request.POST.get("IsSerial")
             NomeCo=request.POST.get("NomeCo")
             NomeCa=request.POST.get("NomeCa")
             SedeCa =request.POST.get("SedeCa")
@@ -234,14 +234,14 @@ def inserimento(request):
             CodTrad=inspector({'NomeTr':NomeTr ,',CognomeTr':CognomeTr,'NazioneTr':NazioneTr},"A")
             CodCri=inspector({'NomeTr':NomeC ,',CognomeTr':CognomeC,'NazioneTr':NazioneC},"A")
 
-            if identificatore=="N":
+            if identificatore==False:
                 query="INSERT INTO NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                 cod="N"+randrange(1000)
                 Dati=[cod,CodCollane,CodCasaEd,CodAutore,CodPost,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodTrad,CodCri]
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
                 
-            if identificatore=="S":
+            if identificatore==True:
                 query="INSERT INTO Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                 cod="N"+randrange(1000)
                 Dati=[cod,CodCollane,CodCasaEd,CodAutore,CodPost,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodTrad,CodCri]
