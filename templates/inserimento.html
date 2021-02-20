@@ -6,11 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Nuovo Libro</title>
+    <title>PAolo</title>
     <!--<link rel="stylesheet" href="styles.css">-->
     <link rel="stylesheet" href="{% static './css/base_style.css' %}">
     <link rel="stylesheet" href="{% static './css/ins_style.css' %}">
 </head>
+
 <body>
     <nav>
         <h2 style="color:red;">BIBLIOBASE</h2>
@@ -25,7 +26,7 @@
         </div>
         <div class="cp">All Right Reserverd</div>
     </nav>
-{% block content %}
+    {% block content %}
 
     <main class="ins-box">
         <h1>Inserisci Libro</h1>
@@ -39,13 +40,14 @@
             <p> {{form.NomeCa}}</p>
             <p> {{form.NomeCo}}</p>
             <input type="submit" value="Inserisci Libro" class="ingresso" onclick="Funzione()">
-        </form> 
+        </form>
     </main>
 </body>
-    <script>
-		function Funzione() {
-			alert("Inserimento Effetuato!");
-		}
-	</script>
+<script>
+    function Funzione() {
+        alert("Inserimento Effetuato!");
+    }
+</script>
 {% endblock content %}
+
 </html>
