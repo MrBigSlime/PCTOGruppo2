@@ -417,12 +417,12 @@ def HomePageViewNonSeriale(request):
 def HomePageView(request):
     if request.method == 'GET':
         context=[]
-        for record in Seriale.objects.raw("SELECT N.Titolo, N.Autore, N.Genere FROM libri_NonSeriale N"):
+        for record in Seriale.objects.raw("SELECT N.Titolo, N.Autore, N.Genere FROM libri_NonSeriale N "):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo, record.Autore, record.Genere)
             context.append(elemento)
         
-        for record in Seriale.objects.raw("SELECT S.Titolo, S.Autore, S.Genere FROM libri_Seriale S"):
+        for record in Seriale.objects.raw("SELECT S.Titolo, S.Autore, S.Genere FROM libri_Seriale S libri_WHERE "):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo, record.Autore, record.Genere)
             context.append(elemento)
