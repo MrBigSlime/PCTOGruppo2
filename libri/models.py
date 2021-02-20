@@ -3,23 +3,23 @@ from django.db import models
 # Create your models here.
 class Collane(models.Model):
     CodCollane = models.CharField(max_length=4, primary_key=True)
-    Nome = models.CharField(max_length=256)
+    NomeCo = models.CharField(max_length=256)
 
 class CasaEditrice(models.Model):
     CodCasaEd = models.CharField(max_length=4, primary_key=True)
     Sede = models.CharField(max_length=256)
-    Nome = models.CharField(max_length=256)
+    NomeCa = models.CharField(max_length=256)
 
 class TradAutCur(models.Model):
     CodAutore = models.CharField(max_length=4,primary_key=True)
-    Nome = models.CharField(max_length=256)
-    Cognome = models.CharField(max_length=256)
-    Nazione = models.CharField(max_length=256)
+    NomeTr = models.CharField(max_length=256)
+    CognomeTr = models.CharField(max_length=256)
+    NazioneTr = models.CharField(max_length=256)
 
 class PostfazionePre(models.Model):
     CodPostfazione = models.CharField(max_length=4,primary_key=True)
-    autPostfazione = models.ForeignKey(TradAutCur,related_name='AutPost',on_delete = models.RESTRICT, blank=True, null=True)
-    autPrefazione = models.ForeignKey(TradAutCur,related_name='AutPre',on_delete = models.RESTRICT, blank=True, null=True)
+    autPostfazione = models.ForeignKey(TradAutCur,related_name='Post',on_delete = models.RESTRICT, blank=True, null=True)
+    autPrefazione = models.ForeignKey(TradAutCur,related_name='Pre',on_delete = models.RESTRICT, blank=True, null=True)
 
 class Seriale(models.Model):
     CodLibro = models.CharField(max_length=4, primary_key=True)
@@ -76,9 +76,9 @@ class SingoliLibri(models.Model):
 
 class Utenti(models.Model):
     CodUser = models.CharField(max_length = 4, primary_key = True)
-    Nome = models.CharField(max_length = 256)
-    Cognome = models.CharField(max_length = 256)
-    Nazione = models.CharField(max_length = 256)
+    NomeUt = models.CharField(max_length = 256)
+    CognomeUt = models.CharField(max_length = 256)
+    NazioneUt = models.CharField(max_length = 256)
 
 class Scaffale(models.Model):
     CodScaffale = models.CharField(max_length = 4, primary_key = True)
