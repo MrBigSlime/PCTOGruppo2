@@ -162,7 +162,7 @@ def inspector(self,dati,identificatore):
     cursor.close()
 
 
-def inserimento(request,identificatore):
+def inserimento(request):
     if request.method =='GET':
         form = InserimentoLibro()
         nomiautori=[]
@@ -183,20 +183,26 @@ def inserimento(request,identificatore):
         obj=objlist()
 
         if form.is_valid():
+            idetificatore=request.POST.get("IsSerial")
             NomeCo=request.POST.get("NomeCo")
             NomeCa=request.POST.get("NomeCa")
             SedeCa =request.POST.get("SedeCa")
+
             NomeAu=request.POST.get("NomeAu")
             CognomeAu=request.POST.get("CognomeAu")
             NazioneAu=request.POST.get("NazioneAu")
+
             NomePost=request.POST.get("NomePost")
             CognomePost=request.POST.get("CognomePost")
             NazionePost=request.POST.get("NazionePost")
+
             NomePre=request.POST.get("NomePre")
             CognomePre=request.POST.get("CognomePre")
             NazionePre=request.POST.get("NazionePre") 
+
             Straniero=request.POST.get("Straniero")
             TitoloOrig=request.POST.get("TitoloOrig")
+
             Titolo=request.POST.get("Titolo")
             Sottotitolo=request.POST.get("Sottotitolo")
             AnnoEd=request.POST.get("AnnoEd")
@@ -210,9 +216,13 @@ def inserimento(request,identificatore):
             Edizione=request.POST.get("Edizione")
             NumPagine=request.POST.get("NumPagine")
             Curatore=request.POST.get("Curatore")
+
+            #Dati Critico
             NomeTr=request.POST.get("NomeTr")
             CognomeTr=request.POST.get("CognomeTr")
             NazioneTr=request.POST.get("NazioneTr") 
+
+            #Dati Critico
             NomeC=request.POST.get("NomeC")
             CognomeC=request.POST.get("CognomeC")
             NazioneC=request.POST.get("NazioneC")
