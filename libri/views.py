@@ -176,7 +176,7 @@ def inserimento(request,identificatore):
         for ris in CasaEditrice.objects.raw("SELECT C.NomeCa,C.SedeCa FROM libro_CasaEditrice C"):
             casaed.append(ris.NomeCa)
             sedeed.append(ris.SedeCa)
-        return(render(request,"#",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed}))
+        return(render(request,"inserimento.html",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed}))
 
     else:
         form = InserimentoLibro(request.POST)
