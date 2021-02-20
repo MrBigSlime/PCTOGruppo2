@@ -169,11 +169,11 @@ def inserimento(request):
         cognomiautori=[]
         casaed=[]
         sedeed=[]
-        for ris in TradAutCur.objects.raw("SELECT A.NomeTr,A.CognomeTr FROM libro_TradAutCur A"):
+        for ris in TradAutCur.objects.raw("SELECT A.NomeTr,A.CognomeTr FROM libri_TradAutCur A"):
             nomiautori.append(ris.NomeAut)
             cognomiautori.append(ris.CognomeTr)
 
-        for ris in CasaEditrice.objects.raw("SELECT C.NomeCa,C.SedeCa FROM libro_CasaEditrice C"):
+        for ris in CasaEditrice.objects.raw("SELECT C.NomeCa,C.SedeCa FROM libri_CasaEditrice C"):
             casaed.append(ris.NomeCa)
             sedeed.append(ris.SedeCa)
         return(render(request,"inserimento.html",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed}))
