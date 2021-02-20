@@ -24,21 +24,21 @@ class InserimentoLibro(forms.Form):
     #Info Libro
     TitoloOrig = forms.CharField(label="Titolo Originale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo Originale'}))
     Titolo = forms.CharField(label="Titolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo'}))
-    Straniero = forms.BooleanField(label="Straniero", widget=forms.TextInput(attrs={'class' : 'formBox'}))
+    Straniero = forms.BooleanField(label="Straniero", widget=forms.CheckboxInput(attrs={'class' : 'formBox', 'placeholder':'Straniero'}))
     Sottotitolo = forms.CharField(label="Sottotitolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     Genere = forms.CharField(label="Genere", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Genere'}))
     IsSerial = forms.BooleanField(label="IsSerial", widget=forms.TextInput(attrs={'class' : 'formBox'}))
     
     #Info Edizione
     AnnoEd = forms.CharField(label="Anno Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
-    ISBN_ISSN = forms.CharField(label="ISBN ISSN", max_length=16, widget=forms.TextInput(attrs={'class' : 'formBox'}))
+    ISBN_ISSN = forms.CharField(label="ISBN ISSN", max_length=16, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'ISBM/ISSN'}))
     NumPub = forms.CharField(label="Numero Pub", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     CopertinaRigida = forms.BooleanField(label="Copertina Rigida", widget=forms.TextInput(attrs={'class' : 'formBox'}))
     Illustrazioni = forms.BooleanField(label="Illustrazioni", widget=forms.TextInput(attrs={'class' : 'formBox'}))
     Ristampa = forms.BooleanField(label="Ristampa", widget=forms.TextInput(attrs={'class' : 'formBox'}))
     nRistampa = forms.CharField(label="Num Ristampa", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     Edizione = forms.CharField(label="Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
-    NumPagine = forms.CharField(label="Num Pagine", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
+    NumPagine = forms.CharField(label="Num Pagine", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero di pagine'}))
     Curatore = forms.BooleanField(label="Curatore", widget=forms.TextInput(attrs={'class' : 'formBox'}))
     NomeCo = forms.CharField(label="Nome Collana", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Collana'}))
     

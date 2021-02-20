@@ -30,7 +30,7 @@
 
     <main class="ins-box">
         <h1>Inserisci Libro</h1>
-        <form method="post">
+        <form method="post" autocomplete="off">
             {% csrf_token %}
             <p> {{form.NomeAu}}</p>
             <p> {{form.CognomeAu}}</p>
@@ -39,6 +39,7 @@
             <p> {{form.Genere}}</p>
             <p> {{form.NomeCa}}</p>
             <p> {{form.NomeCo}}</p>
+            <p> Straniero: {{form.Straniero}}</p>
             <input type="submit" value="Inserisci Libro" class="ingresso" onclick="Funzione()">
         </form>
     </main>
