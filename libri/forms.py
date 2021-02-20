@@ -27,6 +27,7 @@ class InserimentoLibro(forms.Form):
     Straniero = forms.BooleanField(label="Straniero", widget=forms.TextInput(attrs={'class' : 'formBox'}))
     Sottotitolo = forms.CharField(label="Sottotitolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     Genere = forms.CharField(label="Genere", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Genere'}))
+    IsSerial = forms.BooleanField(label="IsSerial", widget=forms.TextInput(attrs={'class' : 'formBox'}))
     
     #Info Edizione
     AnnoEd = forms.CharField(label="Anno Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
