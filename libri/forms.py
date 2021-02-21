@@ -26,12 +26,18 @@ class InserimentoLibro(forms.Form):
     Titolo = forms.CharField(label="Titolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo'}))
     Straniero = forms.BooleanField(label="Straniero", widget=forms.CheckboxInput(attrs={'class' : 'formBox', 'placeholder':'Straniero'}))
     Sottotitolo = forms.CharField(label="Sottotitolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
-    Genere = forms.CharField(label="Genere", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Genere'}))
+    #Genere = forms.CharField(label="Genere", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Genere'}))
+    Genere = forms.ChoiceField(choices = 
+        (('1',' '),
+        ('2','Sci-fi'),
+        ('3','Romance'),
+        ('4','Fantasy')
+        ))
     IsSerial = forms.BooleanField(label="IsSerial", widget=forms.TextInput(attrs={'class' : 'formBox'}))
     
     #Info Edizione
     AnnoEd = forms.CharField(label="Anno Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
-    ISBN_ISSN = forms.CharField(label="ISBN ISSN", max_length=16, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'ISBM/ISSN'}))
+    ISBN_ISSN = forms.CharField(label="ISBN ISSN", max_length=16, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'ISBM / ISSN'}))
     NumPub = forms.CharField(label="Numero Pub", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     CopertinaRigida = forms.BooleanField(label="Copertina Rigida", widget=forms.TextInput(attrs={'class' : 'formBox'}))
     Illustrazioni = forms.BooleanField(label="Illustrazioni", widget=forms.TextInput(attrs={'class' : 'formBox'}))
