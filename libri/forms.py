@@ -29,9 +29,22 @@ class InserimentoLibro(forms.Form):
     #Genere = forms.CharField(label="Genere", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Genere'}))
     Genere = forms.ChoiceField(choices = 
         (('1',' '),
-        ('2','Sci-fi'),
+        ('2','Fantascienza'),
         ('3','Romance'),
-        ('4','Fantasy')
+        ('4','Fantasy'),
+        ('5','Storico'),
+        ('6','Avventura'),
+        ('7','Horror'),
+        ('8','Thriller'),
+        ('9','Giallo'),
+        ('10','Umoristico'),
+        ('11','Erotico'),
+        ('12','Fiabesco'),
+        ('13','Biografico'),
+        ('14','Antologico'),
+        ('15','Poesia'),
+        ('16','Divulgazione'),
+        ('17','Scolastico'),
         ))
     IsSerial = forms.BooleanField(label="IsSerial", widget=forms.CheckboxInput(attrs={'class' : 'formBox'}))
     
