@@ -12,9 +12,9 @@ class InserimentoLibro(forms.Form):
     NazioneAu = forms.CharField(label="Nazione Autore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione Autore'}))
     
     #Postfazione
-    NomePost = forms.CharField(label="Nome AutorePost", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Autore Postfazione'}))
-    CognomePost = forms.CharField(label="Cognome AutorePost", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Cognome Autore Postfazione'}))
-    NazionePost = forms.CharField(label="Nazione AutorePost", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione Autore Postfazione'}))
+    NomePost = forms.CharField(label="Nome AutorePost", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Autore Postfazione'}))
+    CognomePost = forms.CharField(label="Cognome AutorePost", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Cognome Autore Postfazione'}))
+    NazionePost = forms.CharField(label="Nazione AutorePost", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione Autore Postfazione'}))
     
     #Prefazione
     NomePre = forms.CharField(label="Nome AutorePre", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Autore Prefazione'}))
@@ -22,7 +22,7 @@ class InserimentoLibro(forms.Form):
     NazionePre = forms.CharField(label="Nazione AutorePre", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione Autore Prefazione'}))
     
     #Info Libro
-    TitoloOrig = forms.CharField(label="Titolo Originale", max_length=256, required=True, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo Originale'}))
+    TitoloOrig = forms.CharField(label="Titolo Originale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo Originale'}))
     Titolo = forms.CharField(label="Titolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo'}))
     Straniero = forms.BooleanField(label="Straniero", widget=forms.CheckboxInput(attrs={'class' : 'Checkbox', 'placeholder':'Straniero'}))
     Sottotitolo = forms.CharField(label="Sottotitolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Sottotitolo'}))
