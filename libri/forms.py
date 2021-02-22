@@ -49,22 +49,22 @@ class InserimentoLibro(forms.Form):
     IsSerial = forms.BooleanField(label="IsSerial", widget=forms.CheckboxInput(attrs={'class' : 'Checkbox'}))
     
     #Info Edizione
-    #AnnoEd = forms.CharField(label="Anno Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
+    AnnoEd = forms.CharField(label="Anno Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'ISBM / ISSN'}))
     ISBN_ISSN = forms.CharField(label="ISBN ISSN", max_length=16, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'ISBM / ISSN'}))
     NumPub = forms.CharField(label="Numero Pub", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero Pubblicazione'}))
     CopertinaRigida = forms.BooleanField(label="Copertina Rigida",required=False, widget=forms.CheckboxInput(attrs={'class' : 'Checkbox'}))
     Illustrazioni = forms.BooleanField(label="Illustrazioni",required=False,widget=forms.CheckboxInput(attrs={'class' : 'Checkbox'}))
-    Ristampa = forms.BooleanField(label="Ristampa",required=False,widget=forms.CheckboxInput(attrs={'class' : 'Checkbox'}))
-    #nRistampa = forms.CharField(label="Num Ristampa", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Edizione'}))
+    Ristampa = forms.BooleanField(label="Ristampa", required=False, widget=forms.CheckboxInput(attrs={'class' : 'Checkbox'}))
+    nRistampa = forms.CharField(label="Num Ristampa", required=False, max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero di ristampa'}))
     Edizione = forms.CharField(label="Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Edizione'}))
     NumPagine = forms.CharField(label="Num Pagine", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero di pagine'}))
     Curatore = forms.BooleanField(label="Curatore",required=False, widget=forms.CheckboxInput(attrs={'class' : 'Checkbox'}))
     NomeCo = forms.CharField(label="Nome Collana", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Collana'}))
     
     #Traduttore
-    #NomeTr = forms.CharField(label="Nome Traduttore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Traduttore'}))
-    #CognomeTr = forms.CharField(label="Cognome Traduttore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Cognome Traduttore'}))
-    #NazioneTr = forms.CharField(label="Nazione Traduttore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione traduttore'}))
+    NomeTr = forms.CharField(label="Nome Traduttore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Traduttore'}))
+    CognomeTr = forms.CharField(label="Cognome Traduttore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Cognome Traduttore'}))
+    NazioneTr = forms.CharField(label="Nazione Traduttore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione traduttore'}))
     
     #Critico
     NomeCu = forms.CharField(label="Nome Critco", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome critico'}))
