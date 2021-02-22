@@ -127,7 +127,7 @@ def in_CasaEd(self, dati):
     cursor.close()
     return cod
 
-def inspector(self,dati,identificatore):
+def inspector(dati,identificatore):
     queryes={
     "A":{"Q":"SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.Nazione=%s","D":[dati.NomeTR,dati.CognomeTR,dati.NazioneTr]},
     "P":{"Q":"SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.Nazione=%s","D":[dati.NomePre,dati.CognomePre,dati.NazionePre]},
