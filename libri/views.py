@@ -85,67 +85,92 @@ class objlist():
         self.Autore = Autore
         self.Genere = Genere
 
-def in_TradAutCur(self,dati):
-    query="INSERT INTO libri_TradAutCur VALUES(%s,%s,%s,%s)"
-    cod="A"+randrange(1000)
-    cursor = connection.cursor()
-    cursor.execute(query,[cod,dati.NomeTr,dati.CognomeTr,dati.NazioneTr])
-    return cod
-
-
-def in_PostfazionePre(self,dati):
-    cursor = connection.cursor()
-
-    ris=cursor.excute("SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.Nazione=%s",[dati.NomePre,dati.CognomePre,dati.NazionePre])
-    if ris.rowcount==0:
-       autPrefazione=in_TradAutCur({"Nome":dati.NomePre,"Cognome":dati.CognomePre,"Nazione":dati.NazionePre})
-
-    ris=cursor.excute("SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.Nazione=%s",[dati.NomePost,dati.CognomePost,dati.NazionePost])
-    if ris.rowcount==0:
-        autPostfazione=in_TradAutCur({"Nome":dati.NomePre,"Cognome":dati.CognomePre,"Nazione":dati.NazionePre})
+def in_TradAutCur(dati):
     
-
-    query="INSERT INTO libri_TradAutCur VALUES(%s,%s,%s)"
-    cod="P"+randrange(1000)
-    cursor.execute(query,[cod,autPostfazione,autPrefazione])
-    cursor.close()
+    query="INSERT INTO libri_TradAutCur VALUES(%s,%s,%s,%s)"
+    cod="A"+str(randrange(1000))
+    cursor = connection.cursor()
+    cursor.execute(query,[cod,dati["NazioneTr"],dati["CognomeTr"],dati["NomeTr"]])
     return cod
 
-def in_Collana(self, dati):
+
+def in_PostfazionePre(dati):
+    cursor = connection.cursor()
+    
+    cursor.execute("SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.NazioneTr=%s",[dati["NomePre"],dati["CognomePre"],dati["NazionePre"]])
+    ris=cursor.fetchone()
+
+    
+    if ris is None:
+        
+        autPrefazione=in_TradAutCur({"NomeTr":dati["NomePre"],"CognomeTr":dati["CognomePre"],"NazioneTr":dati["NazionePre"]})
+    else:
+        autPrefazione=ris[0]
+
+    cursor.execute("SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.NazioneTr=%s",[dati["NomePost"],dati["CognomePost"],dati["NazionePost"]])
+    ris=cursor.fetchone()
+    if ris is None:
+        
+        autPostfazione=in_TradAutCur({"NomeTr":dati["NomePost"],"CognomeTr":dati["CognomePost"],"NazioneTr":dati["NazionePost"]})
+       
+    else:
+        autPostfazione=ris[0]
+    
+    cursor.execute("SELECT P.CodPostfazione FROM libri_TradAutCur A, libri_PostfazionePre P WHERE P.autPostfazione_id=%s AND P.autPrefazione_id=%s",[autPostfazione,autPrefazione])
+    ris=cursor.fetchone()
+    if ris is None:
+        query="INSERT INTO libri_PostfazionePre VALUES(%s,%s,%s)"
+        cod="P"+str(randrange(1000))
+        cursor.execute(query,[cod,autPostfazione,autPrefazione])
+        cursor.close()
+        return cod
+    else:
+        return ris[0]
+        
+
+def in_Collana(dati):
     query="INSERT INTO libri_Collane VALUES(%s, %s)"
-    cod = "C"+randrange(1000)
+    cod = "C"+str(randrange(1000))
     cursor = connection.cursor()
-    cursor.execute(query,[cod, dati.Nome,])
+    cursor.execute(query,[cod, dati["NomeCo"]])
     cursor.close()
     return cod
 
-def in_CasaEd(self, dati):
+def in_CasaEd(dati):
     query="INSERT INTO libri_CasaEditrice VALUES(%s, %s, %s)"
-    cod = "E"+randrange(1000)
+    cod = "E"+str(randrange(1000))
     cursor = connection.cursor()
-    cursor.execute(query,[cod, dati.Sede, dati.Nome,])
+    cursor.execute(query,[cod, dati["Sede"], dati["NomeCa"],])
     cursor.close()
     return cod
 
 def inspector(dati,identificatore):
-    queryes={
-    "A":{"Q":"SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.Nazione=%s","D":[dati.NomeTR,dati.CognomeTR,dati.NazioneTr]},
-    "P":{"Q":"SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.Nazione=%s","D":[dati.NomePre,dati.CognomePre,dati.NazionePre]},
-    "PP":{"Q":"SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.Nazione=%s","D":[dati.NomePost,dati.CognomePost,dati.NazionePost]},
-    "E":{"Q":"SELECT E.CodCasaEd FROM CasaEditrice E WHERE E.Sede=%s AND E.NomeCa=%s","D":[dati.Sede,dati.NomeCa]},
-    "O":{"Q":"SELECT O.CodCollane FROM Collane O WHERE O.NomeCo=%s","D":[dati.NomeCo,]}
-    }
-    query=queryes[identificatore]
+
+    if(identificatore=="A"):
+        query="SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.NazioneTr=%s"
+        dato=[dati["NomeTr"],dati["CognomeTr"],dati["NazioneTr"]]
+  
+    if(identificatore=="E"):
+        query="SELECT E.CodCasaEd FROM libri_CasaEditrice E WHERE E.Sede=%s AND E.NomeCa=%s"
+        dato=[dati["Sede"],dati["NomeCa"]]
+
+    if(identificatore=="O"):
+        query="SELECT O.CodCollane FROM libri_Collane O WHERE O.NomeCo=%s"
+        dato=[dati["NomeCo"],]
+
+    if(identificatore=="P"):
+        cod=in_PostfazionePre(dati)
+        return cod
+
     cursor = connection.cursor()
-    cursor.execute(query["Q"],query["D"])
+    cursor.execute(query,dato)
     ris=cursor.fetchone()
-    if(ris.rowcount==0):
-        
+    
+    
+    if ris is None:
+
         if(identificatore=="A"):
             cod=in_TradAutCur(dati)
-        
-        if(identificatore=="P"):
-            cod=in_PostfazionePre(dati)
 
         if(identificatore=="E"):
             cod=in_CasaEd(dati)
@@ -156,7 +181,7 @@ def inspector(dati,identificatore):
         return cod
 
     else:
-
+        
         return ris[0]
 
     cursor.close()
@@ -170,12 +195,12 @@ def inserimento(request):
         casaed=[]
         sedeed=[]
         for ris in TradAutCur.objects.raw("SELECT A.NomeTr,A.CognomeTr,A.CodAutore FROM libri_TradAutCur A"):
-            nomiautori.append(ris.NomeAut)
+            nomiautori.append(ris.NomeTr)
             cognomiautori.append(ris.CognomeTr)
 
         for ris in CasaEditrice.objects.raw("SELECT C.NomeCa,C.Sede,C.CodCasaEd FROM libri_CasaEditrice C"):
             casaed.append(ris.NomeCa)
-            sedeed.append(ris.SedeCa)
+            sedeed.append(ris.Sede)
         return(render(request,"inserimento.html",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed}))
 
     elif request.method =='POST':
@@ -230,31 +255,34 @@ def inserimento(request):
             NazioneTr=request.POST.get("NazioneTr") 
 
             #Dati Critico
-            NomeC=request.POST.get("NomeC")
-            CognomeC=request.POST.get("CognomeC")
-            NazioneC=request.POST.get("NazioneC")
+            NomeC=request.POST.get("NomeCu")
+            CognomeC=request.POST.get("CognomeCu")
+            NazioneC=request.POST.get("NazioneCu")
 
             CodCollane=inspector({'NomeCo':NomeCo},"O")
             CodCasaEd=inspector({'Sede':SedeCa,'NomeCa':NomeCa},"E")
-            CodAutore=inspector({'NomeTr':NomeAu ,',CognomeTr':CognomeAu ,'NazioneTr':NazioneAu},"A")
-            CodPost=inspector({'NomePost':NomePost ,',CognomePost':CognomePost ,'NazionePost':NazionePost,'NomePre':NomePre ,',CognomePre':CognomePre ,'NazionePre':NazionePre},"P")
-            CodTrad=inspector({'NomeTr':NomeTr ,',CognomeTr':CognomeTr,'NazioneTr':NazioneTr},"A")
-            CodCri=inspector({'NomeTr':NomeC ,',CognomeTr':CognomeC,'NazioneTr':NazioneC},"A")
-
-            if identificatore==False:
-                query="INSERT INTO NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                cod="N"+randrange(1000)
-                Dati=[cod,CodCollane,CodCasaEd,CodAutore,CodPost,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodTrad,CodCri]
+            CodAutore=inspector({'NomeTr':NomeAu ,'CognomeTr':CognomeAu ,'NazioneTr':NazioneAu},"A")
+            CodPost=inspector({'NomePost':NomePost ,'CognomePost':CognomePost ,'NazionePost':NazionePost,'NomePre':NomePre ,'CognomePre':CognomePre ,'NazionePre':NazionePre},"P")
+            CodTrad=inspector({'NomeTr':NomeTr ,'CognomeTr':CognomeTr,'NazioneTr':NazioneTr},"A")
+            CodCri=inspector({'NomeTr':NomeC ,'CognomeTr':CognomeC,'NazioneTr':NazioneC},"A")
+            
+            if identificatore=='off':
+                query="INSERT INTO libri_NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                cod="N"+str(randrange(1000))
+                Dati=[cod,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodCri,CodAutore,CodCasaEd,CodCollane,CodPost,CodTrad]
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
                 
-            if identificatore==True:
-                query="INSERT INTO Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                cod="N"+randrange(1000)
-                Dati=[cod,CodCollane,CodCasaEd,CodAutore,CodPost,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodTrad,CodCri]
+            if identificatore=='on':
+                query="INSERT INTO libri_Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                cod="S"+str(randrange(1000))
+                Dati=[cod,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodCri,CodAutore,CodCasaEd,CodCollane,CodPost,CodTrad]
+                
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
+                cursor.close()
                 return HttpResponseRedirect(reverse('base'))
+                
 
         else:
                 print(form.errors)
