@@ -178,7 +178,8 @@ def inserimento(request):
             sedeed.append(ris.SedeCa)
         return(render(request,"inserimento.html",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed}))
 
-    else:
+    elif request.method =='POST':
+    
         form = InserimentoLibro(request.POST)
         obj=objlist()
 
@@ -256,6 +257,7 @@ def inserimento(request):
                 return HttpResponseRedirect(reverse('base'))
 
         else:
+                print(form.errors)
                 return HttpResponseRedirect(reverse('#errore'))
 
 
