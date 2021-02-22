@@ -30,15 +30,44 @@
 
     <main class="ins-box">
         <h1>Inserisci Libro</h1>
-        <form method="post">
+        <form method="post" autocomplete="off">
             {% csrf_token %}
+            <!-- Info autore -->
             <p> {{form.NomeAu}}</p>
             <p> {{form.CognomeAu}}</p>
             <p> {{form.NazioneAu}}</p>
+
+            <!-- Postfazione -->
+            <p> {{form.NomePost}}</p>
+            <p> {{form.CognomePost}}</p>
+            <p> {{form.NazionePost}}</p>
+
+            <!-- Prefazione -->
+            <p> {{form.NomePre}}</p>
+            <p> {{form.CognomePre}}</p>
+            <p> {{form.NazionePre}}</p>
+
+            <!-- Info Libro -->
+            <p> {{form.TitoloOrig}}</p>
             <p> {{form.Titolo}}</p>
-            <p> {{form.Genere}}</p>
-            <p> {{form.NomeCa}}</p>
+            <p> {{form.Sottotitolo}}</p>
+            <p> {{form.ISBN_ISSN}}</p>
+            <p> Genere: {{form.Genere}}</p>
+            <p> Straniero: {{form.Straniero}}</p>
+            <p> Seriale: {{form.IsSerial}}</p>
+
+            <p> {{form.NumPub}}</p>
+            <p> Copertina Rigida: {{form.CopertinaRigida}}</p>
+            <p> Illustrazioni: {{form.Illustrazioni}}</p>
+            <p> {{form.Edizione}}</p>
+            <p>Curatore: {{form.Curatore}}</p>
+            <p> {{form.NumPagine}}</p>
             <p> {{form.NomeCo}}</p>
+
+            <p> {{form.NomeCa}}</p>
+            <p> {{form.SedeCa}}</p>
+            <p> {{form.NomeCo}}</p>
+
             <input type="submit" value="Inserisci Libro" class="ingresso" onclick="Funzione()">
         </form>
     </main>
