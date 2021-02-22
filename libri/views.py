@@ -183,26 +183,32 @@ def inserimento(request):
         obj=objlist()
 
         if form.is_valid():
+
             identificatore=request.POST.get("IsSerial")
+
+            #dati collane e casa editrice
             NomeCo=request.POST.get("NomeCo")
             NomeCa=request.POST.get("NomeCa")
             SedeCa =request.POST.get("SedeCa")
 
+            #dati autori
             NomeAu=request.POST.get("NomeAu")
             CognomeAu=request.POST.get("CognomeAu")
             NazioneAu=request.POST.get("NazioneAu")
 
+            #dati postfazione
             NomePost=request.POST.get("NomePost")
             CognomePost=request.POST.get("CognomePost")
             NazionePost=request.POST.get("NazionePost")
 
+            #Dati prefazione
             NomePre=request.POST.get("NomePre")
             CognomePre=request.POST.get("CognomePre")
             NazionePre=request.POST.get("NazionePre") 
-
+            
+            #Dati anagrafici
             Straniero=request.POST.get("Straniero")
             TitoloOrig=request.POST.get("TitoloOrig")
-
             Titolo=request.POST.get("Titolo")
             Sottotitolo=request.POST.get("Sottotitolo")
             AnnoEd=request.POST.get("AnnoEd")
@@ -247,7 +253,10 @@ def inserimento(request):
                 Dati=[cod,CodCollane,CodCasaEd,CodAutore,CodPost,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodTrad,CodCri]
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
-        return HttpResponseRedirect(reverse('base'))
+                return HttpResponseRedirect(reverse('base'))
+
+        else:
+                return HttpResponseRedirect(reverse('#errore'))
 
 
 
