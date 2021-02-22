@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static './css/index-style.css' %}">
+
+{% for record in context_list %}
+
+<div class="view-detail">
+    <img src="./svg/No_image_available.svg">
+    <div class="info">
+        <ul>
+            <li>record.Titolo</li>
+            <li>record.Autore</li>
+            <li>record.Genere</li>
+        </ul>
+    </div>
+    <div class="buttons">
+        <button type="submit"><a href="{% url 'dettaglio_libro' record.Codlibro %}">Dettaglio</a></button>
+        <button type="submit" style="background: #c22509;">Cancella</button>
+        <button type="submit"><a href="{% url 'modifica_libro' record.Codlibro %}">Modifica</a></button>
+    </div>
+</div>
+
+{% endfor %}

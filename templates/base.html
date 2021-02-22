@@ -1,50 +1,37 @@
-{% load static %}
 <!DOCTYPE html>
-<html>
-
+<html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
-    <!--<link rel="stylesheet" href="styles.css">-->
-    <link rel="stylesheet" href="{% static './css/base_style.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static './css/index-style.css' %}">
+    <title>Landing Page</title>
 </head>
-
 <body>
-    <nav>
-        <h2 style="color:red;">BIBLIOBASE</h2>
-        <div class="links">
-            <br><br>
-            <a href="{% url 'base' %}">HOME</a>
-            <br><br>
-            <a href="xxx">ABOUT</a>
-            <br><br>
-            <a href="{% url 'nuovo_libro' %}">NUOVO LIBRO</a>
-            <br><br>
-        </div>
-        <div class="cp">All Right Reserverd</div>
-    </nav>
-    <div class="HolyGrail-body">
-
-        <div class="layout">
-            {% block content %} {% for record in context_list %}
-            <div class="box">
-                <div class="info">
-                    <h2>{{record.Titolo}}</h2>
-                    <h4>{{record.Autore}}</h4>
-                    <h4>{{record.Genere}}</h4>
-                </div>
-                <div class="child">
-                    <a href="cancella.html">Elimina</a>
-                    <a href="{% url 'modifica_libro' record.Codlibro %}">Modifica</a>
-                    <a href="{% url 'dettaglio_libro' record.Codlibro %}">Dettaglio</a>
-                </div>
+    <div class="all-box">
+        <div class="ad"></div>
+        <div class="sidenav">
+            <div class="logo">
+                <p><a href="{% url 'base' %}">BiblioBase</a></p>
             </div>
-            {% endfor %} {% endblock content %}
+            <div class="links">
+                <ul>
+                    <li><a href="{% url 'nuovo_libro' %}">Nuovo Libro</a></li>
+                    <li><a href="#">Seriali</a></li>
+                    <li><a href="#">Non Seriali</a></li>
+                </ul>
+            </div>
+            <div class="info">
+                <ul>
+                    <li><a href="#">Team</a></li>
+                    <li><a href="#">Contatti</a></li>
+                </ul>
+            </div>
         </div>
-
+        <div class="contenuto">
+            {% block content %}
+            {% endblock content %}
+        </div>
     </div>
 </body>
-
-</html>
