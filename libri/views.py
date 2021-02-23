@@ -315,7 +315,7 @@ def LibroDetailView(request, Cod)
 
     if request.method == 'GET':
         if IDSeriale is None:           #non seriale
-            for record in NonSeriale.objects.raw("SELECT * FROM libri_NonSeriale N WHERE N.IDNonseriale=%s", [IDNonseriale,]"):
+            for record in NonSeriale.objects.raw("SELECT * FROM libri_NonSeriale N WHERE N.IDNonseriale=%s", [IDNonseriale,]):
                 CodLibro = record.CodLibro
                 IDCollana = record.IDCollana
                 IDCasaEd = record.IDCasaEd
@@ -370,7 +370,7 @@ def LibroDetailView(request, Cod)
                 elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
             return render(request, 'dettaglio.html', {'context':elemento})
         else:                       #seriale
-            for record in Seriale.objects.raw("SELECT * FROM libri_Seriale S WHERE S.IDNonseriale=%s", [IDNonseriale,]"):
+            for record in Seriale.objects.raw("SELECT * FROM libri_Seriale S WHERE S.IDSeriale=%s", [IDSeriale,]):
                 CodLibro = record.CodLibro
                 IDCollana = record.IDCollana
                 IDCasaEd = record.IDCasaEd
