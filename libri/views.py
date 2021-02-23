@@ -234,20 +234,40 @@ def inserimento(request):
             
             #Dati anagrafici
             Straniero=request.POST.get("Straniero")
+            if Straniero=='on':
+                Straniero=False
+            else:
+                Straniero=True
             TitoloOrig=request.POST.get("TitoloOrig")
             Titolo=request.POST.get("Titolo")
             Sottotitolo=request.POST.get("Sottotitolo")
             AnnoEd=request.POST.get("AnnoEd")
             Illustrazioni=request.POST.get("Illustrazioni")
+            if Illustrazioni=='on':
+                Illustrazioni=False
+            else:
+                Illustrazioni=True
             ISBN_ISSN=request.POST.get("ISBN_ISSN")
             Genere=request.POST.get("Genere")
             NumPub=request.POST.get("NumPub")
             CopertinaRigida=request.POST.get("CopertinaRigida")
+            if CopertinaRigida=='on':
+                CopertinaRigida=False
+            else:
+                CopertinaRigida=True
             Ristampa=request.POST.get("Ristampa")
+            if Ristampa=='on':
+                Ristampa=False
+            else:
+                Ristampa=True
             nRistampa=request.POST.get("nRistampa")
             Edizione=request.POST.get("Edizione")
             NumPagine=request.POST.get("NumPagine")
             Curatore=request.POST.get("Curatore")
+            if Curatore=='on':
+                Curatore=False
+            else:
+                Curatore=True
 
             #Dati Critico
             NomeTr=request.POST.get("NomeTr")
@@ -267,18 +287,21 @@ def inserimento(request):
             CodCri=inspector({'NomeTr':NomeC ,'CognomeTr':CognomeC,'NazioneTr':NazioneC},"A")
             
             if identificatore=='off':
+                print("hfrghfswrghfsw")
                 query="INSERT INTO libri_NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                 cod="N"+str(randrange(1000))
                 Dati=[cod,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodCri,CodAutore,CodCasaEd,CodCollane,CodPost,CodTrad]
+                print(Dati)
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
+                cursor.close()
                 
             if identificatore=='on':
                 query="INSERT INTO libri_Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                 cod="S"+str(randrange(1000))
-                Dati=[cod,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodCri,CodAutore,CodCasaEd,CodCollane,CodPost,CodTrad]
-                
+                Dati=[cod,CodCasaEd,CodCollane,AnnoEd,CopertinaRigida,Curatore,Edizione,Genere,Illustrazioni,NumPagine,NumPub,Ristampa,Sottotitolo,Straniero,Titolo,TitoloOrig,nRistampa,CodAutore,CodPost,CodCri,CodTrad,ISBN_ISSN]
                 cursor = connection.cursor()
+                print(Dati)
                 cursor.execute(query,Dati)
                 cursor.close()
                 return HttpResponseRedirect(reverse('base'))
@@ -287,6 +310,62 @@ def inserimento(request):
         else:
                 print(form.errors)
                 return HttpResponseRedirect(reverse('#errore'))
+
+
+def mod_libro(request,cod):
+
+        if request.method == 'GET':
+            for record in TradAutCur.objects.raw("SELECT * FROM libri_NonSeriale WHERE IDNonseriale=%s", [IDNonseriale,]):
+                CodLibro = record.CodLibro
+                IDCollana = record.IDCollana
+                IDCasaEd = record.IDCasaEd
+                IDAutoreCuratore = record.IDAutoreCuratore
+                IDPostPrefazione = record.IDPostPrefazione
+                Straniero = record.Straniero
+                TitoloOrig = record.TitoloOrig
+                Titolo = record.Titolo
+                Sottotitolo = record.Sottotitolo
+                AnnoEd = record.AnnoEd
+                Illustrazioni = record.Illustrazioni
+                ISBN = record.ISBN
+                Genere = record.Genere
+                NumPub = record.NumPub
+                CopertinaRigida = record.CopertinaRigida
+                Ristampa = record.Ristampa
+                nRistampa = record.nRistampa
+                Edizione = record.Edizione
+                NumPagine = record.NumPagine
+                Curatore = record.Curatore
+                Traduttore = record.Traduttore
+                Critico = record.Critico
+                for record in libri.objects.raw("SELECT * FROM libri_Collane WHERE CodCollane=%s", [IDCollana]):
+                    NomeCo = record.NomeCo
+                for record in libri.objects.raw("SELECT * FROM libri_CasaEditrice WHERE CodCasaEd=%s", [IDCasaEd]):
+                    Sede = record.Sede
+                    NomeCa = record.NomeCa
+                for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [IDAutoreCuratore]):
+                    NomeAu = record.NomeTr
+                    CognomeAu = record.CognomeTr
+                    NazioneAu = record.CognomeTr
+                for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Traduttore]):
+                    NomeTr = record.NomeTr
+                    CognomeTr = record.CognomeTr
+                    NazioneTr = record.NazioneTr
+                for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Critico]):
+                    NomeCu = record.NomeTr
+                    CognomeCu = record.CognomeTr
+                    NazioneCu = record.NazioneTr
+                for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_PostfazionePre ON p.autPostfazione = t.CodAutore JOIN libri_NonSeriale ON p.CodAutore = n.IDPostPrefazione "):
+                    NomePo = record.NomeTr
+                    CognomePo = record.CognomeTr
+                    NazionePo = record.NazioneTr 
+                for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_PostfazionePre ON p.autPrefazione = t.CodAutore JOIN libri_NonSeriale ON p.CodAutore = n.IDPostPrefazione "):
+                    NomePr = record.NomeTr
+                    CognomePr = record.CognomeTr
+                    NazionePr = record.NazioneTr    
+
+            elemento = objlist()
+            elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
 
 
 
