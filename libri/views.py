@@ -429,11 +429,11 @@ def LibroDetailView(request, Cod)
 
 
 def HomePageViewSeriale(request):
-    if request.method == 'GET':
-        context=[]
-        for record in Seriale.object.raw("SELECT Titolo, Autore, Genere FROM Biblioteca_Seriale"):
+    if request.method = 'GET':
+        context[]
+        for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore")
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo, record.Autore, record.Genere)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
             context.append(elemento)
         return render(request, 'Serial.html',{'context_list':context}) 
     else:
@@ -441,22 +441,22 @@ def HomePageViewSeriale(request):
 
 
 def HomePageViewNonSeriale(request):
-    if request.method == 'GET':
-        context=[]
-        for record in Seriale.object.raw("SELECT Titolo, Autore, Genere FROM Biblioteca_NonSeriale"):
+    if request.method = 'GET':
+        context[]
+        for record in NonSeriale.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore")
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo, record.Autore, record.Genere)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
             context.append(elemento)
-            
         return render(request, 'notSerial.html',{'context_list':context}) 
     else:
         print("Errore")
+
 """
 
 def HomePageView(request):
     if request.method == 'GET':
         context=[]
-        for record in Seriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
+        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo, record.Autore, record.Genere)
             context.append(elemento)
