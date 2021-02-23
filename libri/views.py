@@ -369,18 +369,15 @@ def mod_libro(request,cod):
 
 
 
-"""
+
 def del_libro(request, Cod):
-
     cursor = connection.cursor()
-
     if request.method =='GET':
         cursor.execute("DELETE FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
         return HttpResponseRedirect(reverse('base'))
         cursor.close()
     else:
         print("Errore")
-
 def LibroDetailView(request, Cod):
     if request.method == 'GET':             #controllo seriale o non seriale
         cursor.execute("SELECT S.IDSeriale, S.IDNonseriale FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
@@ -390,11 +387,9 @@ def LibroDetailView(request, Cod):
             IDNonseriale = record.IDNonseriale
     else:
         print("Errore")
-
-
     if request.method == 'GET':
         if IDSeriale is None:           #non seriale
-            for record in NonSeriale.objects.raw("SELECT * FROM libri_NonSeriale N WHERE N.IDNonseriale=%s", [IDNonseriale,]"):
+            for record in NonSeriale.objects.raw("SELECT * FROM libri_NonSeriale N WHERE N.IDNonseriale=%s", [IDNonseriale,]):
                 CodLibro = record.CodLibro
                 IDCollana = record.IDCollana
                 IDCasaEd = record.IDCasaEd
@@ -434,22 +429,19 @@ def LibroDetailView(request, Cod):
                 NomeCu = record.NomeTr
                 CognomeCu = record.CognomeTr
                 NazioneCu = record.NazioneTr
-            for record in NonSeriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N WHERE N.IDPostPrefazione = P.CodAutore AND P.autPostfazione = T.CodAutore")
+            for record in NonSeriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N WHERE N.IDPostPrefazione = P.CodAutore AND P.autPostfazione = T.CodAutore"):
                 NomePo = record.NomeTr
                 CognomePo = record.CognomeTr
                 NazionePo = record.NazioneTr 
-            for record in NonSeriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N WHERE N.IDPostPrefazione = P.CodAutore AND P.autPrefazione = T.CodAutore")
+            for record in NonSeriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N WHERE N.IDPostPrefazione = P.CodAutore AND P.autPrefazione = T.CodAutore"):
                 NomePr = record.NomeTr
                 CognomePr = record.CognomeTr
                 NazionePr = record.NazioneTr    
-
-
-
                 elemento = objlist()
                 elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
             return render(request, 'dettaglio.html', {'context':elemento})
         else:                       #seriale
-            for record in Seriale.objects.raw("SELECT * FROM libri_Seriale S WHERE S.IDSeriale=%s", [IDSeriale,]"):
+            for record in Seriale.objects.raw("SELECT * FROM libri_Seriale S WHERE S.IDSeriale=%s", [IDSeriale,]):
                 CodLibro = record.CodLibro
                 IDCollana = record.IDCollana
                 IDCasaEd = record.IDCasaEd
@@ -489,40 +481,33 @@ def LibroDetailView(request, Cod):
                 NomeCu = record.NomeTr
                 CognomeCu = record.CognomeTr
                 NazioneCu = record.NazioneTr
-            for record in Seriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_Seriale S WHERE S.IDPostPrefazione = P.CodAutore AND P.autPostfazione = T.CodAutore")
+            for record in Seriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_Seriale S WHERE S.IDPostPrefazione = P.CodAutore AND P.autPostfazione = T.CodAutore"):
                 NomePo = record.NomeTr
                 CognomePo = record.CognomeTr
                 NazionePo = record.NazioneTr
-            for record in Seriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_Seriale S WHERE S.IDPostPrefazione = P.CodAutore AND P.autPrefazione = T.CodAutore")
+            for record in Seriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_Seriale S WHERE S.IDPostPrefazione = P.CodAutore AND P.autPrefazione = T.CodAutore"):
                 NomePr = record.NomeTr
                 CognomePr = record.CognomeTr
                 NazionePr = record.NazioneTr 
-
-
-
                 elemento = objlist()
                 elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISSN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
             return render(request, 'dettaglio.html', {'context':elemento})
     else:
         print("Errore")
-
-
 def HomePageViewSeriale(request):
-    if request.method = 'GET':
-        context[]
-        for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore")
-            elemento = objlist()
+    if request.method == 'GET':
+        context=[]
+        for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
+            elemento == objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
             context.append(elemento)
         return render(request, 'Serial.html',{'context_list':context}) 
     else:
         print("Errore")
-
-
 def HomePageViewNonSeriale(request):
-    if request.method = 'GET':
-        context[]
-        for record in NonSeriale.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore")
+    if request.method == 'GET':
+        context=[]
+        for record in NonSeriale.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
             context.append(elemento)
@@ -530,7 +515,6 @@ def HomePageViewNonSeriale(request):
     else:
         print("Errore")
 
-"""
 
 def HomePageView(request):
     if request.method == 'GET':
@@ -549,5 +533,3 @@ def HomePageView(request):
         return render(request, 'base.html',{'context_list':context}) 
     else:
         print("Errore")
-
-
