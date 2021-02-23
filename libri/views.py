@@ -304,7 +304,7 @@ def del_libro(request, Cod):
 
 def LibroDetailView(request, Cod)
     if request.method == 'GET':             #controllo seriale o non seriale
-        cursor.execute("SELECT IDSeriale, IDNonseriale FROM Biblioteca_SingoliLibri WHERE CodLibro=%s", [Cod,])
+        cursor.execute("SELECT S.IDSeriale, S.IDNonseriale FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
         ris = cursor.fetchall()
         for record in ris:
             IDSeriale = record.IDSeriale
@@ -315,7 +315,7 @@ def LibroDetailView(request, Cod)
 
     if request.method == 'GET':
         if IDSeriale is None:           #non seriale
-            for record in libri.objects.raw("SELECT * FROM libri_NonSeriale WHERE IDNonseriale=%s", [IDNonseriale,]"):
+            for record in NonSeriale.objects.raw("SELECT * FROM libri_NonSeriale N WHERE N.IDNonseriale=%s", [IDNonseriale,]"):
                 CodLibro = record.CodLibro
                 IDCollana = record.IDCollana
                 IDCasaEd = record.IDCasaEd
@@ -338,28 +338,28 @@ def LibroDetailView(request, Cod)
                 Curatore = record.Curatore
                 Traduttore = record.Traduttore
                 Critico = record.Critico
-            for record in libri.objects.raw("SELECT * FROM libri_Collane WHERE CodCollane=%s", [IDCollana]):
+            for record in NonSeriale.objects.raw("SELECT * FROM libri_Collane C WHERE C.CodCollane=%s", [IDCollana]):
                 NomeCo = record.NomeCo
-            for record in libri.objects.raw("SELECT * FROM libri_CasaEditrice WHERE CodCasaEd=%s", [IDCasaEd]):
+            for record in NonSeriale.objects.raw("SELECT * FROM libri_CasaEditrice C WHERE C.CodCasaEd=%s", [IDCasaEd]):
                 Sede = record.Sede
                 NomeCa = record.NomeCa
-            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [IDAutoreCuratore]):
+            for record in NonSeriale.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [IDAutoreCuratore]):
                 NomeAu = record.NomeTr
                 CognomeAu = record.CognomeTr
                 NazioneAu = record.CognomeTr
-            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Traduttore]):
+            for record in NonSeriale.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [Traduttore]):
                 NomeTr = record.NomeTr
                 CognomeTr = record.CognomeTr
                 NazioneTr = record.NazioneTr
-            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Critico]):
+            for record in NonSeriale.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Critico]):
                 NomeCu = record.NomeTr
                 CognomeCu = record.CognomeTr
                 NazioneCu = record.NazioneTr
-            for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_PostfazionePre ON p.autPostfazione = t.CodAutore JOIN libri_NonSeriale ON p.CodAutore = n.IDPostPrefazione ")
+            for record in NonSeriale.objecrs.raw("SELECT N.NomeTr, N.CognomeTr, N.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N JOIN libri_PostfazionePre P ON P.autPostfazione = T.CodAutore JOIN libri_NonSeriale N ON P.CodAutore = N.IDPostPrefazione ")
                 NomePo = record.NomeTr
                 CognomePo = record.CognomeTr
                 NazionePo = record.NazioneTr 
-            for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_PostfazionePre ON p.autPrefazione = t.CodAutore JOIN libri_NonSeriale ON p.CodAutore = n.IDPostPrefazione ")
+            for record in NonSeriale.objecrs.raw("SELECT N.NomeTr, N.CognomeTr, N.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N JOIN libri_PostfazionePre P ON P.autPrefazione = T.CodAutore JOIN libri_NonSeriale N ON P.CodAutore = N.IDPostPrefazione ")
                 NomePr = record.NomeTr
                 CognomePr = record.CognomeTr
                 NazionePr = record.NazioneTr    
@@ -370,7 +370,7 @@ def LibroDetailView(request, Cod)
                 elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
             return render(request, 'dettaglio.html', {'context':elemento})
         else:                       #seriale
-            for record in libri.objects.raw("SELECT * FROM libri_NonSeriale WHERE IDNonseriale=%s", [IDNonseriale,]"):
+            for record in Seriale.objects.raw("SELECT * FROM libri_Seriale S WHERE S.IDNonseriale=%s", [IDNonseriale,]"):
                 CodLibro = record.CodLibro
                 IDCollana = record.IDCollana
                 IDCasaEd = record.IDCasaEd
@@ -393,28 +393,28 @@ def LibroDetailView(request, Cod)
                 Curatore = record.Curatore
                 Traduttore = record.Traduttore
                 Critico = record.Critico
-            for record in libri.objects.raw("SELECT * FROM libri_Collane WHERE CodCollane=%s", [IDCollana]):
+            for record in Seriale.objects.raw("SELECT * FROM libri_Collane C WHERE C.CodCollane=%s", [IDCollana]):
                 NomeCo = record.NomeCo
-            for record in libri.objects.raw("SELECT * FROM libri_CasaEditrice WHERE CodCasaEd=%s", [IDCasaEd]):
+            for record in Seriale.objects.raw("SELECT * FROM libri_CasaEditrice C WHERE C.CodCasaEd=%s", [IDCasaEd]):
                 Sede = record.Sede
                 NomeCa = record.NomeCa
-            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [IDAutoreCuratore]):
+            for record in Seriale.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [IDAutoreCuratore]):
                 NomeAu = record.NomeTr
                 CognomeAu = record.CognomeTr
                 NazioneAu = record.CognomeTr
-            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Traduttore]):
+            for record in Seriale.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [Traduttore]):
                 NomeTr = record.NomeTr
                 CognomeTr = record.CognomeTr
                 NazioneTr = record.NazioneTr
-            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Critico]):
+            for record in Seriale.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [Critico]):
                 NomeCu = record.NomeTr
                 CognomeCu = record.CognomeTr
                 NazioneCu = record.NazioneTr
-            for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_TradAutCur ON p.autPostfazione = t.CodAutore JOIN libri_NonSeriale ON t.CodAutore = n.IDPostPrefazione ")
+            for record in Seriale.objecrs.raw("SELECT N.NomeTr, N.CognomeTr, N.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N JOIN libri_TradAutCur T ON P.autPostfazione = T.CodAutore JOIN libri_Seriale S ON T.CodAutore = S.IDPostPrefazione ")
                 NomePo = record.NomeTr
                 CognomePo = record.CognomeTr
                 NazionePo = record.NazioneTr
-            for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_TradAutCur ON p.autPrefazione = t.CodAutore JOIN libri_NonSeriale ON t.CodAutore = n.IDPostPrefazione ")
+            for record in Seriale.objecrs.raw("SELECT N.NomeTr, N.CognomeTr, N.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N JOIN libri_TradAutCur T ON P.autPrefazione = T.CodAutore JOIN libri_Seriale S ON T.CodAutore = S.IDPostPrefazione ")
                 NomePr = record.NomeTr
                 CognomePr = record.CognomeTr
                 NazionePr = record.NazioneTr 
