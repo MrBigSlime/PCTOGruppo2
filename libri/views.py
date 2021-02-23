@@ -313,207 +313,36 @@ def inserimento(request):
 
 
 def mod_libro(request,cod):
-
-        if request.method == 'GET':
-            for record in TradAutCur.objects.raw("SELECT * FROM libri_NonSeriale WHERE IDNonseriale=%s", [IDNonseriale,]):
-                CodLibro = record.CodLibro
-                IDCollana = record.IDCollana
-                IDCasaEd = record.IDCasaEd
-                IDAutoreCuratore = record.IDAutoreCuratore
-                IDPostPrefazione = record.IDPostPrefazione
-                Straniero = record.Straniero
-                TitoloOrig = record.TitoloOrig
-                Titolo = record.Titolo
-                Sottotitolo = record.Sottotitolo
-                AnnoEd = record.AnnoEd
-                Illustrazioni = record.Illustrazioni
-                ISBN = record.ISBN
-                Genere = record.Genere
-                NumPub = record.NumPub
-                CopertinaRigida = record.CopertinaRigida
-                Ristampa = record.Ristampa
-                nRistampa = record.nRistampa
-                Edizione = record.Edizione
-                NumPagine = record.NumPagine
-                Curatore = record.Curatore
-                Traduttore = record.Traduttore
-                Critico = record.Critico
-                for record in libri.objects.raw("SELECT * FROM libri_Collane WHERE CodCollane=%s", [IDCollana]):
-                    NomeCo = record.NomeCo
-                for record in libri.objects.raw("SELECT * FROM libri_CasaEditrice WHERE CodCasaEd=%s", [IDCasaEd]):
-                    Sede = record.Sede
-                    NomeCa = record.NomeCa
-                for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [IDAutoreCuratore]):
-                    NomeAu = record.NomeTr
-                    CognomeAu = record.CognomeTr
-                    NazioneAu = record.CognomeTr
-                for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Traduttore]):
-                    NomeTr = record.NomeTr
-                    CognomeTr = record.CognomeTr
-                    NazioneTr = record.NazioneTr
-                for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Critico]):
-                    NomeCu = record.NomeTr
-                    CognomeCu = record.CognomeTr
-                    NazioneCu = record.NazioneTr
-                for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_PostfazionePre ON p.autPostfazione = t.CodAutore JOIN libri_NonSeriale ON p.CodAutore = n.IDPostPrefazione "):
-                    NomePo = record.NomeTr
-                    CognomePo = record.CognomeTr
-                    NazionePo = record.NazioneTr 
-                for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_PostfazionePre ON p.autPrefazione = t.CodAutore JOIN libri_NonSeriale ON p.CodAutore = n.IDPostPrefazione "):
-                    NomePr = record.NomeTr
-                    CognomePr = record.CognomeTr
-                    NazionePr = record.NazioneTr    
-
-            elemento = objlist()
-            elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
-        if request.method== 'POST':
-            for record in TradAutCur.objects.raw("SELECT * FROM libri_NonSeriale WHERE CodLibro=%s", [CodLibro,]):
-                
-                IDCollana = record.IDCollana
-                IDCasaEd = record.IDCasaEd
-                IDAutoreCuratore = record.IDAutoreCuratore
-                IDPostPrefazione = record.IDPostPrefazione
-                Traduttore = record.Traduttore
-                Critico = record.Critico
-
-
-            identificatore=request.POST.get("IsSerial")
-
-            #dati collane e casa editrice
-            NomeCo=request.POST.get("NomeCo")
-            NomeCa=request.POST.get("NomeCa")
-            SedeCa =request.POST.get("SedeCa")
-
-            #dati autori
-            NomeAu=request.POST.get("NomeAu")
-            CognomeAu=request.POST.get("CognomeAu")
-            NazioneAu=request.POST.get("NazioneAu")
-
-            #dati postfazione
-            NomePost=request.POST.get("NomePost")
-            CognomePost=request.POST.get("CognomePost")
-            NazionePost=request.POST.get("NazionePost")
-
-            #Dati prefazione
-            NomePre=request.POST.get("NomePre")
-            CognomePre=request.POST.get("CognomePre")
-            NazionePre=request.POST.get("NazionePre") 
-            
-            #Dati anagrafici
-            Straniero=request.POST.get("Straniero")
-            if Straniero=='on':
-                Straniero=False
-            else:
-                Straniero=True
-            TitoloOrig=request.POST.get("TitoloOrig")
-            Titolo=request.POST.get("Titolo")
-            Sottotitolo=request.POST.get("Sottotitolo")
-            AnnoEd=request.POST.get("AnnoEd")
-            Illustrazioni=request.POST.get("Illustrazioni")
-            if Illustrazioni=='on':
-                Illustrazioni=False
-            else:
-                Illustrazioni=True
-            ISBN_ISSN=request.POST.get("ISBN_ISSN")
-            Genere=request.POST.get("Genere")
-            NumPub=request.POST.get("NumPub")
-            CopertinaRigida=request.POST.get("CopertinaRigida")
-            if CopertinaRigida=='on':
-                CopertinaRigida=False
-            else:
-                CopertinaRigida=True
-            Ristampa=request.POST.get("Ristampa")
-            if Ristampa=='on':
-                Ristampa=False
-            else:
-                Ristampa=True
-            nRistampa=request.POST.get("nRistampa")
-            Edizione=request.POST.get("Edizione")
-            NumPagine=request.POST.get("NumPagine")
-            Curatore=request.POST.get("Curatore")
-            if Curatore=='on':
-                Curatore=False
-            else:
-                Curatore=True
-
-            #Dati Critico
-            NomeTr=request.POST.get("NomeTr")
-            CognomeTr=request.POST.get("CognomeTr")
-            NazioneTr=request.POST.get("NazioneTr") 
-
-            #Dati Critico
-            NomeC=request.POST.get("NomeCu")
-            CognomeC=request.POST.get("CognomeCu")
-            NazioneC=request.POST.get("NazioneCu")
-
-            cursor = connection.cursor()
-            cursor.execute("UPDATE libri_Collane SET NomeCo=%s WHERE CodCollane=%s",[NomeCo,IDCollana,])
-            cursor.execute("UPDATE libri_CasaEditrice SET Sede=%s,NomeCa=%s WHERE CodCasaEd=%s",[Sede,NomeCa,IDCasaEd,])
-            cursor.execute("UPDATE libri_TradAutCur SET NomeAu=%s WHERE NomeCa=%s",[Sede,NomeCa,IDCasaEd,])
-            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [IDAutoreCuratore]):
-                NomeAu = record.NomeTr
-                CognomeAu = record.CognomeTr
-                NazioneAu = record.CognomeTr
-            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Traduttore]):
-                NomeTr = record.NomeTr
-                CognomeTr = record.CognomeTr
-                NazioneTr = record.NazioneTr
-            for record in libri.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Critico]):
-                NomeCu = record.NomeTr
-                CognomeCu = record.CognomeTr
-                NazioneCu = record.NazioneTr
-            for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_PostfazionePre ON p.autPostfazione = t.CodAutore JOIN libri_NonSeriale ON p.CodAutore = n.IDPostPrefazione "):
-                NomePo = record.NomeTr
-                CognomePo = record.CognomeTr
-                NazionePo = record.NazioneTr 
-            for record in libri.objecrs.raw("SELECT n.NomeTr, n.CognomeTr, n.NazioneTr FROM libri_TradAutCur t, libri_PostfazionePre p, libri_NonSeriale n JOIN libri_PostfazionePre ON p.autPrefazione = t.CodAutore JOIN libri_NonSeriale ON p.CodAutore = n.IDPostPrefazione "):
-                NomePr = record.NomeTr
-                CognomePr = record.CognomeTr
-                NazionePr = record.NazioneTr  
-
-
-def del_libro(request, Cod):
-    cursor = connection.cursor()
-    if request.method =='GET':
-        cursor.execute("DELETE FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
-        return HttpResponseRedirect(reverse('base'))
-        cursor.close()
-    else:
-        print("Errore")
-def LibroDetailView(request, Cod):
-    if request.method == 'GET':             #controllo seriale o non seriale
-        cursor.execute("SELECT S.IDSeriale, S.IDNonseriale FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
-        ris = cursor.fetchall()
-        for record in ris:
-            IDSeriale = record.IDSeriale
-            IDNonseriale = record.IDNonseriale
-    else:
-        print("Errore")
+    context=[]
     if request.method == 'GET':
-        if IDSeriale is None:           #non seriale
-            for record in NonSeriale.objects.raw("SELECT * FROM libri_NonSeriale N WHERE N.IDNonseriale=%s", [IDNonseriale,]):
-                CodLibro = record.CodLibro
-                IDCollana = record.IDCollana
-                IDCasaEd = record.IDCasaEd
-                IDAutoreCuratore = record.IDAutoreCuratore
-                IDPostPrefazione = record.IDPostPrefazione
-                Straniero = record.Straniero
-                TitoloOrig = record.TitoloOrig
-                Titolo = record.Titolo
-                Sottotitolo = record.Sottotitolo
-                AnnoEd = record.AnnoEd
-                Illustrazioni = record.Illustrazioni
-                ISBN = record.ISBN
-                Genere = record.Genere
-                NumPub = record.NumPub
-                CopertinaRigida = record.CopertinaRigida
-                Ristampa = record.Ristampa
-                nRistampa = record.nRistampa
-                Edizione = record.Edizione
-                NumPagine = record.NumPagine
-                Curatore = record.Curatore
-                Traduttore = record.Traduttore
-                Critico = record.Critico
+        if cod[0]=='N':
+            query="SELECT * FROM libri_NonSeriale WHERE CodLibro=%s"
+        if cod[0]=='S':
+            query="SELECT * FROM libri_Seriale WHERE CodLibro=%s"
+        
+        for record in TradAutCur.objects.raw(query,[cod,]):
+            CodLibro = record.CodLibro
+            IDCollana = record.IDCollana
+            IDCasaEd = record.IDCasaEd
+            IDAutoreCuratore = record.IDAutoreCuratore
+            IDPostPrefazione = record.IDPostPrefazione
+            Straniero = record.Straniero
+            TitoloOrig = record.TitoloOrig
+            Titolo = record.Titolo
+            Sottotitolo = record.Sottotitolo
+            AnnoEd = record.AnnoEd
+            Illustrazioni = record.Illustrazioni
+            ISBN = record.ISBN
+            Genere = record.Genere
+            NumPub = record.NumPub
+            CopertinaRigida = record.CopertinaRigida
+            Ristampa = record.Ristampa
+            nRistampa = record.nRistampa
+            Edizione = record.Edizione
+            NumPagine = record.NumPagine
+            Curatore = record.Curatore
+            Traduttore = record.Traduttore
+            Critico = record.Critico
             for record in NonSeriale.objects.raw("SELECT * FROM libri_Collane C WHERE C.CodCollane=%s", [IDCollana]):
                 NomeCo = record.NomeCo
             for record in NonSeriale.objects.raw("SELECT * FROM libri_CasaEditrice C WHERE C.CodCasaEd=%s", [IDCasaEd]):
@@ -539,11 +368,130 @@ def LibroDetailView(request, Cod):
                 NomePr = record.NomeTr
                 CognomePr = record.CognomeTr
                 NazionePr = record.NazioneTr    
-                elemento = objlist()
-                elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
-            return render(request, 'dettaglio.html', {'context':elemento})
-        else:                       #seriale
-            for record in Seriale.objects.raw("SELECT * FROM libri_Seriale S WHERE S.IDSeriale=%s", [IDSeriale,]):
+
+            elemento = objlist()
+            elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
+            context.append(elemento)
+
+        return(render(request,"inserimento.html",{"context":context}))
+
+        if request.method== 'POST':
+            for record in TradAutCur.objects.raw("SELECT * FROM libri_NonSeriale WHERE CodLibro=%s", [CodLibro,]):
+                
+                IDCollana = record.IDCollana
+                IDCasaEd = record.IDCasaEd
+                IDAutoreCuratore = record.IDAutoreCuratore
+                IDPostPrefazione = record.IDPostPrefazione
+                Traduttore = record.Traduttore
+                Critico = record.Critico
+                for record in TradAutCur.objects.raw("SELECT * FROM libri_PostfazionePre P WHERE CodPostfazione=%s", [IDPostPrefazione,]):
+                    IDPost=record.autPostfazione
+                    IDPre=record.autPrefazione
+
+            identificatore=request.POST.get("IsSerial")
+
+            #Dati anagrafici
+            Straniero=request.POST.get("Straniero")
+            if Straniero=='on': Straniero=False 
+            else:   Straniero=True
+            Illustrazioni=request.POST.get("Illustrazioni")
+            if Illustrazioni=='on': Illustrazioni=False
+            else:   Illustrazioni=True
+            CopertinaRigida=request.POST.get("CopertinaRigida")
+            if CopertinaRigida=='on': CopertinaRigida=False
+            else:   CopertinaRigida=True
+            Ristampa=request.POST.get("Ristampa")
+            if Ristampa=='on':  Ristampa=False           
+            else:   Ristampa=True
+            Curatore=request.POST.get("Curatore")
+            if Curatore=='on': Curatore=False
+            else: Curatore=True
+
+            TitoloOrig=request.POST.get("TitoloOrig")
+            Titolo=request.POST.get("Titolo")
+            Sottotitolo=request.POST.get("Sottotitolo")
+            AnnoEd=request.POST.get("AnnoEd")
+            ISBN_ISSN=request.POST.get("ISBN_ISSN")
+            Genere=request.POST.get("Genere")
+            NumPub=request.POST.get("NumPub")
+            nRistampa=request.POST.get("nRistampa")
+            Edizione=request.POST.get("Edizione")
+            NumPagine=request.POST.get("NumPagine")
+            
+
+            #Dati Critico
+            NomeTr=request.POST.get("NomeTr")
+            CognomeTr=request.POST.get("CognomeTr")
+            NazioneTr=request.POST.get("NazioneTr") 
+
+            #Dati Critico
+            NomeC=request.POST.get("NomeCu")
+            CognomeC=request.POST.get("CognomeCu")
+            NazioneC=request.POST.get("NazioneCu")
+
+             #dati collane e casa editrice
+            NomeCo=request.POST.get("NomeCo")
+            NomeCa=request.POST.get("NomeCa")
+            SedeCa =request.POST.get("SedeCa")
+
+            #dati autori
+            NomeAu=request.POST.get("NomeAu")
+            CognomeAu=request.POST.get("CognomeAu")
+            NazioneAu=request.POST.get("NazioneAu")
+
+            #dati postfazione
+            NomePost=request.POST.get("NomePost")
+            CognomePost=request.POST.get("CognomePost")
+            NazionePost=request.POST.get("NazionePost")
+
+            #Dati prefazione
+            NomePre=request.POST.get("NomePre")
+            CognomePre=request.POST.get("CognomePre")
+            NazionePre=request.POST.get("NazionePre") 
+
+        cursor = connection.cursor()
+        cursor.execute("UPDATE libri_Collane SET NomeCo=%s WHERE CodCollane=%s",[NomeCo,IDCollana,])
+        cursor.execute("UPDATE libri_CasaEditrice SET Sede=%s,NomeCa=%s WHERE CodCasaEd=%s",[Sede,NomeCa,IDCasaEd,])
+        cursor.execute("UPDATE libri_TradAutCur SET NomeAu=%s,CognomeAu=%s,NazioneAu=%s WHERE CodAutore=%s",[NomeAu,CognomeAu,NazioneAu,IDAutoreCuratore,])
+        cursor.execute("UPDATE libri_TradAutCur SET NomeAu=%s,CognomeAu=%s,NazioneAu=%s WHERE CodAutore=%s",[NomePre,CognomePre,NazionePre,IDPre,])
+        cursor.execute("UPDATE libri_TradAutCur SET NomeAu=%s,CognomeAu=%s,NazioneAu=%s WHERE CodAutore=%s",[NomePost,CognomePost,NazionePost,IDPost,])
+        cursor.close()
+
+def del_libro(request, Cod):
+    cursor = connection.cursor()
+    if request.method =='GET':
+        cursor.execute("DELETE FROM libri_SingoliLibri S WHERE S.CodLibro=%s",[Cod,])
+        return HttpResponseRedirect(reverse('base'))
+        cursor.close()
+    else:
+        print("Errore")
+
+
+def LibroDetailView(request, Cod):
+    """
+    if request.method == 'GET':             #controllo seriale o non seriale
+
+        cursor = connection.cursor()
+        cursor.execute("SELECT S.IDSeriale, S.IDNonseriale FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
+        ris = cursor.fetchall()
+        for record in ris:
+            IDSeriale = record.IDSeriale
+            IDNonseriale = record.IDNonseriale
+
+    else:
+
+        print("Errore")
+    """
+
+    if request.method == 'GET':
+
+            if Cod[0]=='N':
+                query="SELECT * FROM libri_NonSeriale WHERE CodLibro=%s"
+
+            if Cod[0]=='S':
+                query="SELECT * FROM libri_Seriale WHERE CodLibro=%s"
+
+            for record in NonSeriale.objects.raw(query,[Cod,]):
                 CodLibro = record.CodLibro
                 IDCollana = record.IDCollana
                 IDCasaEd = record.IDCasaEd
@@ -555,7 +503,7 @@ def LibroDetailView(request, Cod):
                 Sottotitolo = record.Sottotitolo
                 AnnoEd = record.AnnoEd
                 Illustrazioni = record.Illustrazioni
-                ISSN = record.ISSN
+                ISBN = record.ISBN
                 Genere = record.Genere
                 NumPub = record.NumPub
                 CopertinaRigida = record.CopertinaRigida
@@ -566,46 +514,57 @@ def LibroDetailView(request, Cod):
                 Curatore = record.Curatore
                 Traduttore = record.Traduttore
                 Critico = record.Critico
-            for record in Seriale.objects.raw("SELECT * FROM libri_Collane C WHERE C.CodCollane=%s", [IDCollana]):
+
+            for record in Collane.objects.raw("SELECT * FROM libri_Collane C WHERE C.CodCollane=%s", [IDCollana,]):
                 NomeCo = record.NomeCo
-            for record in Seriale.objects.raw("SELECT * FROM libri_CasaEditrice C WHERE C.CodCasaEd=%s", [IDCasaEd]):
+
+            for record in CasaEditrice.objects.raw("SELECT * FROM libri_CasaEditrice C WHERE C.CodCasaEd=%s", [IDCasaEd,]):
                 Sede = record.Sede
                 NomeCa = record.NomeCa
-            for record in Seriale.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [IDAutoreCuratore]):
+
+            for record in TradAutCur.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [IDAutoreCuratore,]):
                 NomeAu = record.NomeTr
                 CognomeAu = record.CognomeTr
                 NazioneAu = record.CognomeTr
-            for record in Seriale.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [Traduttore]):
+
+            for record in TradAutCur.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [Traduttore,]):
                 NomeTr = record.NomeTr
                 CognomeTr = record.CognomeTr
                 NazioneTr = record.NazioneTr
-            for record in Seriale.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [Critico]):
+
+            for record in TradAutCur.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Critico,]):
                 NomeCu = record.NomeTr
                 CognomeCu = record.CognomeTr
                 NazioneCu = record.NazioneTr
-            for record in Seriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_Seriale S WHERE S.IDPostPrefazione = P.CodAutore AND P.autPostfazione = T.CodAutore"):
+
+            for record in PostfazionePre.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N WHERE N.IDPostPrefazione = P.CodAutore AND P.autPostfazione = T.CodAutore AND P.CodLibro=%s",[Cod,]):
                 NomePo = record.NomeTr
                 CognomePo = record.CognomeTr
-                NazionePo = record.NazioneTr
-            for record in Seriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_Seriale S WHERE S.IDPostPrefazione = P.CodAutore AND P.autPrefazione = T.CodAutore"):
+                NazionePo = record.NazioneTr 
+
+            for record in PostfazionePre.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N WHERE N.IDPostPrefazione = P.CodAutore AND P.autPrefazione = T.CodAutore AND P.CodLibro=%s",[Cod,]):
                 NomePr = record.NomeTr
                 CognomePr = record.CognomeTr
-                NazionePr = record.NazioneTr 
-                elemento = objlist()
-                elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISSN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
+                NazionePr = record.NazioneTr    
+
+            elemento = objlist()
+            elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
             return render(request, 'dettaglio.html', {'context':elemento})
     else:
         print("Errore")
+
+
 def HomePageViewSeriale(request):
     if request.method == 'GET':
         context=[]
         for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
-            elemento == objlist()
+            elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
             context.append(elemento)
         return render(request, 'Serial.html',{'context_list':context}) 
     else:
         print("Errore")
+        
 def HomePageViewNonSeriale(request):
     if request.method == 'GET':
         context=[]
