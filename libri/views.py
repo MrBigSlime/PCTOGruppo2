@@ -293,14 +293,14 @@ def inserimento(request):
 """
 def del_libro(request, Cod):
 
-cursor = connection.cursor()
+    cursor = connection.cursor()
 
-if request.method =='GET':
-    cursor.execute("DELETE FROM Biblioteca_SingoliLibri WHERE CodLibro=%s", [Cod,])
-    return HttpResponseRedirect(reverse('base'))
-    cursor.close()
-else:
-    print("Errore")
+    if request.method =='GET':
+        cursor.execute("DELETE FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
+        return HttpResponseRedirect(reverse('base'))
+        cursor.close()
+    else:
+        print("Errore")
 
 def LibroDetailView(request, Cod)
     if request.method == 'GET':             #controllo seriale o non seriale
