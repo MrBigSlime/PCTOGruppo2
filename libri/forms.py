@@ -24,8 +24,8 @@ class InserimentoLibro(forms.Form):
     #Info Libro
     TitoloOrig = forms.CharField(label="Titolo Originale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo Originale'}))
     Titolo = forms.CharField(label="Titolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo'}))
-    Straniero = forms.BooleanField(label="Straniero",required=False, widget=forms.CheckboxInput(attrs={'class' : 'formBox', 'placeholder':'Straniero'}))
-    Sottotitolo = forms.CharField(label="Sottotitolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Sottotitolo'}))
+    Straniero = forms.ChoiceField(choices = (('on','Si'),('off','No')))
+    Sottotitolo = forms.CharField(label="Sottotitolo", max_length=256,required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Sottotitolo'}))
     #Genere = forms.CharField(label="Genere", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Genere'}))
     Genere = forms.ChoiceField(choices = 
         (('1',' '),
@@ -46,19 +46,18 @@ class InserimentoLibro(forms.Form):
         ('16','Divulgazione'),
         ('17','Scolastico'),
         ))
-    IsSerial = forms.BooleanField(label="IsSerial", widget=forms.CheckboxInput(attrs={'class' : 'formBox'}))
-    
+    IsSerial = forms.ChoiceField(choices = (('on','Si'),('off','No')))
     #Info Edizione
     AnnoEd = forms.CharField(label="Anno Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Anno Edizione'}))
     ISBN_ISSN = forms.CharField(label="ISBN ISSN", max_length=16, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'ISBN / ISSN'}))
     NumPub = forms.CharField(label="Numero Pub", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero Pubblicazione'}))
-    CopertinaRigida = forms.BooleanField(label="Copertina Rigida",required=False, widget=forms.CheckboxInput(attrs={'class' : 'formBox'}))
-    Illustrazioni = forms.BooleanField(label="Illustrazioni",required=False,widget=forms.CheckboxInput(attrs={'class' : 'formBox'}))
-    Ristampa = forms.BooleanField(label="Ristampa", required=False, widget=forms.CheckboxInput(attrs={'class' : 'formBox'}))
+    CopertinaRigida = forms.ChoiceField(choices = (('on','Si'),('off','No')))
+    Illustrazioni = forms.ChoiceField(choices = (('on','Si'),('off','No')))
+    Ristampa = forms.ChoiceField(choices = (('on','Si'),('off','No')))
     nRistampa = forms.CharField(label="Num Ristampa", required=False, max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero di ristampa'}))
     Edizione = forms.CharField(label="Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Edizione'}))
-    NumPagine = forms.CharField(label="Num Pagine", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero di pagine'}))
-    Curatore = forms.BooleanField(label="Curatore",required=False, widget=forms.CheckboxInput(attrs={'class' : 'formBox'}))
+    NumPagine = forms.CharField(label="NumPagine", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero Pagine'}))
+    Curatore = forms.ChoiceField(choices = (('on','Si'),('off','No')))
     NomeCo = forms.CharField(label="Nome Collana", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Collana'}))
     
     #Traduttore
