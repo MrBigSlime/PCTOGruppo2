@@ -326,7 +326,6 @@ def mod_libro(request,cod):
             IDCollana = record.IDCollana
             IDCasaEd = record.IDCasaEd
             IDAutoreCuratore = record.IDAutoreCuratore
-            IDPostPrefazione = record.IDPostPrefazione
             Straniero = record.Straniero
             TitoloOrig = record.TitoloOrig
             Titolo = record.Titolo
@@ -344,34 +343,28 @@ def mod_libro(request,cod):
             Curatore = record.Curatore
             Traduttore = record.Traduttore
             Critico = record.Critico
-            for record in NonSeriale.objects.raw("SELECT * FROM libri_Collane C WHERE C.CodCollane=%s", [IDCollana]):
-                NomeCo = record.NomeCo
-            for record in NonSeriale.objects.raw("SELECT * FROM libri_CasaEditrice C WHERE C.CodCasaEd=%s", [IDCasaEd]):
-                Sede = record.Sede
-                NomeCa = record.NomeCa
-            for record in NonSeriale.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [IDAutoreCuratore]):
-                NomeAu = record.NomeTr
-                CognomeAu = record.CognomeTr
-                NazioneAu = record.CognomeTr
-            for record in NonSeriale.objects.raw("SELECT * FROM libri_TradAutCur T WHERE T.CodAutore=%s", [Traduttore]):
-                NomeTr = record.NomeTr
-                CognomeTr = record.CognomeTr
-                NazioneTr = record.NazioneTr
-            for record in NonSeriale.objects.raw("SELECT * FROM libri_TradAutCur WHERE CodAutore=%s", [Critico]):
-                NomeCu = record.NomeTr
-                CognomeCu = record.CognomeTr
-                NazioneCu = record.NazioneTr
-            for record in NonSeriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N WHERE N.IDPostPrefazione = P.CodAutore AND P.autPostfazione = T.CodAutore"):
-                NomePo = record.NomeTr
-                CognomePo = record.CognomeTr
-                NazionePo = record.NazioneTr 
-            for record in NonSeriale.objecrs.raw("SELECT T.NomeTr, T.CognomeTr, T.NazioneTr FROM libri_TradAutCur T, libri_PostfazionePre P, libri_NonSeriale N WHERE N.IDPostPrefazione = P.CodAutore AND P.autPrefazione = T.CodAutore"):
-                NomePr = record.NomeTr
-                CognomePr = record.CognomeTr
-                NazionePr = record.NazioneTr    
+            NomeCo = record.IDCollana.NomeCo
+            Sede = record.IDCasaEd.Sede
+            NomeCa = record.IDCasaEd.NomeCa
+            NomeAu = record.IDAutoreCuratore.NomeTr
+            CognomeAu = record.IDAutoreCuratore.CognomeTr
+            NazioneAu = record.IDAutoreCuratore.CognomeTr
+            NomeTr = record.Traduttore.NomeTr
+            CognomeTr = record.Traduttore.CognomeTr
+            NazioneTr = record.Traduttore.NazioneTr
+            NomeCu = record.Critico.NomeTr
+            CognomeCu = record.Critico.CognomeTr
+            NazioneCu = record.Critico.NazioneTr
+            for record in NonSeriale.objecrs.raw("SELECT * FROM libri_PostfazionePre P WHERE P.CodPostfazione=%s",[record.IDPostPrefazione.CodPostfazione]):
+                NomePo = record.autPostfazione.NomeTr
+                CognomePo = record.autPostfazione.CognomeTr
+                NazionePo = record.autPostfazione.NazioneTr 
+                NomePr = record.autPrefazione.NomeTr
+                CognomePr = record.autPrefazione.CognomeTr
+                NazionePr = record.autPrefazione.NazioneTr    
 
             elemento = objlist()
-            elemento.inserimento(record.CodLibro, record.NomeCo, record.Sede, record.NomeCa, record.NomeAu, record.CognomeAu, record.NazioneAu, record.NomePo, record.CognomePo, record.NazionePo, record.NomePr, record.CognomePr, record.NazionePr, record.Straniero, record.TitoloOrig, record.Titolo, record.Sottotitolo, record.AnnoEd, record.Illustrazioni, record.ISBN, record.Genere, record.NumPub, record.CopertinaRigida, record.Ristampa, record.nRistampa, record.Edizione, record.NumPagine, record.Curatore, record.NomeTr, record.CognomeTr, record.NazioneTr, record.NomeCr, record.CognomeCr, record.NazioneCr)
+            elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr,  NomeCr,  CognomeCr,  NazioneCr)
             context.append(elemento)
 
         return(render(request,"inserimento.html",{"context":context}))
