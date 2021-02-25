@@ -25,7 +25,7 @@ class InserimentoLibro(forms.Form):
     TitoloOrig = forms.CharField(label="Titolo Originale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo Originale'}))
     Titolo = forms.CharField(label="Titolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo'}))
     Straniero = forms.ChoiceField(choices = (('on','Si'),('off','No')))
-    Sottotitolo = forms.CharField(label="Sottotitolo", max_length=256,required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Sottotitolo'}))
+    Sottotitolo = forms.CharField(label="Sottotitolo", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Sottotitolo'}))
     #Genere = forms.CharField(label="Genere", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Genere'}))
     Genere = forms.ChoiceField(choices = 
         ((' ',' '),
@@ -58,7 +58,7 @@ class InserimentoLibro(forms.Form):
     Edizione = forms.CharField(label="Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Edizione'}))
     NumPagine = forms.CharField(label="NumPagine", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero Pagine'}))
     Curatore = forms.ChoiceField(choices = (('on','Si'),('off','No')))
-    NomeCo = forms.CharField(label="Nome Collana", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Collana'}))
+    NomeCo = forms.CharField(label="Nome Collana", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Collana'}))
     
     #Traduttore
     NomeTr = forms.CharField(label="Nome Traduttore", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Traduttore'}))
