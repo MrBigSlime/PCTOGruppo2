@@ -80,7 +80,7 @@ class objlist():
         self.CognomeCu = CognomeCu
         self.NazioneCu = NazioneCu
 
-    def inserimentoHome(self,Titolo, Autore, Genere,Cod):
+  def inserimentoHome(self,Titolo, Autore, Genere,Cod):
         self.Titolo = Titolo
         self.Autore = Autore
         self.Genere = Genere
@@ -597,12 +597,14 @@ def HomePageView(request):
         context=[]
         for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo, record.Autore, record.Genere)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
             context.append(elemento)
         
         for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
             context.append(elemento)
 
 
