@@ -80,7 +80,7 @@ class objlist():
         self.CognomeCu = CognomeCu
         self.NazioneCu = NazioneCu
 
-  def inserimentoHome(self,Titolo, Autore, Genere,Cod):
+    def inserimentoHome(self,Titolo, Autore, Genere,Cod):
         self.Titolo = Titolo
         self.Autore = Autore
         self.Genere = Genere
