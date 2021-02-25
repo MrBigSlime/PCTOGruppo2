@@ -80,10 +80,11 @@ class objlist():
         self.CognomeCu = CognomeCu
         self.NazioneCu = NazioneCu
 
-    def inserimentoHome(self,Titolo, Autore, Genere):
+    def inserimentoHome(self,Titolo, Autore, Genere,Cod):
         self.Titolo = Titolo
         self.Autore = Autore
         self.Genere = Genere
+        self.CodLibro = Cod
 
 def in_TradAutCur(dati):
     
@@ -467,7 +468,7 @@ def del_libro(request, Cod):
         print("Errore")
 
 
-def LibroDetailView(request, Cod):
+def LibroDetailView(request,Cod):
     """
     if request.method == 'GET':             #controllo seriale o non seriale
 
@@ -573,6 +574,27 @@ def HomePageViewNonSeriale(request):
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
             context.append(elemento)
         return render(request, 'notSerial.html',{'context_list':context}) 
+    else:
+        print("Errore")
+
+
+def HomePageView(request):
+    if request.method == 'GET':
+        context=[]
+        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
+            context.append(elemento)
+        
+        for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
+            context.append(elemento)
+
+
+        return render(request, 'base.html',{'context_list':context}) 
     else:
         print("Errore")
 
