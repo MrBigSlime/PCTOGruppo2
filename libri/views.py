@@ -450,7 +450,8 @@ def mod_libro(request,cod):
         cursor.execute("UPDATE libri_TradAutCur SET NomeAu=%s,CognomeAu=%s,NazioneAu=%s WHERE CodAutore=%s",[NomePre,CognomePre,NazionePre,IDPre,])
         cursor.execute("UPDATE libri_TradAutCur SET NomeAu=%s,CognomeAu=%s,NazioneAu=%s WHERE CodAutore=%s",[NomePost,CognomePost,NazionePost,IDPost,])
         cursor.close()
-
+        
+"""
 def del_libro(request, Cod):
     cursor = connection.cursor()
     if request.method =='GET':
@@ -459,7 +460,20 @@ def del_libro(request, Cod):
         cursor.close()
     else:
         print("Errore")
+"""
 
+def del_libro(request, Cod):
+    cursor = connection.cursor()
+    
+    if request.method =='GET':
+        if Cod[0]=='N':
+            query="DELETE FROM libri_NonSeriale S Libri S WHERE S.CodLibro=%s"
+            
+        if Cod[0]=='S':
+            query="DELETE FROM libri_Seriale S Libri S WHERE S.CodLibro=%s"
+        cursor.execute(query,[Cod,])
+        cursor.close()
+        return HttpResponseRedirect(reverse('base'))
 
 def LibroDetailView(request,Cod):
     """
