@@ -521,11 +521,10 @@ def LibroDetailView(request,Cod):
                 CognomeCu = record.Critico.CognomeTr
                 NazioneCu = record.Critico.NazioneTr
                 elemento = objlist()
-                elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr,  NomeCr,  CognomeCr,  NazioneCr)
-                return render(request, 'dettaglio.html', {'context':elemento})
+                elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr, NomeCu, CognomeCu, NazioneCu)
+            return render(request, 'detail.html', {'context':elemento})
     else:
         print("Errore")
-
 
 def HomePageViewSeriale(request):
     if request.method == 'GET':
