@@ -490,9 +490,9 @@ def LibroDetailView(request,Cod):
                 NomeCo = record.IDCollana.NomeCo
                 Sede = record.IDCasaEd.Sede
                 NomeCa = record.IDCasaEd.NomeCa
-                NomeAu = record.IDAutoreCuratore.NomeAu
-                CognomeAu = record.IDAutoreCuratore.CognomeAu
-                NazioneAu = record.IDAutoreCuratore.NazioneAu
+                NomeAu = record.IDAutoreCuratore.NomeTr
+                CognomeAu = record.IDAutoreCuratore.CognomeTr
+                NazioneAu = record.IDAutoreCuratore.NazioneTr
                 NomePr = record.IDPostPrefazione.autPrefazione.NomeTr
                 CognomePr = record.IDPostPrefazione.autPrefazione.CognomeTr
                 NazionePr = record.IDPostPrefazione.autPrefazione.NazioneTr
