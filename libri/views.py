@@ -44,7 +44,7 @@ class objlist():
         self.CognomeCu = ""
         self.NazioneCu = ""
     
-    def inserimento(self,CodLibro, NomeCo, Sede, NomeCa, NomeAu, CognomeAu, NazioneAu, NomePo, CognomePo, NazionePo, NomePr, CognomePr, NazionePr, Straniero, TitoloOrig, Titolo, Sottotitolo, AnnoEd, Illustrazioni, ISBN_ISSN, Genere, NumPub, CopertinaRigida, Ristampa, nRistampa, Edizione, NumPagine, Curatore, NomeTr, CognomeTr, NazioneTr, NomeCr, CognomeCr, NazioneCr):
+    def inserimento(self,CodLibro, NomeCo, Sede, NomeCa, NomeAu, CognomeAu, NazioneAu, NomePo, CognomePo, NazionePo, NomePr, CognomePr, NazionePr, Straniero, TitoloOrig, Titolo, Sottotitolo, AnnoEd, Illustrazioni, ISBN_ISSN, Genere, NumPub, CopertinaRigida, Ristampa, nRistampa, Edizione, NumPagine, Curatore, NomeTr, CognomeTr, NazioneTr, NomeCu, CognomeCu, NazioneCu):
         self.CodLibro = CodLibro
         self.NomeCo = NomeCo
         self.Sede = Sede
@@ -464,16 +464,13 @@ def del_libro(request, Cod):
 def LibroDetailView(request,Cod):
     """
     if request.method == 'GET':             #controllo seriale o non seriale
-
         cursor = connection.cursor()
         cursor.execute("SELECT S.IDSeriale, S.IDNonseriale FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
         ris = cursor.fetchall()
         for record in ris:
             IDSeriale = record.IDSeriale
             IDNonseriale = record.IDNonseriale
-
     else:
-
         print("Errore")
     """
 
