@@ -7,5 +7,5 @@ urlpatterns = [
     path('add/',views.inserimento, name='nuovo_libro'),
     path('detail/<Cod>/',views.LibroDetailView, name='detail'),
     path('mod/<Cod>/', views.mod_libro, name= 'modifica_libro'),
-    path('del/<Cod>/', views.del_libro, name='cancella')
+    path('del/<Cod>/', views.del_libro, name='cancella'),
 ]
