@@ -1,0 +1,62 @@
+.add-box {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.add-box h1 {
+    text-align: center;
+}
+
+.addForm-box {
+    display: flex;
+    flex-direction: column;
+}
+.insBtn {
+    width: 200px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    align-self: center;
+    text-align: center;
+    border: none;
+    background-color: rgb(91, 110, 155);
+    border-radius: 5px 5px;
+    height: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all .3s ease .0s;
+}
+
+.insBtn:hover {
+    cursor: pointer;
+    color: whitesmoke;
+    transition: all .3s ease .0s;
+}
+
+.partOne {
+    margin-left: 20px;
+    font-size: 13.99px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+.formBox {
+    border-bottom: 2px solid rgba(91, 110, 155, 0.692);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-size: 12px;
+    width: 200px;
+    text-align: center;
+    padding: 10px 10px;
+    margin-top: 20px;
+}
+
+.Checkbox {
+    margin-top: 20px;
+    width: 50px;
+}
+
+.genBox {
+    margin-top: 20px;
+}
