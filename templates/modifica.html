@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="add-box">
+    <h1>Modifica</h1>
+    <form method="post" autocomplete="off" class="addForm-box">
+        
+        {% csrf_token %}
+
+        <table class="partOne">
+            <tr>
+                <!-- Info autore -->
+                <td>{{form.NomeAu}}</td>
+                <td>{{form.CognomeAu}}</td>
+                <td>{{form.NazioneAu}}</td>
+            </tr>
+            <tr>
+                <!-- Postfazione -->
+                <td>{{form.NomePost}}</td>
+                <td>{{form.CognomePost}}</td>
+                <td>{{form.NazionePost}}</td>
+            </tr>
+            <tr>
+                <!-- Prefazione -->
+                <td>{{form.NomePre}}</td>
+                <td>{{form.CognomePre}}</td>
+                <td>{{form.NazionePre}}</td>
+            </tr>
+            <!-- Info Libro -->
+            <tr>
+                <td>{{form.TitoloOrig}}</td>
+                <td>{{form.Titolo}}</td>
+                <td>{{form.Sottotitolo}}</td>
+            </tr>
+            <tr>
+                <td>{{form.ISBN_ISSN}}</td>
+            </tr>
+            <tr>
+                <td>Genere: {{form.Genere}}</td>
+                <td>Straniero: {{form.Straniero}}</td>
+                <td>Seriale: {{form.IsSerial}}</td>
+            </tr>
+            <tr>
+                <td>{{form.NumPub}}</td>
+                <td>{{form.Edizione}}</td>
+                <td>{{form.AnnoEd}}</td>
+            </tr>
+            <tr>
+                <td>Copertina Rigida: {{form.CopertinaRigida}}</td>
+                <td>Illustrazioni: {{form.Illustrazioni}}</td>
+                <td>Curatore: {{form.Curatore}}</td>
+            </tr>
+            <tr>
+                <td>{{form.NumPagine}}</td>
+                <td>{{form.NomeCo}}</td>
+                <td>{{form.nRistampa}}</td>
+            </tr>
+            <tr>
+                <td>Ristampa: {{form.Ristampa}}</td>
+            </tr>
+            <tr>
+                <td>{{form.NomeCa}}</td>
+                <td>{{form.SedeCa}}</td>
+            </tr>
+            <tr>
+                <td>{{form.NomeTr}}</td>
+                <td>{{form.CognomeTr}}</td>
+                <td>{{form.NazioneTr}}</td>
+            </tr>
+            <tr>
+                <td>{{form.NomeCu}}</td>
+                <td>{{form.CognomeCu}}</td>
+                <td>{{form.NazioneCu}}</td>
+            </tr>
+        </table>
+
+        <input type="submit" value="Inserisci Libro" class="insBtn">
+    </form>
+</div>
+
+{% endblock content %}
