@@ -317,9 +317,9 @@ def mod_libro(request,cod):
     context=[]
     if request.method == 'GET':
         if cod[0]=='N':
-            query="SELECT * FROM libri_NonSeriale WHERE CodLibro=%s"
+            query="SELECTS.CodLibro S.IDCollana, S.IDCasaEd, S.IDAutoreCuratore, S.Straniero, S.TitoloOrig, S.Titolo, S.Sottotitolo, S.AnnoEd, S.Illustrazioni, S.ISBN, S.Genere, S.NumPub, S.CopertinaRigida, S.Ristampa, S.nRistampa, S.Edizione, S.NumPagine, S.Curatore, S.Traduttore, S.Critico FROM libri_NonSeriale WHERE S.CodLibro=%s"
         if cod[0]=='S':
-            query="SELECT * FROM libri_Seriale WHERE CodLibro=%s"
+            query="SELECT S.CodLibro S.IDCollana, S.IDCasaEd, S.IDAutoreCuratore, S.Straniero, S.TitoloOrig, S.Titolo, S.Sottotitolo, S.AnnoEd, S.Illustrazioni, S.ISSN, S.Genere, S.NumPub, S.CopertinaRigida, S.Ristampa, S.nRistampa, S.Edizione, S.NumPagine, S.Curatore, S.Traduttore, S.Critico FROM libri_Seriale S WHERE S.CodLibro=%s"
         
         for record in TradAutCur.objects.raw(query,[cod,]):
             CodLibro = record.CodLibro
