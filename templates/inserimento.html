@@ -1,91 +1,80 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Nuovo Libro</title>
-    <!--<link rel="stylesheet" href="styles.css">-->
-    <link rel="stylesheet" href="{% static './css/base_style.css' %}">
-    <link rel="stylesheet" href="{% static './css/ins_style.css' %}">
-</head>
+{% block content %}
 
-<body>
-    <nav>
-        <h2 style="color:red;">BIBLIOBASE</h2>
-        <div class="links">
-            <br><br>
-            <a href="{% url 'base' %}">HOME</a>
-            <br><br>
-            <a href="{% url 'nuovo_libro' %}">NUOVO LIBRO</a>
-            <br><br>
-        </div>
-        <div class="cp">All Right Reserverd</div>
-    </nav>
-    {% block content %}
+<div class="add-box">
+    <h1>Nuovo Libro</h1>
+    <form method="post" autocomplete="off" class="addForm-box">
+        
+        {% csrf_token %}
 
-    <main class="ins-box">
-        <h1>Inserisci Libro</h1>
-        <form method="post" autocomplete="off">
-            {% csrf_token %}
-            <!-- Info autore -->
-            <p> {{form.NomeAu}}</p>
-            <p> {{form.CognomeAu}}</p>
-            <p> {{form.NazioneAu}}</p>
-
-            <!-- Postfazione -->
-            <p> {{form.NomePost}}</p>
-            <p> {{form.CognomePost}}</p>
-            <p> {{form.NazionePost}}</p>
-
-            <!-- Prefazione -->
-            <p> {{form.NomePre}}</p>
-            <p> {{form.CognomePre}}</p>
-            <p> {{form.NazionePre}}</p>
-
+        <table class="partOne">
+            <tr>
+                <!-- Info autore -->
+                <td>{{form.NomeAu}}</td>
+                <td>{{form.CognomeAu}}</td>
+                <td>{{form.NazioneAu}}</td>
+            </tr>
+            <tr>
+                <!-- Postfazione -->
+                <td>{{form.NomePost}}</td>
+                <td>{{form.CognomePost}}</td>
+                <td>{{form.NazionePost}}</td>
+            </tr>
+            <tr>
+                <!-- Prefazione -->
+                <td>{{form.NomePre}}</td>
+                <td>{{form.CognomePre}}</td>
+                <td>{{form.NazionePre}}</td>
+            </tr>
             <!-- Info Libro -->
-            <p> {{form.TitoloOrig}}</p>
-            <p> {{form.Titolo}}</p>
-            <p> {{form.Sottotitolo}}</p>
-            <p> {{form.ISBN_ISSN}}</p>
-            <p> Genere: {{form.Genere}}</p>
-            <p> Straniero: {{form.Straniero}}</p>
-            <p> Seriale: {{form.IsSerial}}</p>
+            <tr>
+                <td>{{form.TitoloOrig}}</td>
+                <td>{{form.Titolo}}</td>
+                <td>{{form.Sottotitolo}}</td>
+            </tr>
+            <tr>
+                <td>Genere: {{form.Genere}}</td>
+                <td>Straniero: {{form.Straniero}}</td>
+                <td>Seriale: {{form.IsSerial}}</td>
+            </tr>
+            <tr>
+                <td>{{form.NumPub}}</td>
+                <td>{{form.Edizione}}</td>
+                <td>{{form.AnnoEd}}</td>
+            </tr>
+            <tr>
+                <td>Copertina Rigida: {{form.CopertinaRigida}}</td>
+                <td>Illustrazioni: {{form.Illustrazioni}}</td>
+                <td>Curatore: {{form.Curatore}}</td>
+            </tr>
+            <tr>
+                <td>{{form.NumPagine}}</td>
+                <td>{{form.NomeCo}}</td>
+                <td>{{form.nRistampa}}</td>
+            </tr>
+            <tr>
+                <td>Ristampa: {{form.Ristampa}}</td>
+            </tr>
+            <tr>
+                <td>{{form.NomeCa}}</td>
+                <td>{{form.SedeCa}}</td>
+                <td>{{form.ISBN_ISSN}}</td>
+            </tr>
+            <tr>
+                <td>{{form.NomeTr}}</td>
+                <td>{{form.CognomeTr}}</td>
+                <td>{{form.NazioneTr}}</td>
+            </tr>
+            <tr>
+                <td>{{form.NomeCu}}</td>
+                <td>{{form.CognomeCu}}</td>
+                <td>{{form.NazioneCu}}</td>
+            </tr>
+        </table>
 
-            <p> Copertina Rigida: {{form.CopertinaRigida}}</p>
-            <p> Illustrazioni: {{form.Illustrazioni}}</p>
-            <p> Curatore: {{form.Curatore}}</p>
-            <p> {{form.NumPub}}</p>
-            <p> {{form.Edizione}}</p>
-            <p> {{form.AnnoEd}}</p>
-            <p> {{form.NumPagine}}</p>
-            <p> {{form.NomeCo}}</p>
-            <p> Ristampa: {{form.Ristampa}}</p>
-            <p> {{form.nRistampa}}</p>
+        <input type="submit" value="Inserisci Libro" class="insBtn">
+    </form>
+</div>
 
-
-            <p> {{form.NomeCa}}</p>
-            <p> {{form.SedeCa}}</p>
-
-            <p> {{form.NomeTr}}</p>
-            <p> {{form.CognomeTr}}</p>
-            <p> {{form.NazioneTr}}</p>
-
-            <p> {{form.NomeCu}}</p>
-            <p> {{form.CognomeCu}}</p>
-            <p> {{form.NazioneCu}}</p>
-
-            <input type="submit" value="Inserisci Libro" class="ingresso" onclick="Funzione()">
-        </form>
-    </main>
-</body>
-<script>
-    function Funzione() {
-        alert("Inserimento Effetuato!");
-    }
-</script>
 {% endblock content %}
-
-</html>
