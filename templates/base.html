@@ -38,7 +38,7 @@
                 <div class="child">
                     <a href="cancella.html">Elimina</a>
                     <a href="{% url 'modifica_libro' record.Codlibro %}">Modifica</a>
-                    <a href="{% url 'dettaglio_libro' record.Codlibro %}">Dettaglio</a>
+                    <a href="{% url 'detail' record.CodLibro %}">Dettaglio</a>
                 </div>
             </div>
             {% endfor %} {% endblock content %}
