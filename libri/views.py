@@ -225,7 +225,7 @@ def inserimento(request):
             casaed.append(ris.NomeCa)
             sedeed.append(ris.Sede)
 
-        for ris in Collane.objects.raw("SELECT C.NomeCo FROM libri_Collane C"):
+        for ris in Collane.objects.raw("SELECT C.NomeCo, C.CodCollane FROM libri_Collane C"):
             collane.append(ris.NomeCo)
 
         return(render(request,"inserimento.html",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed,'collane':collane}))
