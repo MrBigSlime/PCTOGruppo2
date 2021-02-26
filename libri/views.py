@@ -317,11 +317,11 @@ def mod_libro(request,cod):
     context=[]
     if request.method == 'GET':
         if cod[0]=='N':
-            query="SELECTS.CodLibro S.IDCollana, S.IDCasaEd, S.IDAutoreCuratore, S.Straniero, S.TitoloOrig, S.Titolo, S.Sottotitolo, S.AnnoEd, S.Illustrazioni, S.ISBN, S.Genere, S.NumPub, S.CopertinaRigida, S.Ristampa, S.nRistampa, S.Edizione, S.NumPagine, S.Curatore, S.Traduttore, S.Critico FROM libri_NonSeriale WHERE S.CodLibro=%s"
+            query="SELECT N.CodLibro, N.IDCollana_id, N.IDCasaEd_id, N.IDAutoreCuratore_id, N.Straniero, N.TitoloOrig, N.Titolo, N.Sottotitolo, N.AnnoEd, N.Illustrazioni, N.ISBN, N.Genere, N.NumPub, N.CopertinaRigida, N.Ristampa, N.nRistampa, N.Edizione, N.NumPagine, N.Curatore, N.Traduttore_id, N.Critico_id FROM libri_NonSeriale N WHERE N.CodLibro=%s"
         if cod[0]=='S':
-            query="SELECT S.CodLibro S.IDCollana, S.IDCasaEd, S.IDAutoreCuratore, S.Straniero, S.TitoloOrig, S.Titolo, S.Sottotitolo, S.AnnoEd, S.Illustrazioni, S.ISSN, S.Genere, S.NumPub, S.CopertinaRigida, S.Ristampa, S.nRistampa, S.Edizione, S.NumPagine, S.Curatore, S.Traduttore, S.Critico FROM libri_Seriale S WHERE S.CodLibro=%s"
+            query="SELECT S.CodLibro, S.IDCollana_id, S.IDCasaEd_id, S.IDAutoreCuratore_id, S.Straniero, S.TitoloOrig, S.Titolo, S.Sottotitolo, S.AnnoEd, S.Illustrazioni, S.ISSN, S.Genere, S.NumPub, S.CopertinaRigida, S.Ristampa, S.nRistampa, S.Edizione, S.NumPagine, S.Curatore, S.Traduttore_id, S.Critico_id FROM libri_Seriale S WHERE S.CodLibro=%s"
         
-        for record in TradAutCur.objects.raw(query,[cod,]):
+        for record in Seriale.objects.raw(query,[cod,]):
             CodLibro = record.CodLibro
             IDCollana = record.IDCollana
             IDCasaEd = record.IDCasaEd
@@ -332,7 +332,10 @@ def mod_libro(request,cod):
             Sottotitolo = record.Sottotitolo
             AnnoEd = record.AnnoEd
             Illustrazioni = record.Illustrazioni
-            ISBN = record.ISBN
+            if cod[0]=='N':
+                ISBN = record.ISBN
+            if cod[0]=='S':
+                ISBN = record.ISSN    
             Genere = record.Genere
             NumPub = record.NumPub
             CopertinaRigida = record.CopertinaRigida
@@ -355,7 +358,7 @@ def mod_libro(request,cod):
             NomeCu = record.Critico.NomeTr
             CognomeCu = record.Critico.CognomeTr
             NazioneCu = record.Critico.NazioneTr
-            for record in NonSeriale.objecrs.raw("SELECT * FROM libri_PostfazionePre P WHERE P.CodPostfazione=%s",[record.IDPostPrefazione.CodPostfazione]):
+            for record in PostfazionePre.objects.raw("SELECT P.CodPostfazione,P.autPrefazione_id,P.autPostfazione_id FROM libri_PostfazionePre P WHERE P.CodPostfazione=%s",[record.IDPostPrefazione.CodPostfazione]):
                 NomePo = record.autPostfazione.NomeTr
                 CognomePo = record.autPostfazione.CognomeTr
                 NazionePo = record.autPostfazione.NazioneTr 
@@ -364,10 +367,10 @@ def mod_libro(request,cod):
                 NazionePr = record.autPrefazione.NazioneTr    
 
             elemento = objlist()
-            elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr,  NomeCr,  CognomeCr,  NazioneCr)
+            elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr,  NomeCu,  CognomeCu,  NazioneCu)
             context.append(elemento)
 
-        return(render(request,"inserimento.html",{"context":context}))
+        return(render(request,"modifica.html",{"context":context}))
 
         if request.method== 'POST':
             for record in TradAutCur.objects.raw("SELECT * FROM libri_NonSeriale WHERE CodLibro=%s", [CodLibro,]):
@@ -451,16 +454,16 @@ def mod_libro(request,cod):
         cursor.execute("UPDATE libri_TradAutCur SET NomeAu=%s,CognomeAu=%s,NazioneAu=%s WHERE CodAutore=%s",[NomePost,CognomePost,NazionePost,IDPost,])
         cursor.close()
         
-"""
-def del_libro(request, Cod):
-    cursor = connection.cursor()
-    if request.method =='GET':
-        cursor.execute("DELETE FROM libri_SingoliLibri S WHERE S.CodLibro=%s",[Cod,])
-        return HttpResponseRedirect(reverse('base'))
-        cursor.close()
-    else:
-        print("Errore")
-"""
+    """
+    def del_libro(request, Cod):
+        cursor = connection.cursor()
+        if request.method =='GET':
+            cursor.execute("DELETE FROM libri_SingoliLibri S WHERE S.CodLibro=%s",[Cod,])
+            return HttpResponseRedirect(reverse('base'))
+            cursor.close()
+        else:
+            print("Errore")
+    """
 
 def del_libro(request, Cod):
     cursor = connection.cursor()
@@ -476,6 +479,7 @@ def del_libro(request, Cod):
         return HttpResponseRedirect(reverse('base'))
 
 def LibroDetailView(request,Cod):
+
     """
     if request.method == 'GET':             #controllo seriale o non seriale
         cursor = connection.cursor()
@@ -547,7 +551,7 @@ def HomePageViewSeriale(request):
         return render(request, 'Serial.html',{'context_list':context}) 
     else:
         print("Errore")
-        
+    
 def HomePageViewNonSeriale(request):
     if request.method == 'GET':
         context=[]
