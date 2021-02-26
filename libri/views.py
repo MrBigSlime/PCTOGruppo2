@@ -85,6 +85,8 @@ class objlist():
         self.Autore = Autore
         self.Genere = Genere
         self.CodLibro = Cod
+
+
 def in_serNotser(dati,id):
     
     if id=="N":
@@ -317,11 +319,11 @@ def inserimento(request):
             if identificatore=='on':
                 query="INSERT INTO libri_Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                 cod="S"+str(randrange(1000))
-                Dati=[cod,CodCasaEd,CodCollane,AnnoEd,CopertinaRigida,Curatore,Edizione,Genere,Illustrazioni,NumPagine,NumPub,Ristampa,Sottotitolo,Straniero,Titolo,TitoloOrig,nRistampa,CodAutore,CodPost,CodCri,CodTrad,ISBN_ISSN]
+                Dati=[cod,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodCri,CodAutore,CodCasaEd,CodCollane,CodPost,CodTrad]
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
                 cursor.close()
-                return HttpResponseRedirect(reverse('base'))
+            return HttpResponseRedirect(reverse('base'))
                 
 
         else:
