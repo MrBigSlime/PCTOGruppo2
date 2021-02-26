@@ -1,49 +1,41 @@
-.ins-box {
+h4 {
+    color: red;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+body {
+    margin: 0;
+    font-family: Leelawadee;
+    min-height: 100vh;
+    /*altezza minima*/
+}
+
+nav {
+    flex-basis: 17vw;
+    padding: 20px;
+    background-color: rgba(91, 110, 155, 0.692);
+    text-align: center;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
 }
 
-.ins-box h1 {
-    font-size: 42px;
-    text-transform: uppercase;
+.partOne {
+    margin-left: 20px;
+    text-align: center;
+    font-size: 20px;
 }
 
-.ins-box form {
-    border-radius: 20px;
+table {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
 }
 
-.formBox {
-    border-bottom: 2px solid rgba(91, 110, 155, 0.692);
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-radius: 4px 4px 0px 0px;
-    width: 300px;
-    padding: 12px 20px;
-}
-
-.formBox {
+td {
     border-bottom: 3px solid rgba(91, 110, 155, 0.692);
-}
-
-.ingresso {
-    background-color: rgba(91, 110, 155, 0.692);
-    border: none;
-    padding: 7px 10px;
-    border-radius: 20px;
-    font-size: 16px;
-    margin: 4px;
-    cursor: pointer;
-}
-
-.Checkbox {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #eee;
-    border-radius: 50%;
 }

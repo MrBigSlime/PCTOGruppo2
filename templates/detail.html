@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static './css/ins_style.css' %}">
     <title>Detail</title>
 </head>
 
@@ -21,17 +22,76 @@
         </div>
         <div class="cp">All Right Reserverd</div>
     </nav>
+
     {% block content %}
-    <h4>{{context.Titolo}}</h4>
-    <h4>{{context.TitoloOrig}}</h4>
-    <h4>{{context.ISBN_ISSN}}</h4>
+    <table class="partOne">
+        <tr>
+            <!-- Info autore -->
+            <td><b>Nome Autore:</b> {{context.NomeAu}}</td>
+            <td><b>Cognome Autore:</b> {{context.CognomeAu}}</td>
+            <td><b>Nazione Autore:</b> {{context.NazioneAu}}</td>
+        </tr>
+        <tr>
+            <!-- Postfazione -->
+            <td>{{context.NomePost}}</td>
+            <td>{{context.CognomePost}}</td>
+            <td>{{context.NazionePost}}</td>
+        </tr>
+        <tr>
+            <!-- Prefazione -->
+            <td>{{context.NomePre}}</td>
+            <td>{{context.CognomePre}}</td>
+            <td>{{context.NazionePre}}</td>
+        </tr>
+        <!-- Info Libro -->
+        <tr>
+            <td>{{context.TitoloOrig}}</td>
+            <td>{{context.Titolo}}</td>
+            <td>{{context.Sottotitolo}}</td>
+        </tr>
+        <tr>
+            <td>Genere: {{context.Genere}}</td>
+            <td>Straniero: {{context.Straniero}}</td>
+            <td>Seriale: {{context.IsSerial}}</td>
+        </tr>
+        <tr>
+            <td>{{context.NumPub}}</td>
+            <td>{{context.Edizione}}</td>
+            <td>{{context.AnnoEd}}</td>
+        </tr>
+        <tr>
+            <td>Copertina Rigida: {{context.CopertinaRigida}}</td>
+            <td>Illustrazioni: {{context.Illustrazioni}}</td>
+            <td>Curatore: {{context.Curatore}}</td>
+        </tr>
+        <tr>
+            <td>{{context.NumPagine}}</td>
+            <td>{{context.NomeCo}}</td>
+            <td>{{context.nRistampa}}</td>
+        </tr>
+        <tr>
+            <td>Ristampa: {{context.Ristampa}}</td>
+        </tr>
+        <tr>
+            <td>{{context.NomeCa}}</td>
+            <td>{{context.SedeCa}}</td>
+            <td>{{context.ISBN_ISSN}}</td>
+        </tr>
+        <tr>
+            <td>{{context.NomeTr}}</td>
+            <td>{{context.CognomeTr}}</td>
+            <td>{{context.NazioneTr}}</td>
+        </tr>
+        <tr>
+            <td>{{context.NomeCu}}</td>
+            <td>{{context.CognomeCu}}</td>
+            <td>{{context.NazioneCu}}</td>
+        </tr>
+    </table>
 
-    <h4>{{context.NomeAu}}</h4>
-    <h4>{{context.CognomeAu}}</h4>
-    <h4>{{context.NazioneAu}}</h4>
 
-    <h4>{{context.Genere}}</h4>
-    <h4>{{context.NomeCa}}</h4>
+
+
     {% endblock content %}
 </body>
 

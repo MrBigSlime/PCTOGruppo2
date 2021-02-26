@@ -6,7 +6,7 @@ body {
     /*altezza minima*/
 }
 
-a{
+a {
     text-decoration: none;
     color: black;
 }
@@ -84,7 +84,7 @@ nav {
     /*centrare il testo nel box*/
 }
 
-.child a{
+.child a {
     display: flex;
     background: rgba(91, 110, 155, 0.692);
     box-shadow: 2px 3px rgba(43, 44, 46, 0.753);
@@ -108,14 +108,14 @@ nav {
     box-sizing: border-box;
 }
 
-.info{
+.info {
     display: flex;
     flex-direction: column;
     align-self: center;
     padding: 10px;
 }
 
-.ns{
+.ns {
     color: red;
     padding: 70px;
 }
