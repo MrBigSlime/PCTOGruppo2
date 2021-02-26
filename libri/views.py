@@ -85,7 +85,26 @@ class objlist():
         self.Autore = Autore
         self.Genere = Genere
         self.CodLibro = Cod
+def in_serNotser(dati,id):
+    
+    if id=="N":
+        query="INSERT INTO libri_NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        cod="N"+str(randrange(1000))
 
+    else:
+        query="INSERT INTO libri_Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        cod="S"+str(randrange(1000))
+        
+    if dati['Curatore']==True:
+        cur=True
+    else:
+        cur=False
+
+    Dati=[cod,dati['Straniero'],dati['TitoloOrig'],dati['Titolo'],dati['Sottotitolo'],dati['AnnoEd'],dati['Illustrazioni'],dati['ISBN_ISSN'],dati['Genere'],dati['NumPub'],dati['CopertinaRigida'],dati['Ristampa'],dati['nRistampa'],dati['Edizione'],dati['NumPagine'],cur,dati['CodCri'],dati['CodAutore'],dati['CodCasaEd'],dati['CodCollane'],dati['CodPost'],dati['CodTrad']]
+    cursor = connection.cursor()
+    cursor.execute(query,Dati)
+    cursor.close()
+    
 def in_TradAutCur(dati):
     
     query="INSERT INTO libri_TradAutCur VALUES(%s,%s,%s,%s)"
@@ -235,7 +254,7 @@ def inserimento(request):
             
             #Dati anagrafici
             Straniero=request.POST.get("Straniero")
-            if Straniero=='on':
+            if Straniero=='0':
                 Straniero=False
             else:
                 Straniero=True
@@ -244,7 +263,7 @@ def inserimento(request):
             Sottotitolo=request.POST.get("Sottotitolo")
             AnnoEd=request.POST.get("AnnoEd")
             Illustrazioni=request.POST.get("Illustrazioni")
-            if Illustrazioni=='on':
+            if Illustrazioni=='0':
                 Illustrazioni=False
             else:
                 Illustrazioni=True
@@ -252,12 +271,12 @@ def inserimento(request):
             Genere=request.POST.get("Genere")
             NumPub=request.POST.get("NumPub")
             CopertinaRigida=request.POST.get("CopertinaRigida")
-            if CopertinaRigida=='on':
+            if CopertinaRigida=='0':
                 CopertinaRigida=False
             else:
                 CopertinaRigida=True
             Ristampa=request.POST.get("Ristampa")
-            if Ristampa=='on':
+            if Ristampa=='0':
                 Ristampa=False
             else:
                 Ristampa=True
@@ -265,7 +284,7 @@ def inserimento(request):
             Edizione=request.POST.get("Edizione")
             NumPagine=request.POST.get("NumPagine")
             Curatore=request.POST.get("Curatore")
-            if Curatore=='on':
+            if Curatore=='0':
                 Curatore=False
             else:
                 Curatore=True
@@ -288,11 +307,9 @@ def inserimento(request):
             CodCri=inspector({'NomeTr':NomeC ,'CognomeTr':CognomeC,'NazioneTr':NazioneC},"A")
             
             if identificatore=='off':
-                print("hfrghfswrghfsw")
                 query="INSERT INTO libri_NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                 cod="N"+str(randrange(1000))
                 Dati=[cod,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodCri,CodAutore,CodCasaEd,CodCollane,CodPost,CodTrad]
-                print(Dati)
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
                 cursor.close()
@@ -302,7 +319,6 @@ def inserimento(request):
                 cod="S"+str(randrange(1000))
                 Dati=[cod,CodCasaEd,CodCollane,AnnoEd,CopertinaRigida,Curatore,Edizione,Genere,Illustrazioni,NumPagine,NumPub,Ristampa,Sottotitolo,Straniero,Titolo,TitoloOrig,nRistampa,CodAutore,CodPost,CodCri,CodTrad,ISBN_ISSN]
                 cursor = connection.cursor()
-                print(Dati)
                 cursor.execute(query,Dati)
                 cursor.close()
                 return HttpResponseRedirect(reverse('base'))
@@ -318,11 +334,13 @@ def mod_libro(request,cod):
     if request.method == 'GET':
         form = InserimentoLibro()
         if cod[0]=='N':
+            ide='off'
             query="SELECT N.CodLibro, N.IDCollana_id, N.IDCasaEd_id, N.IDAutoreCuratore_id, N.Straniero, N.TitoloOrig, N.Titolo, N.Sottotitolo, N.AnnoEd, N.Illustrazioni, N.ISBN, N.Genere, N.NumPub, N.CopertinaRigida, N.Ristampa, N.nRistampa, N.Edizione, N.NumPagine, N.Curatore, N.Traduttore_id, N.Critico_id FROM libri_NonSeriale N WHERE N.CodLibro=%s"
             ris=NonSeriale.objects.raw(query,[cod,])
         if cod[0]=='S':
             query="SELECT S.CodLibro, S.IDCollana_id, S.IDCasaEd_id, S.IDAutoreCuratore_id, S.Straniero, S.TitoloOrig, S.Titolo, S.Sottotitolo, S.AnnoEd, S.Illustrazioni, S.ISSN, S.Genere, S.NumPub, S.CopertinaRigida, S.Ristampa, S.nRistampa, S.Edizione, S.NumPagine, S.Curatore, S.Traduttore_id, S.Critico_id FROM libri_Seriale S WHERE S.CodLibro=%s"
             ris=Seriale.objects.raw(query,[cod,])
+            ide='on'
 
         for record in ris:
             CodLibro = record.CodLibro
@@ -330,23 +348,51 @@ def mod_libro(request,cod):
             IDCasaEd = record.IDCasaEd
             IDAutoreCuratore = record.IDAutoreCuratore
             Straniero = record.Straniero
+            if Straniero == False:
+                Stranieroo="0"
+            else: 
+                Stranieroo="1"
+            
             TitoloOrig = record.TitoloOrig
             Titolo = record.Titolo
             Sottotitolo = record.Sottotitolo
             AnnoEd = record.AnnoEd
             Illustrazioni = record.Illustrazioni
+            if  Illustrazioni== False:
+                Illustrazionii="0"
+            else: 
+                Illustrazionii="1"
+
             if cod[0]=='N':
                 ISBN = record.ISBN
             if cod[0]=='S':
                 ISBN = record.ISSN    
+
             Genere = record.Genere
             NumPub = record.NumPub
+            
             CopertinaRigida = record.CopertinaRigida
+            if CopertinaRigida == False:
+                Copertina="0"
+            else: 
+                Copertina="1"
+
             Ristampa = record.Ristampa
+            if Ristampa == False:
+                Ristampaa="0"
+            else: 
+                Ristampaa="1"
+
             nRistampa = record.nRistampa
             Edizione = record.Edizione
             NumPagine = record.NumPagine
+
             Curatore = record.Curatore
+            if Curatore == False:
+                Curatoree="0"
+            else: 
+                Curatoree="1"
+
             Traduttore = record.Traduttore
             Critico = record.Critico
             NomeCo = record.IDCollana.NomeCo
@@ -368,94 +414,132 @@ def mod_libro(request,cod):
                 NomePr = record.autPrefazione.NomeTr
                 CognomePr = record.autPrefazione.CognomeTr
                 NazionePr = record.autPrefazione.NazioneTr    
-
-            elemento = objlist()
-            elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr,  NomeCu,  CognomeCu,  NazioneCu)
-            context.append(elemento)
-            form = InserimentoLibro(initial=context)       
+            
+            elemento={'Straniero':Stranieroo,'TitoloOrig':TitoloOrig,'Titolo':Titolo,'Sottotitolo':Sottotitolo,'AnnoEd':AnnoEd,'Illustrazioni':Illustrazionii,'Genere':str(Genere),'NumPub':NumPub,'CopertinaRigida':Copertina,
+            'Ristampa':Ristampaa,'nRistampa':nRistampa,'Edizione':Edizione,'NumPagine':NumPagine,'Curatore':Curatoree,'Traduttore':Traduttore,'Critico':Critico,'NomeCo':NomeCo,'SedeCa':Sede,
+            'NomeCa':NomeCa,'NomeAu':NomeAu,'CognomeAu':CognomeAu,'NazioneAu':NazioneAu,'NomeTr':NomeTr,'CognomeTr':CognomeTr,'NazioneTr':NazioneTr,'NomeCu':NomeCu,'CognomeCu':CognomeCu,'NazioneCu':NazioneCu,
+            'NomePost':NomePo,'CognomePost':CognomePo,'NazionePost':NazionePo,'NomePre':NomePr,'CognomePre':CognomePr,'NazionePre':NazionePr,'ISBN_ISSN':ISBN,'IsSerial':ide}
+            form = InserimentoLibro(initial=elemento)       
         return(render(request,"modifica.html",{'form':form,}))
 
-        if request.method== 'POST':
-            for record in TradAutCur.objects.raw("SELECT * FROM libri_NonSeriale WHERE CodLibro=%s", [CodLibro,]):
-                
-                IDCollana = record.IDCollana
-                IDCasaEd = record.IDCasaEd
-                IDAutoreCuratore = record.IDAutoreCuratore
-                IDPostPrefazione = record.IDPostPrefazione
-                Traduttore = record.Traduttore
-                Critico = record.Critico
-                for record in TradAutCur.objects.raw("SELECT * FROM libri_PostfazionePre P WHERE CodPostfazione=%s", [IDPostPrefazione,]):
-                    IDPost=record.autPostfazione
-                    IDPre=record.autPrefazione
-
-            identificatore=request.POST.get("IsSerial")
-
-            #Dati anagrafici
-            Straniero=request.POST.get("Straniero")
-            if Straniero=='on': Straniero=False 
-            else:   Straniero=True
-            Illustrazioni=request.POST.get("Illustrazioni")
-            if Illustrazioni=='on': Illustrazioni=False
-            else:   Illustrazioni=True
-            CopertinaRigida=request.POST.get("CopertinaRigida")
-            if CopertinaRigida=='on': CopertinaRigida=False
-            else:   CopertinaRigida=True
-            Ristampa=request.POST.get("Ristampa")
-            if Ristampa=='on':  Ristampa=False           
-            else:   Ristampa=True
-            Curatore=request.POST.get("Curatore")
-            if Curatore=='on': Curatore=False
-            else: Curatore=True
-
-            TitoloOrig=request.POST.get("TitoloOrig")
-            Titolo=request.POST.get("Titolo")
-            Sottotitolo=request.POST.get("Sottotitolo")
-            AnnoEd=request.POST.get("AnnoEd")
-            ISBN_ISSN=request.POST.get("ISBN_ISSN")
-            Genere=request.POST.get("Genere")
-            NumPub=request.POST.get("NumPub")
-            nRistampa=request.POST.get("nRistampa")
-            Edizione=request.POST.get("Edizione")
-            NumPagine=request.POST.get("NumPagine")
+    if request.method== 'POST':
+        form = InserimentoLibro(request.POST)
+        if cod[0]=='N':
             
+            query="SELECT CodLibro,IDCollana_id,IDCasaEd_id,IDAutoreCuratore_id,IDPostPrefazione_id,Traduttore_id,Critico_id FROM libri_NonSeriale WHERE CodLibro=%s"
+            ris=NonSeriale.objects.raw(query,[cod,])
+        if cod[0]=='S':
+            query="SELECT CodLibro,IDCollana_id,IDCasaEd_id,IDAutoreCuratore_id,IDPostPrefazione_id,Traduttore_id,Critico_id FROM libri_Seriale WHERE CodLibro=%s"
+            ris=Seriale.objects.raw(query,[cod,])
+        for record in ris:
+            CodLibro = record.CodLibro
+            IDCollana = record.IDCollana
+            IDCasaEd = record.IDCasaEd
+            IDAutoreCuratore = record.IDAutoreCuratore
+            IDPostPrefazione = record.IDPostPrefazione
+            Traduttore = record.Traduttore
+            Critico = record.Critico
+            for record in PostfazionePre.objects.raw("SELECT * FROM libri_PostfazionePre P WHERE CodPostfazione=%s", [IDPostPrefazione.CodPostfazione,]):
+                IDPost=record.autPostfazione
+                IDPre=record.autPrefazione
 
-            #Dati Critico
-            NomeTr=request.POST.get("NomeTr")
-            CognomeTr=request.POST.get("CognomeTr")
-            NazioneTr=request.POST.get("NazioneTr") 
+        identificatore=request.POST.get("IsSerial")
 
-            #Dati Critico
-            NomeC=request.POST.get("NomeCu")
-            CognomeC=request.POST.get("CognomeCu")
-            NazioneC=request.POST.get("NazioneCu")
+        #Dati anagrafici
+        Straniero=request.POST.get("Straniero")
+        if Straniero=='0': Straniero=False 
+        else:   Straniero=True
+        Illustrazioni=request.POST.get("Illustrazioni")
+        if Illustrazioni=='0': Illustrazioni=False
+        else:   Illustrazioni=True
+        CopertinaRigida=request.POST.get("CopertinaRigida")
+        if CopertinaRigida=='0': CopertinaRigida=False
+        else:   CopertinaRigida=True
+        Ristampa=request.POST.get("Ristampa")
+        if Ristampa=='0':  Ristampa=False           
+        else:   Ristampa=True
+        Curatore=request.POST.get("Curatore")
+        if Curatore=='0': Curatore=False
+        else: Curatore=True
 
-             #dati collane e casa editrice
-            NomeCo=request.POST.get("NomeCo")
-            NomeCa=request.POST.get("NomeCa")
-            SedeCa =request.POST.get("SedeCa")
+        TitoloOrig=request.POST.get("TitoloOrig")
+        Titolo=request.POST.get("Titolo")
+        Sottotitolo=request.POST.get("Sottotitolo")
+        AnnoEd=request.POST.get("AnnoEd")
+        ISBN_ISSN=request.POST.get("ISBN_ISSN")
+        Genere=request.POST.get("Genere")
+        NumPub=request.POST.get("NumPub")
+        nRistampa=request.POST.get("nRistampa")
+        Edizione=request.POST.get("Edizione")
+        NumPagine=request.POST.get("NumPagine")
+        
 
-            #dati autori
-            NomeAu=request.POST.get("NomeAu")
-            CognomeAu=request.POST.get("CognomeAu")
-            NazioneAu=request.POST.get("NazioneAu")
+        #Dati Critico
+        NomeTr=request.POST.get("NomeTr")
+        CognomeTr=request.POST.get("CognomeTr")
+        NazioneTr=request.POST.get("NazioneTr") 
 
-            #dati postfazione
-            NomePost=request.POST.get("NomePost")
-            CognomePost=request.POST.get("CognomePost")
-            NazionePost=request.POST.get("NazionePost")
+        #Dati Critico
+        NomeC=request.POST.get("NomeCu")
+        CognomeC=request.POST.get("CognomeCu")
+        NazioneC=request.POST.get("NazioneCu")
 
-            #Dati prefazione
-            NomePre=request.POST.get("NomePre")
-            CognomePre=request.POST.get("CognomePre")
-            NazionePre=request.POST.get("NazionePre") 
+            #dati collane e casa editrice
+        NomeCo=request.POST.get("NomeCo")
+        NomeCa=request.POST.get("NomeCa")
+        SedeCa =request.POST.get("SedeCa")
+
+        #dati autori
+        NomeAu=request.POST.get("NomeAu")
+        CognomeAu=request.POST.get("CognomeAu")
+        NazioneAu=request.POST.get("NazioneAu")
+
+        #dati postfazione
+        NomePost=request.POST.get("NomePost")
+        CognomePost=request.POST.get("CognomePost")
+        NazionePost=request.POST.get("NazionePost")
+
+        #Dati prefazione
+        NomePre=request.POST.get("NomePre")
+        CognomePre=request.POST.get("CognomePre")
+        NazionePre=request.POST.get("NazionePre") 
 
         cursor = connection.cursor()
-        cursor.execute("UPDATE libri_Collane SET NomeCo=%s WHERE CodCollane=%s",[NomeCo,IDCollana,])
-        cursor.execute("UPDATE libri_CasaEditrice SET Sede=%s,NomeCa=%s WHERE CodCasaEd=%s",[Sede,NomeCa,IDCasaEd,])
-        cursor.execute("UPDATE libri_TradAutCur SET NomeAu=%s,CognomeAu=%s,NazioneAu=%s WHERE CodAutore=%s",[NomeAu,CognomeAu,NazioneAu,IDAutoreCuratore,])
-        cursor.execute("UPDATE libri_TradAutCur SET NomeAu=%s,CognomeAu=%s,NazioneAu=%s WHERE CodAutore=%s",[NomePre,CognomePre,NazionePre,IDPre,])
-        cursor.execute("UPDATE libri_TradAutCur SET NomeAu=%s,CognomeAu=%s,NazioneAu=%s WHERE CodAutore=%s",[NomePost,CognomePost,NazionePost,IDPost,])
+    
+        if identificatore=='on':
+            if cod[0]=='N':
+                
+                dati={'CodLibro':CodLibro,'CodCollane':IDCollana.CodCollane,'CodCasaEd':IDCasaEd.CodCasaEd,'CodAutore':IDAutoreCuratore.CodAutore,'CodPost':IDPostPrefazione.CodPostfazione,'CodTrad':Traduttore.CodAutore,'CodCri':Critico.CodAutore,'TitoloOrig':TitoloOrig,'Titolo':Titolo,'Sottotitolo':Sottotitolo,'AnnoEd':AnnoEd,'ISBN_ISSN':ISBN_ISSN,'Genere':Genere,'NumPub':NumPub,'nRistampa':nRistampa,'Edizione':Edizione,'NumPagine':NumPagine,'Ristampa':Ristampa,'Straniero':Straniero,'Illustrazioni':Illustrazioni,'Curatore':Curatore,'CopertinaRigida':CopertinaRigida}
+                in_serNotser(dati,'S')
+                
+                query="DELETE FROM libri_NonSeriale WHERE CodLibro=%s"
+                cursor.execute(query,[cod,])
+            else:
+                query="UPDATE libri_Seriale SET TitoloOrig=%s, Titolo=%s, Sottotitolo=%s, AnnoEd=%s, ISSN=%s, Genere=%s, NumPub=%s, nRistampa=%s, Edizione=%s, NumPagine=%s, Ristampa=%s, Straniero=%s, Illustrazioni=%s, Curatore=%s,CopertinaRigida=%s WHERE CodLibro=%s"
+                cursor.execute(query,[TitoloOrig,Titolo,Sottotitolo,AnnoEd,ISBN_ISSN,Genere,NumPub,nRistampa,Edizione,NumPagine,Ristampa,Straniero,Illustrazioni,Curatore,CopertinaRigida,cod])
+
+        if identificatore=='off':
+            if cod[0]=="S":
+                
+                dati={'CodLibro':CodLibro,'CodCollane':IDCollana.CodCollane,'CodCasaEd':IDCasaEd.CodCasaEd,'CodAutore':IDAutoreCuratore.CodAutore,'CodPost':IDPostPrefazione.CodPostfazione,'CodTrad':Traduttore.CodAutore,'CodCri':Critico.CodAutore,'TitoloOrig':TitoloOrig,'Titolo':Titolo,'Sottotitolo':Sottotitolo,'AnnoEd':AnnoEd,'ISBN_ISSN':ISBN_ISSN,'Genere':Genere,'NumPub':NumPub,'nRistampa':nRistampa,'Edizione':Edizione,'NumPagine':NumPagine,'Ristampa':Ristampa,'Straniero':Straniero,'Illustrazioni':Illustrazioni,'Curatore':Curatore,'CopertinaRigida':CopertinaRigida}
+                in_serNotser(dati,'N')
+
+                query="DELETE FROM libri_Seriale WHERE CodLibro=%s"
+                cursor.execute(query,[cod,])
+            else:
+                query="UPDATE libri_NonSeriale SET TitoloOrig=%s,Titolo=%s,Sottotitolo=%s,AnnoEd=%s,ISBN=%s,Genere=%s,NumPub=%s,nRistampa=%s,Edizione=%s,NumPagine=%s,Ristampa=%s,Straniero=%s,Curatore=%s,CopertinaRigida=%s,Illustrazioni=%s WHERE CodLibro=%s"
+                cursor.execute(query,[TitoloOrig,Titolo,Sottotitolo,AnnoEd,ISBN_ISSN,Genere,NumPub,nRistampa,Edizione,NumPagine,Ristampa,Straniero,Illustrazioni,Curatore,CopertinaRigida,cod])
+
+        cursor.execute("UPDATE libri_Collane SET NomeCo=%s WHERE CodCollane=%s",[NomeCo,IDCollana.CodCollane,])
+        cursor.execute("UPDATE libri_CasaEditrice SET Sede=%s,NomeCa=%s WHERE CodCasaEd=%s",[SedeCa,NomeCa,IDCasaEd.CodCasaEd,])
+        cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomeAu,CognomeAu,NazioneAu,IDAutoreCuratore.CodAutore,])
+        cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomePre,CognomePre,NazionePre,IDPre.CodAutore,])
+        cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomePost,CognomePost,NazionePost,IDPost.CodAutore,])
+        cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomeC,CognomeC,NazioneC,Critico.CodAutore,])
+        cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomeTr,CognomeTr,NazioneTr,Traduttore.CodAutore,])
         cursor.close()
+        return HttpResponseRedirect(reverse('base'))
+        
         
     """
     def del_libro(request, Cod):
@@ -573,13 +657,11 @@ def HomePageView(request):
         for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
-            print(elemento.CodLibro)
             context.append(elemento)
         
         for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
-            print(elemento.CodLibro)
             context.append(elemento)
 
 
@@ -594,13 +676,11 @@ def HomePageView(request):
         for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
-            print(elemento.CodLibro)
             context.append(elemento)
         
         for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
-            print(elemento.CodLibro)
             context.append(elemento)
 
 
