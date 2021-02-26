@@ -316,6 +316,7 @@ def inserimento(request):
 def mod_libro(request,cod):
     context=[]
     if request.method == 'GET':
+        form = InserimentoLibro()
         if cod[0]=='N':
             query="SELECT N.CodLibro, N.IDCollana_id, N.IDCasaEd_id, N.IDAutoreCuratore_id, N.Straniero, N.TitoloOrig, N.Titolo, N.Sottotitolo, N.AnnoEd, N.Illustrazioni, N.ISBN, N.Genere, N.NumPub, N.CopertinaRigida, N.Ristampa, N.nRistampa, N.Edizione, N.NumPagine, N.Curatore, N.Traduttore_id, N.Critico_id FROM libri_NonSeriale N WHERE N.CodLibro=%s"
             ris=NonSeriale.objects.raw(query,[cod,])
@@ -371,8 +372,8 @@ def mod_libro(request,cod):
             elemento = objlist()
             elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr,  NomeCu,  CognomeCu,  NazioneCu)
             context.append(elemento)
-
-        return(render(request,"modifica.html",{"context":context}))
+            form = InserimentoLibro(initial=context)       
+        return(render(request,"modifica.html",{'form':form,}))
 
         if request.method== 'POST':
             for record in TradAutCur.objects.raw("SELECT * FROM libri_NonSeriale WHERE CodLibro=%s", [CodLibro,]):
