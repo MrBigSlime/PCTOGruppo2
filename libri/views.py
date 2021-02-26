@@ -354,7 +354,7 @@ def mod_libro(request,cod):
             casaed.append(ris.NomeCa)
             sedeed.append(ris.Sede)
 
-        for ris in Collane.objects.raw("SELECT C.NomeCo FROM libri_Collane C"):
+        for ris in Collane.objects.raw("SELECT C.NomeCo,C.CodCollane FROM libri_Collane C"):
             collane.append(ris.NomeCo)
 
         if cod[0]=='N':
