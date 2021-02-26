@@ -318,10 +318,12 @@ def mod_libro(request,cod):
     if request.method == 'GET':
         if cod[0]=='N':
             query="SELECT N.CodLibro, N.IDCollana_id, N.IDCasaEd_id, N.IDAutoreCuratore_id, N.Straniero, N.TitoloOrig, N.Titolo, N.Sottotitolo, N.AnnoEd, N.Illustrazioni, N.ISBN, N.Genere, N.NumPub, N.CopertinaRigida, N.Ristampa, N.nRistampa, N.Edizione, N.NumPagine, N.Curatore, N.Traduttore_id, N.Critico_id FROM libri_NonSeriale N WHERE N.CodLibro=%s"
+            ris=NonSeriale.objects.raw(query,[cod,])
         if cod[0]=='S':
             query="SELECT S.CodLibro, S.IDCollana_id, S.IDCasaEd_id, S.IDAutoreCuratore_id, S.Straniero, S.TitoloOrig, S.Titolo, S.Sottotitolo, S.AnnoEd, S.Illustrazioni, S.ISSN, S.Genere, S.NumPub, S.CopertinaRigida, S.Ristampa, S.nRistampa, S.Edizione, S.NumPagine, S.Curatore, S.Traduttore_id, S.Critico_id FROM libri_Seriale S WHERE S.CodLibro=%s"
-        
-        for record in Seriale.objects.raw(query,[cod,]):
+            ris=Seriale.objects.raw(query,[cod,])
+
+        for record in ris:
             CodLibro = record.CodLibro
             IDCollana = record.IDCollana
             IDCasaEd = record.IDCasaEd
@@ -470,10 +472,10 @@ def del_libro(request, Cod):
     
     if request.method =='GET':
         if Cod[0]=='N':
-            query="DELETE FROM libri_NonSeriale S Libri S WHERE S.CodLibro=%s"
+            query="DELETE FROM libri_NonSeriale WHERE CodLibro=%s"
             
         if Cod[0]=='S':
-            query="DELETE FROM libri_Seriale S Libri S WHERE S.CodLibro=%s"
+            query="DELETE FROM libri_Seriale WHERE CodLibro=%s"
         cursor.execute(query,[Cod,])
         cursor.close()
         return HttpResponseRedirect(reverse('base'))
