@@ -17,11 +17,6 @@ a {
     flex-direction: column;
 }
 
-main {
-    flex-grow: 1;
-    padding: 20px;
-}
-
 nav {
     flex-basis: 17vw;
     padding: 20px;

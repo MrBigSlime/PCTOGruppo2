@@ -33,10 +33,25 @@ nav {
 table {
     display: flex;
     justify-content: center;
+    justify-items: center;
     padding: 20px;
 }
 
 td {
     border-bottom: 3px solid rgba(91, 110, 155, 0.692);
     padding: 15px;
+}
+
+.HolyGrail-body {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+body {
+    margin: 0;
+    font-family: Leelawadee;
+    display: flex;
+    min-height: 100vh;
+    /*altezza minima*/
 }

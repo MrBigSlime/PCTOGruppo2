@@ -22,98 +22,96 @@
         </div>
         <div class="cp">All Right Reserverd</div>
     </nav>
+    <div class="HolyGrail-body">
+        {% block content %}
+        <table class="partOne">
+            <tr>
+                <!-- Info autore -->
+                <td><b>Nome Autore:</b> {{context.NomeAu}}</td>
+                <td><b>Cognome Autore:</b> {{context.CognomeAu}}</td>
+                <td><b>Nazione Autore:</b> {{context.NazioneAu}}</td>
+            </tr>
+            <tr>
+                <!-- Postfazione -->
+                {% if context.dato is not null %}
+                <td>{{context.NomePost}}</td>
+                {% endif %} {% if context.dato is not null %}
+                <td>{{context.CognomePost}}</td>
+                {% endif %} {% if context.dato is not null %}
+                <td>{{context.NazionePost}}</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <!-- Prefazione -->
+                {% if context.dato is not null %}
+                <td>{{context.NomePre}}</td>
+                {% endif %} {% if context.dato is not null %}
+                <td>{{context.CognomePre}}</td>
+                {% endif %} {% if context.dato is not null %}
+                <td>{{context.NazionePre}}</td>
+                {% endif %}
+            </tr>
+            <!-- Info Libro -->
+            <tr>
+                <td>{{context.TitoloOrig}}</td>
+                <td>{{context.Titolo}}</td>
+                {% if context.dato is not null %}
+                <td>{{context.Sottotitolo}}</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>Genere: {{context.Genere}}</td>
+                <td>Straniero: {{context.Straniero}}</td>
+                <td>Seriale: {{context.IsSerial}}</td>
+            </tr>
+            <tr>
+                <td>{{context.NumPub}}</td>
+                <td>{{context.Edizione}}</td>
+                <td>{{context.AnnoEd}}</td>
+            </tr>
+            <tr>
+                <td>Copertina Rigida: {{context.CopertinaRigida}}</td>
+                <td>Illustrazioni: {{context.Illustrazioni}}</td>
+                <td>Curatore: {{context.Curatore}}</td>
+            </tr>
+            <tr>
+                <td>{{context.NumPagine}}</td>
+                {% if context.dato is not null %}
+                <td>{{context.NomeCo}}</td>
+                {% endif %} {% if context.dato is not null %}
+                <td>{{context.nRistampa}}</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td>Ristampa: {{context.Ristampa}}</td>
+            </tr>
+            <tr>
+                <td>{{context.NomeCa}}</td>
+                <td>{{context.Sede}}</td>
+                <td>{{context.ISBN_ISSN}}</td>
+            </tr>
+            <tr>
+                {% if context.dato is not null %}
+                <td>{{context.NomeTr}}</td>
+                {% endif %} {% if context.dato is not null %}
+                <td>{{context.CognomeTr}}</td>
+                {% endif %} {% if context.dato is not null %}
+                <td>{{context.NazioneTr}}</td>
+                {% endif %}
+            </tr>
+            <tr>
+                {% if context.dato is not null %}
+                <td>{{context.NomeCu}}</td>
+                {% endif %} {% if context.dato is not null %}
+                <td>{{context.CognomeCu}}</td>
+                {% endif %} {% if context.dato is not null %}
+                <td>{{context.NazioneCu}}</td>
+                {% endif %}
+            </tr>
+        </table>
+        {% endblock content %}
+    </div>
 
-    {% block content %}
-    <table class="partOne">
-        <tr>
-            <!-- Info autore -->
-            <td><b>Nome Autore:</b> {{context.NomeAu}}</td>
-            <td><b>Cognome Autore:</b> {{context.CognomeAu}}</td>
-            <td><b>Nazione Autore:</b> {{context.NazioneAu}}</td>
-        </tr>
-        <tr>
-            <!-- Postfazione -->
-            {% if context.dato is not null %}
-            <td>{{context.NomePost}}</td>
-            {% endif %} {% if context.dato is not null %}
-            <td>{{context.CognomePost}}</td>
-            {% endif %} {% if context.dato is not null %}
-            <td>{{context.NazionePost}}</td>
-            {% endif %}
-        </tr>
-        <tr>
-            <!-- Prefazione -->
-            {% if context.dato is not null %}
-            <td>{{context.NomePre}}</td>
-            {% endif %} {% if context.dato is not null %}
-            <td>{{context.CognomePre}}</td>
-            {% endif %} {% if context.dato is not null %}
-            <td>{{context.NazionePre}}</td>
-            {% endif %}
-        </tr>
-        <!-- Info Libro -->
-        <tr>
-            <td>{{context.TitoloOrig}}</td>
-            <td>{{context.Titolo}}</td>
-            {% if context.dato is not null %}
-            <td>{{context.Sottotitolo}}</td>
-            {% endif %}
-        </tr>
-        <tr>
-            <td>Genere: {{context.Genere}}</td>
-            <td>Straniero: {{context.Straniero}}</td>
-            <td>Seriale: {{context.IsSerial}}</td>
-        </tr>
-        <tr>
-            <td>{{context.NumPub}}</td>
-            <td>{{context.Edizione}}</td>
-            <td>{{context.AnnoEd}}</td>
-        </tr>
-        <tr>
-            <td>Copertina Rigida: {{context.CopertinaRigida}}</td>
-            <td>Illustrazioni: {{context.Illustrazioni}}</td>
-            <td>Curatore: {{context.Curatore}}</td>
-        </tr>
-        <tr>
-            <td>{{context.NumPagine}}</td>
-            {% if context.dato is not null %}
-            <td>{{context.NomeCo}}</td>
-            {% endif %} {% if context.dato is not null %}
-            <td>{{context.nRistampa}}</td>
-            {% endif %}
-        </tr>
-        <tr>
-            <td>Ristampa: {{context.Ristampa}}</td>
-        </tr>
-        <tr>
-            <td>{{context.NomeCa}}</td>
-            <td>{{context.Sede}}</td>
-            <td>{{context.ISBN_ISSN}}</td>
-        </tr>
-        <tr>
-            {% if context.dato is not null %}
-            <td>{{context.NomeTr}}</td>
-            {% endif %} {% if context.dato is not null %}
-            <td>{{context.CognomeTr}}</td>
-            {% endif %} {% if context.dato is not null %}
-            <td>{{context.NazioneTr}}</td>
-            {% endif %}
-        </tr>
-        <tr>
-            {% if context.dato is not null %}
-            <td>{{context.NomeCu}}</td>
-            {% endif %} {% if context.dato is not null %}
-            <td>{{context.CognomeCu}}</td>
-            {% endif %} {% if context.dato is not null %}
-            <td>{{context.NazioneCu}}</td>
-            {% endif %}
-        </tr>
-    </table>
-
-
-
-
-    {% endblock content %}
 </body>
 
 </html>
