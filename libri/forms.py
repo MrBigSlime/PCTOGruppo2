@@ -3,13 +3,13 @@ from libri.models import *
 
 class InserimentoLibro(forms.Form):
     #Casa Editrice
-    NomeCa = forms.CharField(label="Nome CasaEd", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Casa Editrice'}))
-    SedeCa = forms.CharField(label="Sede CasaEd", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Sede Casa Editrice'}))
+    NomeCa = forms.CharField(label="Nome CasaEd", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Casa Editrice*'}))
+    SedeCa = forms.CharField(label="Sede CasaEd", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Sede Casa Editrice*'}))
     
     #Info Autore
-    NomeAu = forms.CharField(label="Nome Autore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Autore'}))
-    CognomeAu = forms.CharField(label="Cognome Autore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Cognome Autore'}))
-    NazioneAu = forms.CharField(label="Nazione Autore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione Autore'}))
+    NomeAu = forms.CharField(label="Nome Autore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Autore*'}))
+    CognomeAu = forms.CharField(label="Cognome Autore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Cognome Autore*'}))
+    NazioneAu = forms.CharField(label="Nazione Autore", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione Autore*'}))
     
     #Postfazione
     NomePost = forms.CharField(label="Nome AutorePost", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Autore Postfazione'}))
@@ -22,8 +22,8 @@ class InserimentoLibro(forms.Form):
     NazionePre = forms.CharField(label="Nazione AutorePre", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione Autore Prefazione'}))
     
     #Info Libro
-    TitoloOrig = forms.CharField(label="Titolo Originale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo Originale'}))
-    Titolo = forms.CharField(label="Titolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo'}))
+    TitoloOrig = forms.CharField(label="Titolo Originale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo Originale*'}))
+    Titolo = forms.CharField(label="Titolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo*'}))
     Straniero = forms.ChoiceField(choices = (('1','Si'),('0','No')))
     Sottotitolo = forms.CharField(label="Sottotitolo", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Sottotitolo'}))
     #Genere = forms.CharField(label="Genere", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Genere'}))
@@ -48,15 +48,15 @@ class InserimentoLibro(forms.Form):
         ))
     IsSerial = forms.ChoiceField(choices = (('on','Si'),('off','No')))
     #Info Edizione
-    AnnoEd = forms.CharField(label="Anno Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Anno Edizione'}))
-    ISBN_ISSN = forms.CharField(label="ISBN ISSN", max_length=16, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'ISBN / ISSN'}))
-    NumPub = forms.CharField(label="Numero Pub", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero Pubblicazione'}))
+    AnnoEd = forms.CharField(label="Anno Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Anno Edizione*'}))
+    ISBN_ISSN = forms.CharField(label="ISBN ISSN", max_length=16, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'ISBN / ISSN*'}))
+    NumPub = forms.CharField(label="Numero Pub", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero Pubblicazione*'}))
     CopertinaRigida = forms.ChoiceField(choices = (('1','Si'),('0','No')))
     Illustrazioni = forms.ChoiceField(choices = (('1','Si'),('0','No')))
     Ristampa = forms.ChoiceField(choices = (('1','Si'),('0','No')))
     nRistampa = forms.CharField(label="Num Ristampa", required=False, max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero di ristampa'}))
-    Edizione = forms.CharField(label="Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Edizione'}))
-    NumPagine = forms.CharField(label="NumPagine", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero Pagine'}))
+    Edizione = forms.CharField(label="Edizione", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Edizione*'}))
+    NumPagine = forms.CharField(label="NumPagine", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero Pagine*'}))
     Curatore = forms.ChoiceField(choices = (('1','Si'),('0','No')))
     NomeCo = forms.CharField(label="Nome Collana", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Collana'}))
     
