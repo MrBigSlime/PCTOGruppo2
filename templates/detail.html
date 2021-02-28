@@ -35,80 +35,80 @@
             <tr>
                 <!-- Postfazione -->
                 {% if context.dato is not null %}
-                <td>{{context.NomePost}}</td>
+                <td><b>Nome Autore Postfazione: </b>{{context.NomePost}}</td>
                 {% endif %} {% if context.dato is not null %}
-                <td>{{context.CognomePost}}</td>
+                <td><b>Cognome Autore Postfazione: </b>{{context.CognomePost}}</td>
                 {% endif %} {% if context.dato is not null %}
-                <td>{{context.NazionePost}}</td>
+                <td><b>Nazione Autore Postfazione: </b>{{context.NazionePost}}</td>
                 {% endif %}
             </tr>
             <tr>
                 <!-- Prefazione -->
                 {% if context.dato is not null %}
-                <td>{{context.NomePre}}</td>
+                <td><b>Nome Autore Prefazione: </b>{{context.NomePre}}</td>
                 {% endif %} {% if context.dato is not null %}
-                <td>{{context.CognomePre}}</td>
+                <td><b>Cognome Autore Prefazione: </b>{{context.CognomePre}}</td>
                 {% endif %} {% if context.dato is not null %}
-                <td>{{context.NazionePre}}</td>
+                <td><b>Nazione Autore Prefazione: </b>{{context.NazionePre}}</td>
                 {% endif %}
             </tr>
             <!-- Info Libro -->
             <tr>
-                <td>{{context.TitoloOrig}}</td>
-                <td>{{context.Titolo}}</td>
+                <td><b>Titolo Originale:</b> {{context.TitoloOrig}}</td>
+                <td><b>Titolo: </b>{{context.Titolo}}</td>
                 {% if context.dato is not null %}
-                <td>{{context.Sottotitolo}}</td>
+                <td><b>Sottotitolo: </b>{{context.Sottotitolo}}</td>
                 {% endif %}
             </tr>
             <tr>
-                <td>Genere: {{context.Genere}}</td>
-                <td>Straniero: {{context.Straniero}}</td>
-                <td>Seriale: {{context.IsSerial}}</td>
+                <td><b>Genere:</b> {{context.Genere}}</td>
+                <td><b>Straniero:</b> {{context.Straniero}}</td>
+                <td> {{ide}}</td>
             </tr>
             <tr>
-                <td>{{context.NumPub}}</td>
-                <td>{{context.Edizione}}</td>
-                <td>{{context.AnnoEd}}</td>
+                <td><b>Numero Pubblicazione: </b>{{context.NumPub}}</td>
+                <td><b>edizione: </b>{{context.Edizione}}</td>
+                <td><b>Anno Edizione: </b>{{context.AnnoEd}}</td>
             </tr>
             <tr>
-                <td>Copertina Rigida: {{context.CopertinaRigida}}</td>
-                <td>Illustrazioni: {{context.Illustrazioni}}</td>
-                <td>Curatore: {{context.Curatore}}</td>
+                <td><b>Copertina Rigida:</b> {{context.CopertinaRigida}}</td>
+                <td><b>Illustrazioni:</b> {{context.Illustrazioni}}</td>
+                <td><b>Curatore:</b> {{context.Curatore}}</td>
             </tr>
             <tr>
-                <td>{{context.NumPagine}}</td>
+                <td><b>Numero di Pagine: </b>{{context.NumPagine}}</td>
                 {% if context.dato is not null %}
-                <td>{{context.NomeCo}}</td>
+                <td><b>Nome Collana: </b>{{context.NomeCo}}</td>
                 {% endif %} {% if context.dato is not null %}
-                <td>{{context.nRistampa}}</td>
+                <td><b>Numero di Ristampa: </b>{{context.nRistampa}}</td>
                 {% endif %}
             </tr>
             <tr>
-                <td>Ristampa: {{context.Ristampa}}</td>
+                <td><b>Ristampa:</b> {{context.Ristampa}}</td>
             </tr>
             <tr>
-                <td>{{context.NomeCa}}</td>
-                <td>{{context.Sede}}</td>
-                <td>{{context.ISBN_ISSN}}</td>
+                <td><b>Casa Editrice: </b>{{context.NomeCa}}</td>
+                <td><b>Sede Casa Editrice: </b>{{context.Sede}}</td>
+                <td><b>ISBN/ISSN: </b>{{context.ISBN_ISSN}}</td>
             </tr>
             <tr>
                 <!--Info traduttore-->
                 {% if context.dato is not null %}
-                <td>{{context.NomeTr}}</td>
+                <td><b>Nome Traduttore: </b>{{context.NomeTr}}</td>
                 {% endif %} {% if context.dato is not null %}
-                <td>{{context.CognomeTr}}</td>
+                <td><b>Cognome Traduttore</b>{{context.CognomeTr}}</td>
                 {% endif %} {% if context.dato is not null %}
-                <td>{{context.NazioneTr}}</td>
+                <td><b>Nazione Traduttore: </b>{{context.NazioneTr}}</td>
                 {% endif %}
             </tr>
             <tr>
                 <!--Info curatore-->
                 {% if context.dato is not null %}
-                <td>{{context.NomeCu}}</td>
+                <td><b>Nome Curatore: </b>{{context.NomeCu}}</td>
                 {% endif %} {% if context.dato is not null %}
-                <td>{{context.CognomeCu}}</td>
+                <td><b>Cognome Curatore: </b>>{{context.CognomeCu}}</td>
                 {% endif %} {% if context.dato is not null %}
-                <td>{{context.NazioneCu}}</td>
+                <td><b>Nazione Curatore: </b>{{context.NazioneCu}}</td>
                 {% endif %}
             </tr>
         </table>
