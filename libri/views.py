@@ -606,11 +606,11 @@ def LibroDetailView(request,Cod):
     if request.method == 'GET':
 
             if Cod[0]=='N':
-                ide='N'
+                ide='Non Seriale'
                 query="SELECT * FROM libri_NonSeriale WHERE CodLibro=%s"
 
             if Cod[0]=='S':
-                ide='S'
+                ide='Seriale'
                 query="SELECT * FROM libri_Seriale WHERE CodLibro=%s"
 
             for record in NonSeriale.objects.raw(query,[Cod,]):
