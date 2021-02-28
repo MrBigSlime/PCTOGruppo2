@@ -633,7 +633,12 @@ def LibroDetailView(request,Cod):
                 Sottotitolo = record.Sottotitolo
                 AnnoEd = record.AnnoEd
                 Illustrazioni = record.Illustrazioni
-                ISBN = record.ISBN
+                if Cod[0]=='N':
+                    ISBN = record.ISBN
+
+                if Cod[0]=='S':
+                    ISBN = record.ISSN
+                
                 Genere = record.Genere
                 NumPub = record.NumPub
                 CopertinaRigida = record.CopertinaRigida
