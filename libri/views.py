@@ -606,9 +606,11 @@ def LibroDetailView(request,Cod):
     if request.method == 'GET':
 
             if Cod[0]=='N':
+                ide='N'
                 query="SELECT * FROM libri_NonSeriale WHERE CodLibro=%s"
 
             if Cod[0]=='S':
+                ide='S'
                 query="SELECT * FROM libri_Seriale WHERE CodLibro=%s"
 
             for record in NonSeriale.objects.raw(query,[Cod,]):
@@ -648,7 +650,7 @@ def LibroDetailView(request,Cod):
                 NazioneCu = record.Critico.NazioneTr
                 elemento = objlist()
                 elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr, NomeCu, CognomeCu, NazioneCu)
-            return render(request, 'detail.html', {'context':elemento})
+            return render(request, 'detail.html', {'context':elemento,'ide':ide})
     else:
         print("Errore")
 
