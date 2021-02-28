@@ -34,21 +34,21 @@
             </tr>
             <tr>
                 <!-- Postfazione -->
-                {% if context.dato is not null %}
+                {% if context.NomePost is not null %}
                 <td><b>Nome Autore Postfazione: </b>{{context.NomePost}}</td>
-                {% endif %} {% if context.dato is not null %}
+                {% endif %} {% if context.CognomePost is not null %}
                 <td><b>Cognome Autore Postfazione: </b>{{context.CognomePost}}</td>
-                {% endif %} {% if context.dato is not null %}
+                {% endif %} {% if context.NazionePost is not null %}
                 <td><b>Nazione Autore Postfazione: </b>{{context.NazionePost}}</td>
                 {% endif %}
             </tr>
             <tr>
                 <!-- Prefazione -->
-                {% if context.dato is not null %}
+                {% if context.NomePre is not null %}
                 <td><b>Nome Autore Prefazione: </b>{{context.NomePre}}</td>
-                {% endif %} {% if context.dato is not null %}
+                {% endif %} {% if context.CognomePre is not null %}
                 <td><b>Cognome Autore Prefazione: </b>{{context.CognomePre}}</td>
-                {% endif %} {% if context.dato is not null %}
+                {% endif %} {% if context.NazionePre is not null %}
                 <td><b>Nazione Autore Prefazione: </b>{{context.NazionePre}}</td>
                 {% endif %}
             </tr>
@@ -77,9 +77,9 @@
             </tr>
             <tr>
                 <td><b>Numero di Pagine: </b>{{context.NumPagine}}</td>
-                {% if context.dato is not null %}
+                {% if context.NomeCo is not null %}
                 <td><b>Nome Collana: </b>{{context.NomeCo}}</td>
-                {% endif %} {% if context.dato is not null %}
+                {% endif %} {% if context.nRistampa is not null %}
                 <td><b>Numero di Ristampa: </b>{{context.nRistampa}}</td>
                 {% endif %}
             </tr>
@@ -93,21 +93,21 @@
             </tr>
             <tr>
                 <!--Info traduttore-->
-                {% if context.dato is not null %}
+                {% if context.NomeTr is not null %}
                 <td><b>Nome Traduttore: </b>{{context.NomeTr}}</td>
-                {% endif %} {% if context.dato is not null %}
+                {% endif %} {% if context.CognomeTr is not null %}
                 <td><b>Cognome Traduttore</b>{{context.CognomeTr}}</td>
-                {% endif %} {% if context.dato is not null %}
+                {% endif %} {% if context.NazioneTr is not null %}
                 <td><b>Nazione Traduttore: </b>{{context.NazioneTr}}</td>
                 {% endif %}
             </tr>
             <tr>
                 <!--Info curatore-->
-                {% if context.dato is not null %}
+                {% if context.NomeCu is not null %}
                 <td><b>Nome Curatore: </b>{{context.NomeCu}}</td>
-                {% endif %} {% if context.dato is not null %}
+                {% endif %} {% if context.CognomeCu is not null %}
                 <td><b>Cognome Curatore: </b>>{{context.CognomeCu}}</td>
-                {% endif %} {% if context.dato is not null %}
+                {% endif %} {% if context.NazioneCu is not null %}
                 <td><b>Nazione Curatore: </b>{{context.NazioneCu}}</td>
                 {% endif %}
             </tr>
