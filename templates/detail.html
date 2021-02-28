@@ -56,7 +56,7 @@
             <tr>
                 <td><b>Titolo Originale:</b> {{context.TitoloOrig}}</td>
                 <td><b>Titolo: </b>{{context.Titolo}}</td>
-                {% if context.dato is not null %}
+                {% if context.Sottotitolo is not null %}
                 <td><b>Sottotitolo: </b>{{context.Sottotitolo}}</td>
                 {% endif %}
             </tr>
@@ -106,7 +106,7 @@
                 {% if context.NomeCu is not null %}
                 <td><b>Nome Curatore: </b>{{context.NomeCu}}</td>
                 {% endif %} {% if context.CognomeCu is not null %}
-                <td><b>Cognome Curatore: </b>>{{context.CognomeCu}}</td>
+                <td><b>Cognome Curatore: </b>{{context.CognomeCu}}</td>
                 {% endif %} {% if context.NazioneCu is not null %}
                 <td><b>Nazione Curatore: </b>{{context.NazioneCu}}</td>
                 {% endif %}
