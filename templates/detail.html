@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -25,6 +25,7 @@
     <div class="HolyGrail-body">
         {% block content %}
         <table class="partOne">
+            <!--Table con i dati del libro-->
             <tr>
                 <!-- Info autore -->
                 <td><b>Nome Autore:</b> {{context.NomeAu}}</td>
@@ -91,6 +92,7 @@
                 <td>{{context.ISBN_ISSN}}</td>
             </tr>
             <tr>
+                <!--Info traduttore-->
                 {% if context.dato is not null %}
                 <td>{{context.NomeTr}}</td>
                 {% endif %} {% if context.dato is not null %}
@@ -100,6 +102,7 @@
                 {% endif %}
             </tr>
             <tr>
+                <!--Info curatore-->
                 {% if context.dato is not null %}
                 <td>{{context.NomeCu}}</td>
                 {% endif %} {% if context.dato is not null %}

@@ -1,11 +1,9 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div class="add-box">
     <h1>Modifica</h1>
     <form method="post" autocomplete="off" class="addForm-box">
-        
+
         {% csrf_token %}
 
         <table class="partOne">
@@ -64,11 +62,13 @@
                 <td>{{form.SedeCa}}</td>
             </tr>
             <tr>
+                <!--Info traduttore-->
                 <td>{{form.NomeTr}}</td>
                 <td>{{form.CognomeTr}}</td>
                 <td>{{form.NazioneTr}}</td>
             </tr>
             <tr>
+                <!--Info curatore-->
                 <td>{{form.NomeCu}}</td>
                 <td>{{form.CognomeCu}}</td>
                 <td>{{form.NazioneCu}}</td>
