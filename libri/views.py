@@ -600,7 +600,6 @@ def del_libro(request, Cod):
         return HttpResponseRedirect(reverse('base'))
 
 def LibroDetailView(request,Cod):
-
     """
     if request.method == 'GET':             #controllo seriale o non seriale
         cursor = connection.cursor()
@@ -614,41 +613,46 @@ def LibroDetailView(request,Cod):
     """
 
     if request.method == 'GET':
-
+            #controllo Seriale o Non Seriale
             if Cod[0]=='N':
-                ide='Non Seriale'
                 query="SELECT * FROM libri_NonSeriale WHERE CodLibro=%s"
 
             if Cod[0]=='S':
-                ide='Seriale'
                 query="SELECT * FROM libri_Seriale WHERE CodLibro=%s"
-
+            #estrazione dati
             for record in NonSeriale.objects.raw(query,[Cod,]):
+
+                #codice del libro
                 CodLibro = record.CodLibro
+
+                #dati collane e casa editrice
                 NomeCo = record.IDCollana.NomeCo
                 Sede = record.IDCasaEd.Sede
                 NomeCa = record.IDCasaEd.NomeCa
+
+                #dati autore
                 NomeAu = record.IDAutoreCuratore.NomeTr
                 CognomeAu = record.IDAutoreCuratore.CognomeTr
                 NazioneAu = record.IDAutoreCuratore.NazioneTr
+
+                #dati autore prefazione
                 NomePr = record.IDPostPrefazione.autPrefazione.NomeTr
                 CognomePr = record.IDPostPrefazione.autPrefazione.CognomeTr
                 NazionePr = record.IDPostPrefazione.autPrefazione.NazioneTr
+
+                #dati autore postfazione
                 NomePo = record.IDPostPrefazione.autPostfazione.NomeTr
                 CognomePo = record.IDPostPrefazione.autPostfazione.CognomeTr
                 NazionePo = record.IDPostPrefazione.autPostfazione.NazioneTr
+
+                #dati anagrafici
                 Straniero = record.Straniero
                 TitoloOrig = record.TitoloOrig
                 Titolo = record.Titolo
                 Sottotitolo = record.Sottotitolo
                 AnnoEd = record.AnnoEd
                 Illustrazioni = record.Illustrazioni
-                if Cod[0]=='N':
-                    ISBN = record.ISBN
-
-                if Cod[0]=='S':
-                    ISBN = record.ISSN
-                
+                ISBN = record.ISBN
                 Genere = record.Genere
                 NumPub = record.NumPub
                 CopertinaRigida = record.CopertinaRigida
@@ -657,21 +661,28 @@ def LibroDetailView(request,Cod):
                 Edizione = record.Edizione
                 NumPagine = record.NumPagine
                 Curatore = record.Curatore
+
+                #dati traduttore
                 NomeTr = record.Traduttore.NomeTr
                 CognomeTr = record.Traduttore.CognomeTr
                 NazioneTr = record.Traduttore.NazioneTr
+
+                #dati critico
                 NomeCu = record.Critico.NomeTr
                 CognomeCu = record.Critico.CognomeTr
                 NazioneCu = record.Critico.NazioneTr
+
                 elemento = objlist()
                 elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr, NomeCu, CognomeCu, NazioneCu)
-            return render(request, 'detail.html', {'context':elemento,'ide':ide})
+            return render(request, 'detail.html', {'context':elemento})
     else:
         print("Errore")
 
 def HomePageViewSeriale(request):
+    #visualizza solo libri seriali
     if request.method == 'GET':
         context=[]
+        #visualizza campi essenziale per libri seriali
         for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
@@ -679,10 +690,12 @@ def HomePageViewSeriale(request):
         return render(request, 'Serial.html',{'context_list':context}) 
     else:
         print("Errore")
-    
+        
 def HomePageViewNonSeriale(request):
+    #visualizza solo libri non seriali
     if request.method == 'GET':
         context=[]
+        #visualizza campi essenziale per libri non seriali
         for record in NonSeriale.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
@@ -693,16 +706,20 @@ def HomePageViewNonSeriale(request):
 
 
 def HomePageView(request):
+    #homepage che visualizza tutti i libri
     if request.method == 'GET':
         context=[]
+        #visualizza campi essenziale per libri non seriali
         for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
             context.append(elemento)
-        
+        #visualizza campi essenziali per libri seriali
         for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
             context.append(elemento)
 
 
@@ -710,21 +727,3 @@ def HomePageView(request):
     else:
         print("Errore")
 
-
-def HomePageView(request):
-    if request.method == 'GET':
-        context=[]
-        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
-            elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
-            context.append(elemento)
-        
-        for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
-            elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
-            context.append(elemento)
-
-
-        return render(request, 'base.html',{'context_list':context}) 
-    else:
-        print("Errore")
