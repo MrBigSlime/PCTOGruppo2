@@ -16,10 +16,10 @@ class objlist():
         self.NomeAu = ""                            #NomeAu è riferito alla tabella TradAutCur
         self.CognomeAu = ""
         self.NazioneAu = ""
-        self.NomePo = ""
+        self.NomePo = ""                            #NomePo è riferito alla tabella TradAutCur
         self.CognomePo = ""
         self.NazionePo = ""
-        self.NomePr = ""
+        self.NomePr = ""                            #NomePr è riferito alla tabella TradAutCur
         self.CognomePr = ""
         self.NazionePr = ""
         self.Straniero = False
@@ -588,7 +588,7 @@ def mod_libro(request,cod):
 
 def del_libro(request, Cod):
     cursor = connection.cursor()
-    
+    #elimina la row in base al codice inserito
     if request.method =='GET':
         if Cod[0]=='N':
             query="DELETE FROM libri_NonSeriale WHERE CodLibro=%s"
