@@ -86,7 +86,29 @@ class objlist():
         self.Genere = Genere
         self.CodLibro = Cod
 
+def check(cod):
+    if cod[0]=='N':
+        query = "SELECT CodLibro FROM libri_NonSeriale WHERE CodLibro=%s"
+    if cod[0]=='S':
+        query = "SELECT CodLibro FROM libri_Seriale WHERE CodLibri=%s"
+    if cod[0]=='A':
+        query = "SELECT CodAutore FROM libri_TradAutCur WHERE CodAutore=%s"
+    if cod[0]=='P':
+        query = "SELECT CodPostfazione FROM libri_PostfazionePre WHERE CodPostfazione=%s"
+    if cod[0]=='C':
+        query = "SELECT CodCollane FROM libri_Collane WHERE CodCollane=%s"
+    if cod[0]=='E':
+        query = "SELECT CodCasaEd FROM libri_CasaEditrice WHERE CodCasaEd=%s"
 
+    cursor = connection.cursor()
+    cursor.execute(query,cod)
+    ris=cursor.fetchone()
+    is ris is None:
+        return True
+    else:
+        return False
+   
+        
 def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di libro, dati=dizionario con i dati da inserire, id=identificatore tipo di libro 
     
     if id=="N":
