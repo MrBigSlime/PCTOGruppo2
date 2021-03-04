@@ -85,7 +85,7 @@ class objlist():
         self.Autore = Autore
         self.Genere = Genere
         self.CodLibro = Cod
-
+"""
 def check(cod):
     if cod[0]=='N':
         query = "SELECT CodLibro FROM libri_NonSeriale WHERE CodLibro=%s"
@@ -107,7 +107,7 @@ def check(cod):
         return True
     else:
         return False
-   
+""""   
         
 def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di libro, dati=dizionario con i dati da inserire, id=identificatore tipo di libro 
     
