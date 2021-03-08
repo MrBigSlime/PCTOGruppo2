@@ -73,3 +73,6 @@ class InserimentoLibro(forms.Form):
     #Scaffale
     #CodScaffale = forms.CharField(label="Codice Scaffale", max_length=4, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     #CatScaffale = forms.CharField(label="Categoria Scaffale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
+
+class ricercaform(forms.Form):
+    Campo = forms.CharField(label="camporicerca", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Ricerca per NomeAutore,Genere,Titolo,'}))

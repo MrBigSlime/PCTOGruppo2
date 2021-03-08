@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django import forms
 from django.db import connection
-from libri.forms import InserimentoLibro
+from libri.forms import InserimentoLibro,ricercaform
 from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -514,7 +514,7 @@ def mod_libro(request,cod):
         CognomeC=request.POST.get("CognomeCu")
         NazioneC=request.POST.get("NazioneCu")
 
-            #dati collane e casa editrice
+        #Dati collane e casa editrice
         NomeCo=request.POST.get("NomeCo")
         NomeCa=request.POST.get("NomeCa")
         SedeCa =request.POST.get("SedeCa")
@@ -707,22 +707,68 @@ def HomePageViewNonSeriale(request):
 def HomePageView(request):
     #homepage che visualizza tutti i libri
     if request.method == 'GET':
+        form = ricercaform()
         context=[]
-        #visualizza campi essenziale per libri non seriali
+        ricerca=[]
+        #visualizza campi essenziale per libri non seriali e inserimento del dato
         for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
+            ricerca.append(record.Titolo)
+            ricerca.append(record.NomeTr+" "+record.CognomeTr)
+            ricerca.append(record.Genere)
+
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
             print(elemento.CodLibro)
             context.append(elemento)
-        #visualizza campi essenziali per libri seriali
+
+        #visualizza campi essenziali per libri seriali e caricamento datalist per ricerca 
         for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
+            ricerca.append(record.Titolo)
+            ricerca.append(record.NomeTr+" "+record.CognomeTr)
+            ricerca.append(record.Genere)
+
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
             print(elemento.CodLibro)
             context.append(elemento)
+       
+        for ris in Collane.objects.raw("SELECT C.NomeCo,C.CodCollane FROM libri_Collane C"):
+            ricerca.append(ris.NomeCo)
 
-
-        return render(request, 'base.html',{'context_list':context}) 
+        for ris in CasaEditrice.objects.raw("SELECT C.NomeCa,C.Sede,C.CodCasaEd FROM libri_CasaEditrice C"):
+            ricerca.append(ris.NomeCa)
+        
+        return render(request, 'base.html',{'form':form,'context_list':context,'ricerca':ricerca}) 
     else:
         print("Errore")
+
+def ricerca(request):
+
+    if request.method == 'POST':
+        form=ricercaform(request.POST)
+        dato=request.POST.get("Campo")
+        context=[]
+        
+        for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore AND S.Titolo=%s OR S.Genere=%s",[dato,dato]):
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
+            context.append(elemento)
+        
+        for record in NonSeriale.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore AND S.Titolo=%s OR S.Genere=%s",[dato,dato]):
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
+            context.append(elemento)
+        
+        datos=dato.split(' ')
+        for record in TradAutCur.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore AND T.NomeTr=%s OR T.CognomeTr=%s OR T.NomeTr=%s OR T.CognomeTr=%s",[dato[0],dato[1],dato[1],dato[0]]):
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
+            context.append(elemento)   
+
+        return render(request, 'base.html',{'context_list':context}) 
+
+
 
