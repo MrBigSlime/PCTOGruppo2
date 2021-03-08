@@ -41,3 +41,14 @@ td {
     border-bottom: 3px solid rgba(91, 110, 155, 0.692);
     padding: 15px;
 }
+
+
+/*Login*/
+
+.logIn {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+    flex-direction: column;
+}
