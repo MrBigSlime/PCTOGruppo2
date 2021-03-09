@@ -22,7 +22,7 @@ class InserimentoLibro(forms.Form):
     NazionePre = forms.CharField(label="Nazione AutorePre", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione Autore Prefazione'}))
     
     #Info Libro
-    TitoloOrig = forms.CharField(label="Titolo Originale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo Originale*'}))
+    TitoloOrig = forms.CharField(label="Titolo Originale", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo Originale'}))
     Titolo = forms.CharField(label="Titolo", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Titolo*'}))
     Straniero = forms.ChoiceField(choices = (('1','Si'),('0','No')))
     Sottotitolo = forms.CharField(label="Sottotitolo", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Sottotitolo'}))

@@ -63,7 +63,9 @@
             <tr>
                 <td><b>Genere:</b> {{context.Genere}}</td>
                 <td><b>Straniero:</b> {{context.Straniero}}</td>
+                {% if ide is not null %}
                 <td> {{ide}}</td>
+                {% endif %}
             </tr>
             <tr>
                 <td><b>Numero Pubblicazione: </b>{{context.NumPub}}</td>
