@@ -3,7 +3,10 @@ body {
     font-family: Leelawadee;
     display: flex;
     min-height: 100vh;
-    /*altezza minima*/
+    /*altezza minima
+    background: url('/static/ur.jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;*/
 }
 
 a {
@@ -51,4 +54,25 @@ td {
     margin: auto;
     text-align: center;
     flex-direction: column;
+    border: 2px solid black;
+    border-radius: 4px;
+    padding: 40px;
+    width: 300px;
+    height: 300px;
+    background-color: rgba(40, 42, 47, 0.692);
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.735);
+}
+
+button {
+    width: 100px;
+    margin-top: 15px;
+    align-self: center;
+    text-align: center;
+    border: none;
+    background-color: rgb(155, 117, 91);
+    border-radius: 5px 5px;
+    height: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
 }
