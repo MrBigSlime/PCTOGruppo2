@@ -1,31 +1,30 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div class="add-box">
     <h1>Nuovo Libro</h1>
     <form method="post" autocomplete="off" class="addForm-box">
-        
+
         {% csrf_token %}
 
         <table class="partOne">
             <tr>
                 <!-- Info autore -->
-                <td>{{form.NomeAu}}</td>
-                <td>{{form.CognomeAu}}</td>
-                <td>{{form.NazioneAu}}</td>
+                <span title="">
+                <td><span title="Nome Autore">{{form.NomeAu}}</span></td>
+                <td><span title="Cognome Autore">{{form.CognomeAu}}</span></td>
+                <td><span title="Nazionalità Autore">{{form.NazioneAu}}</span></td>
             </tr>
             <tr>
                 <!-- Postfazione -->
-                <td>{{form.NomePost}}</td>
-                <td>{{form.CognomePost}}</td>
-                <td>{{form.NazionePost}}</td>
+                <td><span title="Nome Autore Postfazione">{{form.NomePost}}</span></td>
+                <td><span title="Cognome Autore Postfazione">{{form.CognomePost}}</span></td>
+                <td><span title="Nazionalità Autore Postfazione">{{form.NazionePost}}</span></td>
             </tr>
             <tr>
                 <!-- Prefazione -->
-                <td>{{form.NomePre}}</td>
-                <td>{{form.CognomePre}}</td>
-                <td>{{form.NazionePre}}</td>
+                <td><span title="Nome Autore Prefazione">{{form.NomePre}}</span></td>
+                <td><span title="Cognome Autore Prefazione">{{form.CognomePre}}</span></td>
+                <td><span title="Nazionalità Autore Prefazione">{{form.NazionePre}}</span></td>
             </tr>
             <!-- Info Libro -->
             <tr>
