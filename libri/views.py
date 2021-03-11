@@ -109,6 +109,21 @@ def in_TradAutCur(dati):
     cursor.execute(query,[cod,dati["NazioneTr"],dati["CognomeTr"],dati["NomeTr"]])
     return cod
 
+def in_Collana(dati):
+    query="INSERT INTO libri_Collane VALUES(%s, %s)"                #inserimento nuova collana
+    cod = "C"+str(randrange(1000))
+    cursor = connection.cursor()
+    cursor.execute(query,[cod, dati["NomeCo"]])
+    cursor.close()
+    return cod
+
+def in_CasaEd(dati):
+    query="INSERT INTO libri_CasaEditrice VALUES(%s, %s, %s)"           #inseriment nuova CasaEditrice
+    cod = "E"+str(randrange(1000))                          
+    cursor = connection.cursor()
+    cursor.execute(query,[cod, dati["Sede"], dati["NomeCa"],])
+    cursor.close()
+    return cod
 
 def in_PostfazionePre(dati):    #Funzione per l'inserimento delle chiavi alla tabella PostfazionePre
     cursor = connection.cursor()
@@ -144,21 +159,6 @@ def in_PostfazionePre(dati):    #Funzione per l'inserimento delle chiavi alla ta
         return ris[0]
         
 
-def in_Collana(dati):
-    query="INSERT INTO libri_Collane VALUES(%s, %s)"                #inserimento nuova collana
-    cod = "C"+str(randrange(1000))
-    cursor = connection.cursor()
-    cursor.execute(query,[cod, dati["NomeCo"]])
-    cursor.close()
-    return cod
-
-def in_CasaEd(dati):
-    query="INSERT INTO libri_CasaEditrice VALUES(%s, %s, %s)"           #inseriment nuova CasaEditrice
-    cod = "E"+str(randrange(1000))                          
-    cursor = connection.cursor()
-    cursor.execute(query,[cod, dati["Sede"], dati["NomeCa"],])
-    cursor.close()
-    return cod
 
 def inspector(dati,identificatore):                                 #funzione che gestrisce il controllo della esistenza di un dato nel database
 
@@ -682,7 +682,7 @@ def LibroDetailView(request,Cod):
             return render(request, 'detail.html', {'context':elemento})
     else:
         print("Errore")
-
+"""
 def HomePageViewSeriale(request):
     #visualizza solo libri seriali
     if request.method == 'GET':
@@ -708,7 +708,7 @@ def HomePageViewNonSeriale(request):
         return render(request, 'notSerial.html',{'context_list':context}) 
     else:
         print("Errore")
-
+"""
 
 def HomePageView(request):
     #homepage che visualizza tutti i libri
