@@ -7,7 +7,7 @@ from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from random import randrange
-import hashlib 
+
 
 class objlist():                        
     def __Init__(self):
