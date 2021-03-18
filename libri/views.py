@@ -3,6 +3,7 @@ from django import forms
 from django.db import connection
 from libri.forms import InserimentoLibro,UserLoginForm,UserRegistrationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
