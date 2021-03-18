@@ -1,29 +1,6 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %} 
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static './css/ins_style.css' %}">
-    <title>Detail</title>
-</head>
-
-<body>
-    <nav>
-        <h2 style="color:red;">BIBLIOBASE</h2>
-        <div class="links">
-            <br><br>
-            <a href="{% url 'base' %}">HOME</a>
-            <br><br>
-            <a href="{% url 'nuovo_libro' %}">NUOVO LIBRO</a>
-            <br><br>
-        </div>
-        <div class="cp">All Right Reserverd</div>
-    </nav>
-    <div class="HolyGrail-body">
-        {% block content %}
+{% block content %}
         <table class="partOne">
             <!--Table con i dati del libro-->
             <tr>
@@ -114,9 +91,6 @@
                 {% endif %}
             </tr>
         </table>
-        {% endblock content %}
     </div>
 
-</body>
-
-</html>
+{% endblock content %}

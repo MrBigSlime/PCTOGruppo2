@@ -1,31 +1,20 @@
-body {
-    margin: 0;
-    font-family: Leelawadee;
-    display: flex;
-    min-height: 100vh;
-    /*altezza minima
-    background: url('/static/ur.jpg');
-    background-repeat: no-repeat;
-    background-size: 100%;*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    box-sizing: border-box;
+    padding: 0%;
+    margin: 0%;
+    font-family: 'Poppins', sans-serif;
 }
 
 a {
     text-decoration: none;
-    color: black;
+    color: whitesmoke;
 }
 
 .HolyGrail-body {
     display: flex;
     flex-grow: 1;
-    flex-direction: column;
-}
-
-nav {
-    flex-basis: 17vw;
-    padding: 20px;
-    background-color: rgba(91, 110, 155, 0.692);
-    text-align: center;
-    display: flex;
     flex-direction: column;
 }
 
@@ -40,11 +29,10 @@ nav {
     padding: 20px;
 }
 
-td {
-    border-bottom: 3px solid rgba(91, 110, 155, 0.692);
+.partOne td {
+    border-bottom: 2px solid rgb(91, 110, 155);
     padding: 15px;
 }
-
 
 /*Login*/
 
@@ -63,7 +51,7 @@ td {
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.735);
 }
 
-button {
+/*button {
     width: 100px;
     margin-top: 15px;
     align-self: center;
@@ -75,4 +63,4 @@ button {
     font-weight: 600;
     text-transform: uppercase;
     cursor: pointer;
-}
+}*/
