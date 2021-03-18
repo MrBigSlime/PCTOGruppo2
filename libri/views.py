@@ -747,33 +747,13 @@ def Register(request):
             CognomeU = request.POST.get("CognomeU")
             Password = request.POST.get("Password")
 
-            Password = hashlib.md5(Password.encode())
-
-
-            query="INSERT INTO libri_Utenti VALUES(%s,%s,%s,%s,%s)"
-            while True:
-                cod="U"+str(randrange(1000))
-                if check(cod):
-                    break
-
-            query = "SELECT CodUtente FROM libir_Utenti WHERE CodUtenti=%s"
-            cursor = connection.cursor()
-            ris = cursor.execute(query,[Username,])
-            if ris is None:                     
-                Dati = [CodUtente, Username, NomeU, CognomeU, Password] 
-                cursor = connection.cursor()
-                cursor.execute(query,Dati)
-                cursor.close()
-
-                return HttpResponseRedirect(reverse('base'))
-            
-            else:
-                print(form.errors)
-                return HttpResponseRedirect(reverse('#errore'))
-
+            user = User.objects.create_user(Username, '', Password)
+            user.first_name  = NomeU
+            user.last_name = CognomeU
+            user.save()
         else:
-                print(form.errors)
-                return HttpResponseRedirect(reverse('#errore'))
+            print(form.errors)
+            return HttpResponseRedirect(reverse('#errore'))
 
 def loginView(request):
 
