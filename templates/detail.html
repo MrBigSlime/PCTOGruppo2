@@ -34,21 +34,21 @@
             </tr>
             <tr>
                 <!-- Postfazione -->
-                {% if context.NomePost != "" %}
+                {% if context.NomePost is not null %}
                 <td><b>Nome Autore Postfazione: </b>{{context.NomePost}}</td>
-                {% endif %} {% if context.CognomePost != "" %}
+                {% endif %} {% if context.CognomePost is not null %}
                 <td><b>Cognome Autore Postfazione: </b>{{context.CognomePost}}</td>
-                {% endif %} {% if context.NazionePost != "" %}
+                {% endif %} {% if context.NazionePost is not null %}
                 <td><b>Nazione Autore Postfazione: </b>{{context.NazionePost}}</td>
                 {% endif %}
             </tr>
             <tr>
                 <!-- Prefazione -->
-                {% if context.NomePre != "" %}
+                {% if context.NomePre is not null %}
                 <td><b>Nome Autore Prefazione: </b>{{context.NomePre}}</td>
-                {% endif %} {% if context.CognomePre != "" %}
+                {% endif %} {% if context.CognomePre is not null %}
                 <td><b>Cognome Autore Prefazione: </b>{{context.CognomePre}}</td>
-                {% endif %} {% if context.NazionePre != "" %}
+                {% endif %} {% if context.NazionePre is not null %}
                 <td><b>Nazione Autore Prefazione: </b>{{context.NazionePre}}</td>
                 {% endif %}
             </tr>
