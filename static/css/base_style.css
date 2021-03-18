@@ -5,6 +5,15 @@
     padding: 0%;
     margin: 0%;
     font-family: 'Poppins', sans-serif;
+    scrollbar-color: #1d3557 rgba(255, 255, 255, 0);
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1d3557;
 }
 
 a {
