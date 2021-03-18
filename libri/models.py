@@ -96,3 +96,10 @@ class Posizione(models.Model):
     CodPosizione = models.CharField(max_length = 4, primary_key = True)
     IDScaffale = models.ForeignKey(Scaffale, on_delete = models.RESTRICT)
     IDLibro = models.ForeignKey(SingoliLibri, on_delete = models.RESTRICT)
+
+class Utenti(models.Model):
+    CodUtente = models.CharField(max_length = 4,primary_key = True)
+    Username = models.CharField(max_length = 256)
+    NomeU = models.CharField(max_length = 256)
+    CognomeU = models.CharField(max_length = 256)
+    Password = models.CharField(max_length = 128)
