@@ -732,3 +732,43 @@ def HomePageView(request):
     else:
         print("Errore")
 
+def Register(request):
+    if request.method =='POST':
+    
+        form = UserRegistrationForm(request.POST)
+
+        if form.is_valid():
+
+            CodUtente = request.POST.get("CodUtente")
+            Username = request.POST.get("Username")
+            NomeU = request.POST.get("NomeU")
+            CognomeU = request.POST.get("CognomeU")
+            Password = request.POST.get("Password")
+
+            Password = hashlib.md5(Password.encode())
+
+
+            query="INSERT INTO libri_Utenti VALUES(%s,%s,%s,%s,%s)"
+            while True:
+                cod="U"+str(randrange(1000))
+                if check(cod):
+                    break
+
+            query = "SELECT CodUtente FROM libir_Utenti WHERE CodUtenti=%s"
+            cursor = connection.cursor()
+            cursor.execute(query,[Username,])
+            if ris is None:                     
+                Dati = [CodUtente, Username, NomeU, CognomeU, Password] 
+                cursor = connection.cursor()
+                cursor.execute(query,Dati)
+                cursor.close()
+
+                return HttpResponseRedirect(reverse('base'))
+            
+            else:
+                print(form.errors)
+                return HttpResponseRedirect(reverse('#errore'))
+
+        else:
+                print(form.errors)
+                return HttpResponseRedirect(reverse('#errore'))
