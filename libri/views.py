@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django import forms
 from django.db import connection
-from libri.forms import InserimentoLibro
+from libri.forms import InserimentoLibro,UserLoginForm,UserRegistrationForm
 from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from random import randrange
+import hashlib 
 
 class objlist():                        
     def __Init__(self):
@@ -638,7 +639,7 @@ def LibroDetailView(request,Cod):
                 NomePr = record.IDPostPrefazione.autPrefazione.NomeTr
                 CognomePr = record.IDPostPrefazione.autPrefazione.CognomeTr
                 NazionePr = record.IDPostPrefazione.autPrefazione.NazioneTr
-
+                print(type(NomePr))
                 #dati autore postfazione
                 NomePo = record.IDPostPrefazione.autPostfazione.NomeTr
                 CognomePo = record.IDPostPrefazione.autPostfazione.CognomeTr
@@ -732,6 +733,7 @@ def HomePageView(request):
     else:
         print("Errore")
 
+<<<<<<< Updated upstream
 def Register(request):
     if request.method =='POST':
     
@@ -772,3 +774,24 @@ def Register(request):
         else:
                 print(form.errors)
                 return HttpResponseRedirect(reverse('#errore'))
+=======
+
+def loginView(request):
+
+    if request.method == 'GET':
+
+        form = UserLoginForm()
+        return render(request, '#',{'form':form})          
+
+    if request.method == 'POST':
+        form = UserLoginForm(request.POST)
+        password = request.POST.get("Password")
+        user = request.POST.get("Username")
+
+        digest = hashlib.md5(password.encode())
+        ris = Utenti.objects
+        
+
+
+
+>>>>>>> Stashed changes
