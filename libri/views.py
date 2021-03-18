@@ -748,9 +748,7 @@ def Register(request):
             CognomeU = request.POST.get("CognomeU")
             Password = request.POST.get("Password")
 
-            user = User.objects.create_user(Username, '', Password)
-            user.first_name  = NomeU
-            user.last_name = CognomeU
+            user = User.objects.create_user(Username, '', Password, CognomeU, NomeU)
             user.save()
         else:
             print(form.errors)
