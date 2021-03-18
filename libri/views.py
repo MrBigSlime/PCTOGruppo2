@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django import forms
 from django.db import connection
 from libri.forms import InserimentoLibro,UserLoginForm,UserRegistrationForm
+from django.contrib.auth import authenticate, login, logout
 from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -733,7 +734,6 @@ def HomePageView(request):
     else:
         print("Errore")
 
-<<<<<<< Updated upstream
 def Register(request):
     if request.method =='POST':
     
@@ -758,7 +758,7 @@ def Register(request):
 
             query = "SELECT CodUtente FROM libir_Utenti WHERE CodUtenti=%s"
             cursor = connection.cursor()
-            cursor.execute(query,[Username,])
+            ris = cursor.execute(query,[Username,])
             if ris is None:                     
                 Dati = [CodUtente, Username, NomeU, CognomeU, Password] 
                 cursor = connection.cursor()
@@ -774,7 +774,6 @@ def Register(request):
         else:
                 print(form.errors)
                 return HttpResponseRedirect(reverse('#errore'))
-=======
 
 def loginView(request):
 
@@ -787,11 +786,13 @@ def loginView(request):
         form = UserLoginForm(request.POST)
         password = request.POST.get("Password")
         user = request.POST.get("Username")
+        user = authenticate(request, username=user, password=password)
+        if user is not None:
+            login(request, user)
 
-        digest = hashlib.md5(password.encode())
-        ris = Utenti.objects
+def logoutview(request):
+    logout(request)
         
 
 
 
->>>>>>> Stashed changes
