@@ -776,11 +776,9 @@ def Ghet(request, Cod):
     if request.method == 'GET':
         if Cod[0]=='N':
             query="SELECT COUNT(*) FROM libri_NonSeriale WHERE CodLibro=%s"
-            is_ser = False
 
         if Cod[0]=='S':
             query="SELECT COUNT(*) FROM libri_Seriale WHERE CodLibro=%s"
-            is_ser = True
         
         cursor.execute(query, [Cod,])
         numero_libri = cursor.fetchone()
@@ -790,9 +788,11 @@ def Ghet(request, Cod):
         if form.is_valid():
             if Cod[0]=='N':
                 query="SELECT COUNT(*) FROM libri_NonSeriale WHERE CodLibro=%s"
+                is_ser = False
 
             if Cod[0]=='S':
                 query="SELECT COUNT(*) FROM libri_Seriale WHERE CodLibro=%s"
+                is_ser = True
         
                 cursor.execute(query, [Cod,])
                 numero_libri = cursor.fetchone()
