@@ -772,6 +772,47 @@ def loginView(request):
 def logoutview(request):
     logout(request)
         
+def Ghet(request, Cod):
+    if request.method == 'GET':
+        if Cod[0]=='N':
+            query="SELECT COUNT(*) FROM libri_NonSeriale WHERE CodLibro=%s"
+            is_ser = False
+
+        if Cod[0]=='S':
+            query="SELECT COUNT(*) FROM libri_Seriale WHERE CodLibro=%s"
+            is_ser = True
+        
+        cursor.execute(query, [Cod,])
+        numero_libri = cursor.fetchone()
+        return numero_libri
+
+    elif request.method == 'POST':
+        if form.is_valid():
+            if Cod[0]=='N':
+                query="SELECT COUNT(*) FROM libri_NonSeriale WHERE CodLibro=%s"
+
+            if Cod[0]=='S':
+                query="SELECT COUNT(*) FROM libri_Seriale WHERE CodLibro=%s"
+        
+                cursor.execute(query, [Cod,])
+                numero_libri = cursor.fetchone()
+
+            numero_inserito = request.POST.get("numero_inserito")
+            
+            if numero_inserito > numero_libri :
+                ris = numero_inserito - numero_libri
+                for x in range(ris):
+                    invDef(Cod,is_ser,'I')
+            elif numero_inserito < numero_libri :
+                ris =numero_libri - numero_inserito
+                for x in range(ris):
+                    invDef(Cod,is_ser,'D')
+    
+    else:
+        print(form.errors)
+        return HttpResponseRedirect(reverse('#errore'))
+            
+
 
 
 
