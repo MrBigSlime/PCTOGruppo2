@@ -84,3 +84,6 @@ class UserRegistrationForm(forms.Form):
 class UserLoginForm(forms.Form):
     Username = forms.CharField(label="Username",max_length = 256)
     Password = forms.CharField(label="Password",max_length = 256)
+
+class DetailForm(forms.Form):
+     QLibri = forms.CharField(label="QLibri", max_length=256)

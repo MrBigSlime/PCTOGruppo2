@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django import forms
 from django.db import connection
-from libri.forms import InserimentoLibro,UserLoginForm,UserRegistrationForm
+from libri.forms import InserimentoLibro,UserLoginForm,UserRegistrationForm,DetailForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from libri.models import *
@@ -88,6 +88,7 @@ class objlist():
         self.Autore = Autore
         self.Genere = Genere
         self.CodLibro = Cod
+
 
 def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di libro, dati=dizionario con i dati da inserire, id=identificatore tipo di libro 
     
@@ -204,6 +205,32 @@ def inspector(dati,identificatore):                                 #funzione ch
         return ris[0]
 
     cursor.close()
+
+def invDef(codlib,identificatore):
+    cursor = connection.cursor()
+
+    if identificatore == 'D':
+        cod="L"+str(randrange(1000))
+       
+        if codlib[0] == 'N':                                                                  #In base al identificatore si decide se eliminare o inserire un libro
+            query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
+            query="INSERT INTO libri_SingoliLibri(CodLibro,IDSeriale) VALUES(%s,%s)"
+
+        cursor.execute(query,[cod,codlib])
+        cursor.close()
+
+    elif identificatore == 'I':
+
+        cursor.execute("SELECT S.CodLibro FROM SingoliLibri S, Prestito P WHERE S.CodLibro!=P.IDLibro")
+        record=cursor.fetchone()                                                                                    #fetch di un singolo codice che non è in prestito e seguente eliminazione
+
+        cursor.execute("DELETE FROM libri_SingoliLibri WHERE CodLibro=%s",[record[0],])
+
+        cursor.close()
+               
+
+
+
 
 
 def inserimento(request):
@@ -773,6 +800,7 @@ def logoutview(request):
     logout(request)
         
 def Ghet(request, Cod):
+    cursor = connection.cursor()
     if request.method == 'GET':
         if Cod[0]=='N':
             query="SELECT COUNT(*) FROM libri_NonSeriale WHERE CodLibro=%s"
@@ -785,6 +813,7 @@ def Ghet(request, Cod):
         return numero_libri
 
     elif request.method == 'POST':
+        form = DetailForm(request.POST)
         if form.is_valid():
             if Cod[0]=='N':
                 query="SELECT COUNT(*) FROM libri_NonSeriale WHERE CodLibro=%s"
