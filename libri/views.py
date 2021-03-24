@@ -206,31 +206,32 @@ def inspector(dati,identificatore):                                 #funzione ch
 
     cursor.close()
 
-def invDef(codlib,identificatore):
+def invDef(codlib):
     cursor = connection.cursor()
 
-    if identificatore == 'D':
-        cod="L"+str(randrange(1000))
-       
-        if codlib[0] == 'N':                                                                  #In base al identificatore si decide se eliminare o inserire un libro
-            query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
-            query="INSERT INTO libri_SingoliLibri(CodLibro,IDSeriale) VALUES(%s,%s)"
+    cod="L"+str(randrange(1000))
+    
+    if codlib[0] == 'N':                                                                  #In base al identificatore si decide se eliminare o inserire un libro
+        query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
+    else:
+        query="INSERT INTO libri_SingoliLibri(CodLibro,IDSeriale) VALUES(%s,%s)"
 
-        cursor.execute(query,[cod,codlib])
-        cursor.close()
+    cursor.execute(query,[cod,codlib])
+    cursor.close()
 
-    elif identificatore == 'I':
+def invDel(codlib):
 
-        cursor.execute("SELECT S.CodLibro FROM SingoliLibri S, Prestito P WHERE S.CodLibro!=P.IDLibro")
-        record=cursor.fetchone()                                                                                    #fetch di un singolo codice che non è in prestito e seguente eliminazione
+        cursor = connection.cursor()
 
-        cursor.execute("DELETE FROM libri_SingoliLibri WHERE CodLibro=%s",[record[0],])
-
+        cursor.execute("SELECT S.CodLibro FROM SingoliLibri S, Prestito P WHERE S.CodLibro!=P.IDLibro AND S.CodLibro=%s",[codlib,])
+        record=cursor.fetchone()     
+                                                                                       #fetch di un singolo codice che non è in prestito e seguente eliminazione
+        if record is None:
+            print("il libro è in prestito")
+        else:
+            cursor.execute("DELETE FROM libri_SingoliLibri WHERE CodLibro=%s",[record[0],])
         cursor.close()
                
-
-
-
 
 
 def inserimento(request):
