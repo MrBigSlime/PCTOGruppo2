@@ -86,4 +86,6 @@ class UserLoginForm(forms.Form):
     Password = forms.CharField(label="Password",max_length = 256)
 
 class DetailForm(forms.Form):
-     QLibri = forms.CharField(label="QLibri", max_length=256)
+    QLibri = forms.CharField(label="QLibri", max_length=256)
+class DelSingLib(froms.Form):
+    Numero = forms.CharField(label="CodLib", max_length=256)

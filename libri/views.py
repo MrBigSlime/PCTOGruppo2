@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django import forms
 from django.db import connection
-from libri.forms import InserimentoLibro,UserLoginForm,UserRegistrationForm,DetailForm
+from libri.forms import InserimentoLibro,UserLoginForm,UserRegistrationForm,DetailForm,DelSingLib
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from libri.models import *
@@ -644,6 +644,8 @@ def LibroDetailView(request,Cod):
 
     if request.method == 'GET':
             #controllo Seriale o Non Seriale
+            numlib=Ghet(request, Cod)
+
             if Cod[0]=='N':
                 query="SELECT * FROM libri_NonSeriale WHERE CodLibro=%s"
 
@@ -709,9 +711,9 @@ def LibroDetailView(request,Cod):
             
                 elemento = objlist()
                 elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr, NomeCu, CognomeCu, NazioneCu)
-            return render(request, 'detail.html', {'context':elemento})
-    else:
-        print("Errore")
+            return render(request, 'detail.html', {'context':elemento,'Numlibs':numlib})
+    if request.method == 'POST':
+        Ghet(request, Cod)
 """
 def HomePageViewSeriale(request):
     #visualizza solo libri seriali
