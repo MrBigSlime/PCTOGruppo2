@@ -669,7 +669,6 @@ def LibroDetailView(request,Cod):
                 NomePr = record.IDPostPrefazione.autPrefazione.NomeTr
                 CognomePr = record.IDPostPrefazione.autPrefazione.CognomeTr
                 NazionePr = record.IDPostPrefazione.autPrefazione.NazioneTr
-                print(type(NomePr))
                 #dati autore postfazione
                 NomePo = record.IDPostPrefazione.autPostfazione.NomeTr
                 CognomePo = record.IDPostPrefazione.autPostfazione.CognomeTr
