@@ -802,13 +802,13 @@ def logoutview(request):
     logout(request)
         
 def Ghet(request, Cod):
-    cursor = connection.cursor()
     if request.method == 'GET':
+        form = DetailForm()
         if Cod[0]=='N':
-            query="SELECT COUNT(*) FROM libri_NonSeriale WHERE CodLibro=%s"
+            query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale=%s"
 
         if Cod[0]=='S':
-            query="SELECT COUNT(*) FROM libri_Seriale WHERE CodLibro=%s"
+            query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDSeriale=%s"
         
         cursor.execute(query, [Cod,])
         numero_libri = cursor.fetchone()
@@ -818,11 +818,11 @@ def Ghet(request, Cod):
         form = DetailForm(request.POST)
         if form.is_valid():
             if Cod[0]=='N':
-                query="SELECT COUNT(*) FROM libri_NonSeriale WHERE CodLibro=%s"
+                query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale=%s"
                 is_ser = False
 
             if Cod[0]=='S':
-                query="SELECT COUNT(*) FROM libri_Seriale WHERE CodLibro=%s"
+                query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDSeriale=%s"
                 is_ser = True
         
                 cursor.execute(query, [Cod,])
@@ -833,17 +833,24 @@ def Ghet(request, Cod):
             if numero_inserito > numero_libri :
                 ris = numero_inserito - numero_libri
                 for x in range(ris):
-                    invDef(Cod,is_ser,'I')
-            elif numero_inserito < numero_libri :
-                ris =numero_libri - numero_inserito
-                for x in range(ris):
-                    invDef(Cod,is_ser,'D')
-    
+                    invDef(Cod,is_ser)
     else:
         print(form.errors)
         return HttpResponseRedirect(reverse('#errore'))
             
+def del_singolo(request):
+    cursor = connection.cursor()
+    #elimina la row in base al codice inserito
+    if request.method =='POST':
+        form = DelSingLib(request.POST)
+        if form.is_valid():
+            CodLibro = request.POST.get("CodLibro")
 
-
-
+            query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
+            cursor.execute(query,[CodLibro,])
+            cursor.close()
+            return HttpResponseRedirect(reverse('base'))
+        else:
+            print(form.errors)
+            return HttpResponseRedirect(reverse('#errore'))
 
