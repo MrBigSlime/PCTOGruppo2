@@ -13,53 +13,69 @@
     <link rel="icon" href="{% static 'favicon.ico' %}">
 </head>
 
-<body>
-    <div class="all-box">
-        <div class="sidenav">
+<header>
+    <nav>
+        <div class="nav-box">
             <div class="logo">
-                <p><a href="{% url 'base' %}">BiblioBase</a></p>
+                <h4><a href="{% url 'base' %}">BiblioBase</a></h4>
+            </div>
+            <div class="search-bar">
+                <input type="text" list="BookList" placeholder="Inserisci il titolo del libro..."/>
+                <datalist id="BookList">
+                    {% for results in lista%}
+                    <option>{{results}}</option>
+                    {% endfor %}
+                </datalist>
+                <div class="lente">
+                    <img src="{% static './img/iconmonstr-magnifier-2.svg' %}">
+                </div>
             </div>
             <div class="links">
                 <ul>
-                    <a href="{% url 'nuovo_libro' %}"><li>Nuovo Libro</li></a>
-                    <a href="#"><li>Seriali</li></a>
-                    <a href="#"><li>Non Seriali</li></a>
-                </ul>
-            </div>
-            <div class="info">
-                <ul>
-                    <li><a href="#">Team</a></li>
-                    <li><a href="#">Contatti</a></li>
+                    <li><a href="Team.html">Team</a></li>
+                    <li><a href="https://www.einaudicorreggio.edu.it/pvw/app/REIT0006/pvw_sito.php" target="_blank">Contatti</a></li>
                 </ul>
             </div>
         </div>
-        <div class="contenuto">
-
-            {% block content %}
-
-            {% for record in context_list %}
-
-            <div class="view-detail">
-                <div class="info-detail">
-                    <ul>
-                        <li>{{record.Titolo}}</li>
-                        <li>{{record.Autore}}</li>
-                        <li>{{record.Genere}}</li>
-                    </ul>
-                </div>
-                <div class="buttons">
-                    <a href="{% url 'detail' record.CodLibro %}"><button type="submit">Dettaglio</button></a>
-                    <a href="{% url 'cancella' record.CodLibro %}"><button type="submit" style="background: #c22509;">Cancella</button></a>
-                    <a href="{% url 'modifica_libro' record.CodLibro %}"><button type="submit">Modifica</button></a>
-                </div>
+        <div class="nav-links">
+            <div class="under-links">
+                <ul>
+                    <li><a href="notSerial.html">Libri NON Seriali</a></li>
+                    <li><a href="Serial.html">Libri Seriali</a></li>
+                    <li><a href="CaseEditrici.html">Case Editrici</a></li>
+                    <li><a href="{% url 'nuovo_libro' %}">Nuovo Libro</a></li>
+                </ul>
             </div>
+        </div>
+    </nav>
+</header>
 
-            {% endfor %}
+<div class="contenuto">
 
-            {% endblock content %}
+    {% block content %}
 
+    {% for record in context_list %}
+
+    <div class="view-detail">
+        <div class="info-detail">
+            <ul>
+                <li>{{record.Titolo}}</li>
+                <li>{{record.Autore}}</li>
+                <li>{{record.Genere}}</li>
+            </ul>
+        </div>
+        <div class="buttons">
+            <a href="{% url 'detail' record.CodLibro %}"><button type="submit">Dettaglio</button></a>
+            <a href="{% url 'cancella' record.CodLibro %}"><button type="submit" style="background: #c22509;">Cancella</button></a>
+            <a href="{% url 'modifica_libro' record.CodLibro %}"><button type="submit">Modifica</button></a>
         </div>
     </div>
+
+    {% endfor %}
+
+    {% endblock content %}
+
+</div>
 </body>
 
 </html>

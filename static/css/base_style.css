@@ -21,46 +21,99 @@ a {
     color: whitesmoke;
 }
 
-.all-box {
+.nav-box {
     display: grid;
-    grid-template-columns: .4fr 2.8fr .1fr;
-}
-
-.sidenav {
-    min-height: 100vh;
-    max-height: 100vh;
-    display: grid;
-    grid-template-rows: 1fr 2fr .5fr;
-    overflow: auto;
-    background-color: #8d9bba;
+    min-height: 100px;
+    background-color: #1d3557;
+    grid-template-columns: 1fr 2fr 1fr;
     justify-items: center;
+    align-items: center;
 }
 
 .logo {
+    display: flex;
+    justify-content: center;
     text-transform: uppercase;
-    margin-top: 10px;
+    font-size: 24px;
 }
 
-.links ul {
-    list-style: none;
+.logo a {
+    transition: all .3s ease 0s;
+}
+
+.logo a:hover {
+    color: #457b9d;
+}
+
+.search-bar {
+    display: flex;
+}
+
+.search-bar input{
+    background-color: whitesmoke;
+    border: none;
+    border-radius: 50px 0px 0px 50px;
+    height: 45px;
+    width: 600px;
+    text-indent: 3%;
+    justify-content: right;
+    cursor: text;
+}
+
+.lente {
+    display: flex;
+    background-color: #457b9d;
+    border: none;
+    border-radius: 0px 50px 50px 0px;
+    height: 45px;
+    width: 100px;
+    cursor: pointer;
+    transition: all .3s ease 0s;
+    justify-content: center;
+    justify-items: center;
+}
+
+.lente img {
+    width: 30px;
+}
+
+.lente:hover {
+    background-color:#335a72;
 }
 
 .links li {
-    border-radius: 10px;
-    text-align: center;
-    width: 110px;
-    transition: all .3s ease 0s;
-}
-
-.links li:hover {
-    background-color: whitesmoke;
-    color:#8d9bba;
-    border-radius: 10px;
-    transition: all .3s ease 0s;
-}
-
-.info ul {
+    display: inline;
     list-style: none;
+    padding: 20px 10px;
+}
+
+.links a {
+    transition: all .3s ease 0s;
+}
+
+.links a:hover {
+    color: rgb(146, 146, 146);
+}
+
+.nav-links {
+    display: grid;
+    background-color: #457b9d;
+    min-height: 50px;
+    align-items: center;
+}
+
+.under-links li {
+    display: inline;
+    list-style: none;
+    padding: 20px;
+}
+
+.under-links a{
+    transition: all .3s ease 0s;
+}
+
+.under-links a:hover {
+    color: rgb(146, 146, 146);
 }
 
 .contenuto {
