@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}">
     <link rel="stylesheet" href="{% static './css/base_style.css' %}">
     <link rel="stylesheet" href="{% static './css/newBook-style.css' %}">
 </head>
@@ -34,7 +35,7 @@
                     <h4>{{record.Genere}}</h4>
                 </div>
                 <div class="child">
-                    <a onclick="return confirm('Sei sicuro?')", href="{% url 'cancella' record.CodLibro %}">Elimina</a>
+                    <a onclick="return confirm('Sei sicuro?')" , href="{% url 'cancella' record.CodLibro %}">Elimina</a>
                     <a href="{% url 'modifica_libro' record.CodLibro %}">Modifica</a>
                     <a href="{% url 'detail' record.CodLibro %}">Dettaglio</a>
                 </div>

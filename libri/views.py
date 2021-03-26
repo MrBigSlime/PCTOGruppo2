@@ -86,6 +86,7 @@ class objlist():
         self.Genere = Genere
         self.CodLibro = Cod
         
+
 def check(cod):
     if cod[0]=='N':
         query = "SELECT CodLibro FROM libri_NonSeriale WHERE CodLibro=%s"
@@ -142,6 +143,7 @@ def in_TradAutCur(dati):
 
 def in_Collana(dati):
     query="INSERT INTO libri_Collane VALUES(%s, %s)"                #inserimento nuova collana
+
     while True:
         cod = "C"+str(randrange(1000))
         if check(cod):
@@ -153,10 +155,12 @@ def in_Collana(dati):
 
 def in_CasaEd(dati):
     query="INSERT INTO libri_CasaEditrice VALUES(%s, %s, %s)"           #inseriment nuova CasaEditrice
+
     while True:
         cod = "E"+str(randrange(1000))     
         if check(cod):
             break                     
+
     cursor = connection.cursor()
     cursor.execute(query,[cod, dati["Sede"], dati["NomeCa"],])
     cursor.close()

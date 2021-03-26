@@ -56,14 +56,16 @@
             <tr>
                 <td><b>Titolo Originale:</b> {{context.TitoloOrig}}</td>
                 <td><b>Titolo: </b>{{context.Titolo}}</td>
-                {% if context.Sottotitolo is not null %}
+                {% if context.Sottotitolo != "" %}
                 <td><b>Sottotitolo: </b>{{context.Sottotitolo}}</td>
                 {% endif %}
             </tr>
             <tr>
                 <td><b>Genere:</b> {{context.Genere}}</td>
                 <td><b>Straniero:</b> {{context.Straniero}}</td>
+                {% if ide != "" %}
                 <td> {{ide}}</td>
+                {% endif %}
             </tr>
             <tr>
                 <td><b>Numero Pubblicazione: </b>{{context.NumPub}}</td>
@@ -77,9 +79,9 @@
             </tr>
             <tr>
                 <td><b>Numero di Pagine: </b>{{context.NumPagine}}</td>
-                {% if context.NomeCo is not null %}
+                {% if context.NomeCo != "" %}
                 <td><b>Nome Collana: </b>{{context.NomeCo}}</td>
-                {% endif %} {% if context.nRistampa is not null %}
+                {% endif %} {% if context.nRistampa != "" %}
                 <td><b>Numero di Ristampa: </b>{{context.nRistampa}}</td>
                 {% endif %}
             </tr>
@@ -93,21 +95,21 @@
             </tr>
             <tr>
                 <!--Info traduttore-->
-                {% if context.NomeTr is not null %}
+                {% if context.NomeTr != "" %}
                 <td><b>Nome Traduttore: </b>{{context.NomeTr}}</td>
-                {% endif %} {% if context.CognomeTr is not null %}
+                {% endif %} {% if context.CognomeTr != "" %}
                 <td><b>Cognome Traduttore</b>{{context.CognomeTr}}</td>
-                {% endif %} {% if context.NazioneTr is not null %}
+                {% endif %} {% if context.NazioneTr != "" %}
                 <td><b>Nazione Traduttore: </b>{{context.NazioneTr}}</td>
                 {% endif %}
             </tr>
             <tr>
                 <!--Info curatore-->
-                {% if context.NomeCu is not null %}
+                {% if context.NomeCu != "" %}
                 <td><b>Nome Curatore: </b>{{context.NomeCu}}</td>
-                {% endif %} {% if context.CognomeCu is not null %}
+                {% endif %} {% if context.CognomeCu != "" %}
                 <td><b>Cognome Curatore: </b>{{context.CognomeCu}}</td>
-                {% endif %} {% if context.NazioneCu is not null %}
+                {% endif %} {% if context.NazioneCu != "" %}
                 <td><b>Nazione Curatore: </b>{{context.NazioneCu}}</td>
                 {% endif %}
             </tr>

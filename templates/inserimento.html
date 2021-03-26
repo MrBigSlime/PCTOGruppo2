@@ -1,47 +1,46 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div class="add-box">
     <h1>Nuovo Libro</h1>
     <form method="post" autocomplete="off" class="addForm-box">
-        
+
         {% csrf_token %}
 
         <table class="partOne">
             <tr>
                 <!-- Info autore -->
-                <td>{{form.NomeAu}}</td>
-                <td>{{form.CognomeAu}}</td>
-                <td>{{form.NazioneAu}}</td>
+                <span title="">
+                <td><span title="Nome Autore">{{form.NomeAu}}</span></td>
+                <td><span title="Cognome Autore">{{form.CognomeAu}}</span></td>
+                <td><span title="Nazionalità Autore">{{form.NazioneAu}}</span></td>
             </tr>
             <tr>
                 <!-- Postfazione -->
-                <td>{{form.NomePost}}</td>
-                <td>{{form.CognomePost}}</td>
-                <td>{{form.NazionePost}}</td>
+                <td><span title="Nome Autore Postfazione">{{form.NomePost}}</span></td>
+                <td><span title="Cognome Autore Postfazione">{{form.CognomePost}}</span></td>
+                <td><span title="Nazionalità Autore Postfazione">{{form.NazionePost}}</span></td>
             </tr>
             <tr>
                 <!-- Prefazione -->
-                <td>{{form.NomePre}}</td>
-                <td>{{form.CognomePre}}</td>
-                <td>{{form.NazionePre}}</td>
+                <td><span title="Nome Autore Prefazione">{{form.NomePre}}</span></td>
+                <td><span title="Cognome Autore Prefazione">{{form.CognomePre}}</span></td>
+                <td><span title="Nazionalità Autore Prefazione">{{form.NazionePre}}</span></td>
             </tr>
             <!-- Info Libro -->
             <tr>
-                <td>{{form.TitoloOrig}}</td>
-                <td>{{form.Titolo}}</td>
-                <td>{{form.Sottotitolo}}</td>
+                <td><span title="Titolo Originale">{{form.TitoloOrig}}</span></td>
+                <td><span title="Titolo">{{form.Titolo}}</span></td>
+                <td><span title="Sottotitolo">{{form.Sottotitolo}}</span></td>
             </tr>
             <tr>
-                <td>Genere: {{form.Genere}}</td>
+                <td><span title="Genere">Genere: {{form.Genere}}</span></td>
                 <td>Straniero: {{form.Straniero}}</td>
-                <td>Seriale: {{form.IsSerial}}</td>
+                <td>Seriale: {{form.IsSerial}} </td>
             </tr>
             <tr>
-                <td>{{form.NumPub}}</td>
-                <td>{{form.Edizione}}</td>
-                <td>{{form.AnnoEd}}</td>
+                <td><span title="Numero di Pubblicazione">{{form.NumPub}}</span></td>
+                <td><span title="Edizione">{{form.Edizione}}</span></td>
+                <td><span title="Anno Edizione">{{form.AnnoEd}}</span></td>
             </tr>
             <tr>
                 <td>Copertina Rigida: {{form.CopertinaRigida}}</td>
@@ -49,27 +48,27 @@
                 <td>Curatore: {{form.Curatore}}</td>
             </tr>
             <tr>
-                <td>{{form.NumPagine}}</td>
-                <td>{{form.NomeCo}}</td>
-                <td>{{form.nRistampa}}</td>
+                <td><span title="Numero di Pagine">{{form.NumPagine}}</span></td>
+                <td><span title="Nome Collana">{{form.NomeCo}}</span></td>
+                <td><span title="Numero di Ristampa">{{form.nRistampa}}</span></td>
             </tr>
             <tr>
                 <td>Ristampa: {{form.Ristampa}}</td>
             </tr>
             <tr>
-                <td>{{form.NomeCa}}</td>
-                <td>{{form.SedeCa}}</td>
-                <td>{{form.ISBN_ISSN}}</td>
+                <td><span title="Nome Casa Editrice">{{form.NomeCa}}</span></td>
+                <td><span title="Sede Casa Editrice">{{form.SedeCa}}</span></td>
+                <td><span title="ISBN/ISSN">{{form.ISBN_ISSN}}</span></td>
             </tr>
             <tr>
-                <td>{{form.NomeTr}}</td>
-                <td>{{form.CognomeTr}}</td>
-                <td>{{form.NazioneTr}}</td>
+                <td><span title="Nome Traduttore">{{form.NomeTr}}</span></td>
+                <td><span title="Cognome Traduttore">{{form.CognomeTr}}</span></td>
+                <td><span title="Nazionalità Traduttore">{{form.NazioneTr}}</span></td>
             </tr>
             <tr>
-                <td>{{form.NomeCu}}</td>
-                <td>{{form.CognomeCu}}</td>
-                <td>{{form.NazioneCu}}</td>
+                <td><span title="Nome Critico">{{form.NomeCu}}</span></td>
+                <td><span title="Cognome Critico">{{form.CognomeCu}}</span></td>
+                <td><span title="Nazionalità Critico">{{form.NazioneCu}}</span></td>
             </tr>
         </table>
 
