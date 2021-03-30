@@ -1,11 +1,13 @@
 {% extends 'base.html' %} 
 
+{% load static %}
+
 {% block content %}
 
 <div class="contenuto">
     {% for record in context_list %}
     <div class="view-detail">
-        <img src="http://covers.openlibrary.org/b/isbn/9788884516108-M.jpg">
+        <img src="http://covers.openlibrary.org/b/isbn/{{record.ISBN_ISSN}}-M.jpg">
         <div class="info-detail">
             <ul>
                 <li style="font-weight: 500; font-size: 20px;">{{record.Titolo}}</li>

@@ -80,11 +80,12 @@ class objlist():
         self.CognomeCu = CognomeCu
         self.NazioneCu = NazioneCu
 
-    def inserimentoHome(self,Titolo, Autore, Genere,Cod):
+    def inserimentoHome(self,Titolo, Autore, Genere,Cod, ISBN):
         self.Titolo = Titolo
         self.Autore = Autore
         self.Genere = Genere
         self.CodLibro = Cod
+        self.ISBN_ISSN = ISBN
         
 def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di libro, dati=dizionario con i dati da inserire, id=identificatore tipo di libro 
     
@@ -715,15 +716,15 @@ def HomePageView(request):
     if request.method == 'GET':
         context=[]
         #visualizza campi essenziale per libri non seriali
-        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
+        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere,N.ISBN FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro,record.ISBN)
             #print(elemento.CodLibro)
             context.append(elemento)
         #visualizza campi essenziali per libri seriali
         for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro," ")
             #print(elemento.CodLibro)
             context.append(elemento)
 

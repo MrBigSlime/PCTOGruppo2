@@ -118,7 +118,7 @@ a {
 
 .contenuto {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .view-detail {
@@ -129,6 +129,8 @@ a {
 }
 .view-detail img {
     justify-self: center;
+    width: 180px; 
+    height: 282px;
 }
 
 .info-detail ul {
