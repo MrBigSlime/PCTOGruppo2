@@ -740,6 +740,7 @@ def HomePageView(request):
         
         return render(request, 'base.html',{'form':form,'context_list':context,'ricerca':ricerca}) 
     else:
+        ricerca(request)
         print("Errore")
 
 def ricerca(request):
