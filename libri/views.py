@@ -86,6 +86,34 @@ class objlist():
         self.Genere = Genere
         self.CodLibro = Cod
         
+def ricerca(request):
+
+    if request.method == 'POST':
+        form=ricercaform(request.POST)
+        dato=request.POST.get("Campo")
+        context=[]
+        
+        for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore AND S.Titolo=%s OR S.Genere=%s",[dato,dato]):
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
+            context.append(elemento)
+        
+        for record in NonSeriale.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore AND S.Titolo=%s OR S.Genere=%s",[dato,dato]):
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
+            context.append(elemento)
+        
+        datos=dato.split(' ')
+        for record in TradAutCur.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore AND T.NomeTr=%s OR T.CognomeTr=%s OR T.NomeTr=%s OR T.CognomeTr=%s",[dato[0],dato[1],dato[1],dato[0]]):
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            print(elemento.CodLibro)
+            context.append(elemento)   
+
+        return render(request, 'base.html',{'context_list':context}) 
+        
 def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di libro, dati=dizionario con i dati da inserire, id=identificatore tipo di libro 
     
     if id=="N":
@@ -743,33 +771,7 @@ def HomePageView(request):
         ricerca(request)
         print("Errore")
 
-def ricerca(request):
 
-    if request.method == 'POST':
-        form=ricercaform(request.POST)
-        dato=request.POST.get("Campo")
-        context=[]
-        
-        for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore AND S.Titolo=%s OR S.Genere=%s",[dato,dato]):
-            elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
-            print(elemento.CodLibro)
-            context.append(elemento)
-        
-        for record in NonSeriale.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore AND S.Titolo=%s OR S.Genere=%s",[dato,dato]):
-            elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
-            print(elemento.CodLibro)
-            context.append(elemento)
-        
-        datos=dato.split(' ')
-        for record in TradAutCur.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore AND T.NomeTr=%s OR T.CognomeTr=%s OR T.NomeTr=%s OR T.CognomeTr=%s",[dato[0],dato[1],dato[1],dato[0]]):
-            elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
-            print(elemento.CodLibro)
-            context.append(elemento)   
-
-        return render(request, 'base.html',{'context_list':context}) 
 
 
 
