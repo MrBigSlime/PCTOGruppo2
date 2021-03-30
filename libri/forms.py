@@ -76,16 +76,16 @@ class InserimentoLibro(forms.Form):
 
 class UserRegistrationForm(forms.Form):
 
-    Username = forms.CharField(label="Username",max_length = 256)
-    NomeU = forms.CharField(label="NomeUtente",max_length = 256)
-    CognomeU = forms.CharField(label="CognomeUtente",max_length = 256)
-    Password = forms.CharField(label="Password",max_length = 256)
+    Username = forms.CharField(label="Username", max_length = 256)
+    NomeU = forms.CharField(label="NomeUtente", max_length = 256)
+    CognomeU = forms.CharField(label="CognomeUtente", max_length = 256)
+    Password = forms.CharField(label="Password", max_length = 256)
 
 class UserLoginForm(forms.Form):
-    Username = forms.CharField(label="Username",max_length = 256)
-    Password = forms.CharField(label="Password",max_length = 256)
+    Username = forms.CharField(label="Username", max_length = 256, widget=forms.TextInput(attrs={'class' : 'logclass', 'placeholder':'Username'}))
+    Password = forms.CharField(label="Password", max_length = 256, widget=forms.TextInput(attrs={'class' : 'logclass', 'placeholder':'Password'}))
 
 class DetailForm(forms.Form):
     QLibri = forms.CharField(label="QLibri", max_length=256)
-class DelSingLib(froms.Form):
+class DelSingLib(forms.Form):
     Numero = forms.CharField(label="CodLib", max_length=256)

@@ -9,4 +9,5 @@ urlpatterns = [
     path('mod/<cod>/', views.mod_libro, name= 'modifica_libro'),
     path('del/<Cod>/', views.del_libro, name='cancella'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('login/',views.loginView, name='login'),
 ]

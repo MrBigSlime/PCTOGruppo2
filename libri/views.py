@@ -788,7 +788,7 @@ def loginView(request):
     if request.method == 'GET':
 
         form = UserLoginForm()
-        return render(request, '#',{'form':form})          
+        return render(request, 'login.html',{'form':form})          
 
     if request.method == 'POST':
         form = UserLoginForm(request.POST)

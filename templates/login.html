@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Log in</title>
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <link rel="stylesheet" href="{% static './css/base_style.css' %}">
+    <link rel="stylesheet" href="{% static './css/ins_style.css' %}">
+</head>
+<!-- /accounts/login/ -->
+
+<body>
+    {% block content %}
+    <div class="logIn">
+        <h2>LOGIN</h2>
+        <form method="post" autocomplete="off" class="addForm-box">
+            {% csrf_token %} {{form.Username}} {{form.Password}}
+            <br><button type="submit">LOGIN</button>
+        </form>
+    </div>
+    {% endblock content %}
+
+</body>
+
+</html>

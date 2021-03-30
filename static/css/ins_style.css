@@ -7,6 +7,8 @@ body {
     background: url('/static/ur.jpg');
     background-repeat: no-repeat;
     background-size: 100%;*/
+    background: rgb(174, 190, 238);
+    background: radial-gradient(circle, rgba(174, 190, 238, 1) 0%, rgba(148, 220, 233, 1) 100%);
 }
 
 a {
@@ -51,16 +53,21 @@ td {
 .logIn {
     display: flex;
     align-items: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     margin: auto;
     text-align: center;
     flex-direction: column;
-    border: 2px solid black;
     border-radius: 4px;
     padding: 40px;
     width: 300px;
     height: 300px;
-    background-color: rgba(40, 42, 47, 0.692);
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.735);
+    background: #191919;
+    color: white;
 }
 
 button {
@@ -69,10 +76,28 @@ button {
     align-self: center;
     text-align: center;
     border: none;
-    background-color: rgb(155, 117, 91);
+    background-color: #3498db;
     border-radius: 5px 5px;
     height: 30px;
     font-weight: 600;
     text-transform: uppercase;
     cursor: pointer;
+}
+
+.logclass {
+    border-radius: 24px;
+    padding: 6px;
+    /*dimensione delle caselle di input*/
+    border: 2px solid #3498db;
+    background: transparent;
+    margin: 8px;
+    /*spazio che separa le caselle di input*/
+    text-align: center;
+    color: white;
+}
+
+h2 {
+    /*scritta login*/
+    padding: 15px;
+    font-size: 29px;
 }
