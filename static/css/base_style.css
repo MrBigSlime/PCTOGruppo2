@@ -127,6 +127,9 @@ a {
     display: grid;
     grid-template-columns: 1fr;
 }
+.view-detail img {
+    justify-self: center;
+}
 
 .info-detail ul {
     list-style: none;

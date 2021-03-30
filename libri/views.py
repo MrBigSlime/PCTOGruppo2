@@ -728,7 +728,7 @@ def HomePageView(request):
             context.append(elemento)
 
 
-        return render(request, 'base.html',{'context_list':context}) 
+        return render(request, 'index.html',{'context_list':context}) 
     else:
         print("Errore")
 
