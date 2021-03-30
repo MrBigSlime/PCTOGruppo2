@@ -765,6 +765,12 @@ def HomePageView(request):
         print("Errore")
 
 def Register(request):
+
+    if request.method == 'GET':
+        form = UserRegistrationForm()
+
+        return render(request,'#',{'form':form})
+ 
     if request.method =='POST':
     
         form = UserRegistrationForm(request.POST)
@@ -803,6 +809,7 @@ def logoutview(request):
         
 def Ghet(request, Cod):
     if request.method == 'GET':
+        cursor = connection.cursor()
         form = DetailForm()
         if Cod[0]=='N':
             query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale=%s"
@@ -815,6 +822,7 @@ def Ghet(request, Cod):
         return numero_libri
 
     elif request.method == 'POST':
+ 
         form = DetailForm(request.POST)
         if form.is_valid():
             if Cod[0]=='N':
