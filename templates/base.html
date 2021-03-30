@@ -19,6 +19,8 @@
             <a href="{% url 'base' %}">HOME</a>
             <br><br>
             <a href="{% url 'nuovo_libro' %}">NUOVO LIBRO</a>
+            {% csrf_token %}
+            <li>{{form.Campo}}</li>
             <br><br>
         </div>
         <div class="cp">All Right Reserverd</div>
