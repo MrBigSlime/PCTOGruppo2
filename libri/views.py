@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from django import forms
 from django.db import connection
@@ -827,3 +828,44 @@ def PrenotazioneView(request):
         cursor.execute(query,dati)
         cursor.close()
 
+def UtentiIn(request):
+
+    if request.method == 'GET':
+        form=UtentePForm()
+        return render(request, 'base.html',{"form":form})     
+
+    if request.method == 'POST':
+        NomeUt=request.POST.get("NomeU")
+        CognomeUt=request.POST.get("CognomeU")
+        Email=request.POST.get("Email")
+        NumeroTelefono=request.POST.get("NumTelefono")
+        dati={"NomeUt":NomeUt,"CognomeUt":CognomeUt,"Email":Email,"NumeroTelefono":NumeroTelefono}
+        cod=inspector(dati,"U")
+        return cod
+        
+def inData(request):
+    cursor = connection.cursor()
+    if request.method == 'POST':
+        form = DataForm(request.POST)
+        if form.is_valid():
+            DataInizio = request.POST.get("DataInizio")
+            DataFine = request.POST.get("DataFine")
+            query = "INSERT INTO libri_prestito(DataInizio, DataFine) VALUES(%s, %s)"
+            cursor.execute(query,[DataInizio, DataFine,])
+            cursor.close()
+        else:
+            print(form.errors)
+            return HttpResponseRedirect(reverse('#errore'))
+
+def CodLibro(request):
+    cursor = connection.cursor()
+    if request.method == 'POST':
+        form = CodiceForm(request.POST)
+        if form.is_valid():
+            IDLibro = request.POST.get("IDLibro")
+            query = "INSERT INTO libri_prestito(IDLibro) VALUES(%s)"
+            cursor.execute(query,[IDLibro,])
+            cursor.close()
+        else:
+            print(form.errors)
+            return HttpResponseRedirect(reverse('#errore'))
