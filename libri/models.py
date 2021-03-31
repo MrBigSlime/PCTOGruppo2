@@ -79,7 +79,8 @@ class Utenti(models.Model):
     CodUser = models.CharField(max_length = 4, primary_key = True)
     NomeUt = models.CharField(max_length = 256)
     CognomeUt = models.CharField(max_length = 256)
-    NazioneUt = models.CharField(max_length = 256)
+    Email = models.CharField(max_length = 256)
+    NumTelefono = models.CharField(max_length = 10)
 
 class Scaffale(models.Model):
     CodScaffale = models.CharField(max_length = 4, primary_key = True)
