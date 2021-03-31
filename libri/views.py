@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from django import forms
 from django.db import connection
@@ -209,7 +208,10 @@ def in_PostfazionePre(dati):    #Funzione per l'inserimento delle chiavi alla ta
 
 def in_Utenti(dati):
     query="INSERT INTO libri_Utenti VALUES(%s,%s,%s,%s,%s)"
-    cod="U"+str(randrange(1000))                                                                                            #CHECK
+    while True:
+        cod="U"+str(randrange(1000))                                                                                            #CHECK
+        if check(cod):
+            break                                                                                           #CHECK
     cursor = connection.cursor()
     cursor.execute(query,[cod,dati["CognomeUt"],dati["NomeUt"],dati["Email"],dati["NumTelefono"]])
     return cod
@@ -818,7 +820,11 @@ def PrenotazioneView(request):
 
         #POST DI TUTTE LE FUNZ PER PRENOTAZIONE
         codU=UtentiIn(request)
-    
+        while True:
+            cod = "R"+str(randrange(1000))
+            if check(cod):
+                break
+
         cod = "R"+str(randrange(1000))
 
         query="INSERT INTO libri_Prestito VALUES(%s,%s,%s,%s,%s,%s)"                                                        #CHECK
