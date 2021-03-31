@@ -205,11 +205,19 @@ def in_PostfazionePre(dati):    #Funzione per l'inserimento delle chiavi alla ta
         return cod
     else:
         return ris[0]
-        
 
+def in_Utenti(dati):
+    query="INSERT INTO libri_Utenti VALUES(%s,%s,%s,%s,%s)"
+    cod="U"+str(randrange(1000))                                                                                            #CHECK
+    cursor = connection.cursor()
+    cursor.execute(query,[cod,dati["CognomeUt"],dati["NomeUt"],dati["Email"],dati["NumTelefono"]])
+    return cod
 
 def inspector(dati,identificatore):                                 #funzione che gestrisce il controllo della esistenza di un dato nel database
 
+    if(identificatore=="U"):
+        query="SELECT U.CodUser FROM libri_Utenti U WHERE U.NomeUt=%s AND U.CognomeUt=%s AND U.Email=%s AND U.NumTelefono=%s "
+        dato=[dati["NomeUt"],dati["Cognome"],dati["Email"],dati["NumTelefono"]]
     if(identificatore=="A"):            
         query="SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.NazioneTr=%s"
         dato=[dati["NomeTr"],dati["CognomeTr"],dati["NazioneTr"]]
@@ -233,6 +241,8 @@ def inspector(dati,identificatore):                                 #funzione ch
     
     if ris is None:
 
+        if(identificatore=="U"):
+            cod=in_Utenti(dati)
         if(identificatore=="A"):
             cod=in_TradAutCur(dati)
 
@@ -357,10 +367,7 @@ def inserimento(request):
             
             if identificatore=='off':
                 query="INSERT INTO libri_NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                while True:
-                    cod="N"+str(randrange(1000))
-                    if check(cod):
-                        break
+                cod="N"+str(randrange(1000))
                 Dati=[cod,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodCri,CodAutore,CodCasaEd,CodCollane,CodPost,CodTrad]
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
@@ -368,10 +375,7 @@ def inserimento(request):
                                                                                                         #inserimenti in base alla tabella 
             if identificatore=='on':
                 query="INSERT INTO libri_Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                while True:
-                    cod="S"+str(randrange(1000))
-                    if check(cod):
-                        break
+                cod="S"+str(randrange(1000))
                 Dati=[cod,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodCri,CodAutore,CodCasaEd,CodCollane,CodPost,CodTrad]
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
@@ -785,4 +789,41 @@ def HomePageView(request):
         return render(request, 'base.html',{'context_list':context}) 
     else:
         print("Errore")
+
+def UtentiIn(request):
+
+    if request.method == 'GET':
+        form=UtentePForm()
+        return render(request, 'base.html',{"form":form})     
+
+    if request.method == 'POST':
+        NomeUt=request.POST.get("NomeU")
+        CognomeUt=request.POST.get("CognomeU")
+        Email=request.POST.get("Email")
+        NumeroTelefono=request.POST.get("NumTelefono")
+        dati={"NomeUt":NomeUt,"CognomeUt":CognomeUt,"Email":Email,"NumeroTelefono":NumeroTelefono}
+        cod=inspector(dati,"U")
+        return cod
+
+def PrenotazioneView(request):
+
+    if request.method == 'GET':
+
+        #GET DI TUTTE LE FUNZ PER PRENOTAZIONE
+        UtentiIn(request)
+
+    if request.method == 'POST':
+        ritardo=False
+
+        #POST DI TUTTE LE FUNZ PER PRENOTAZIONE
+        codU=UtentiIn(request)
+    
+        cod = "R"+str(randrange(1000))
+
+        query="INSERT INTO libri_Prestito VALUES(%s,%s,%s,%s,%s,%s)"                                                        #CHECK
+        dati=[cod,datain,datafin,ritardo,idlib,codU]
+
+        cursor=cursor.connection()
+        cursor.execute(query,dati)
+        cursor.close()
 

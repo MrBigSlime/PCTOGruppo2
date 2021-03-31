@@ -73,3 +73,9 @@ class InserimentoLibro(forms.Form):
     #Scaffale
     #CodScaffale = forms.CharField(label="Codice Scaffale", max_length=4, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     #CatScaffale = forms.CharField(label="Categoria Scaffale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
+    
+class UtentePForm(forms.Form):
+    NomeU = forms.CharField(label="NomeU",max_length = 256)
+    CognomeU = forms.CharField(label="CognomeU",max_length = 256)
+    Email = forms.CharField(label="Email",max_length = 256,required=False)
+    NumTelefono = forms.CharField(label="NumTelefono",max_length = 10)
