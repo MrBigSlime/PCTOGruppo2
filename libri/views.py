@@ -100,6 +100,10 @@ def check(cod):
         query = "SELECT CodCollane FROM libri_Collane WHERE CodCollane=%s"
     if cod[0]=='E':
         query = "SELECT CodCasaEd FROM libri_CasaEditrice WHERE CodCasaEd=%s"
+    if cod[0]=='U':
+        query = "SELECT CodUser FROM libri_Utenti WHERE CodUser=%s"
+    if cod[0]=='P':
+        query = "SELECT CodPrestito FROM libri_Prestito WHERE CodPrestito=%s"
 
     cursor = connection.cursor()
     cursor.execute(query,cod)
