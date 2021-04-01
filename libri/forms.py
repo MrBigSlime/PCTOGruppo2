@@ -85,4 +85,4 @@ class DataForm(forms.Form):
     DataFine = forms.DateField(label = "Data Fine", widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Fine*'}))
 
 class CodiceForm(forms.Form):
-    IDLibro = forms.CharField(label = "IDLibro", max_length = 4,  widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'IDLibro')
+    IDLibro = forms.CharField(label = "IDLibro", max_length = 4,  widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'IDLibro'}))
