@@ -769,7 +769,7 @@ def Register(request):
     if request.method == 'GET':
         form = UserRegistrationForm()
 
-        return render(request,'#',{'form':form})
+        return render(request,'register.html',{'form':form})
  
     if request.method =='POST':
     

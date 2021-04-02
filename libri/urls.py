@@ -10,4 +10,5 @@ urlpatterns = [
     path('del/<Cod>/', views.del_libro, name='cancella'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('login/',views.loginView, name='login'),
+    path('register/',views.Register, name='register'),
 ]
