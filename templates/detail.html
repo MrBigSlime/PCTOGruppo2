@@ -1,96 +1,99 @@
 {% extends 'base.html' %} 
 
 {% block content %}
-        <table class="partOne">
-            <!--Table con i dati del libro-->
-            <tr>
-                <!-- Info autore -->
-                <td><b>Nome Autore:</b> {{context.NomeAu}}</td>
-                <td><b>Cognome Autore:</b> {{context.CognomeAu}}</td>
-                <td><b>Nazione Autore:</b> {{context.NazioneAu}}</td>
-            </tr>
-            <tr>
-                <!-- Postfazione -->
-                {% if context.NomePost is not null %}
-                <td><b>Nome Autore Postfazione: </b>{{context.NomePost}}</td>
-                {% endif %} {% if context.CognomePost is not null %}
-                <td><b>Cognome Autore Postfazione: </b>{{context.CognomePost}}</td>
-                {% endif %} {% if context.NazionePost is not null %}
-                <td><b>Nazione Autore Postfazione: </b>{{context.NazionePost}}</td>
-                {% endif %}
-            </tr>
-            <tr>
-                <!-- Prefazione -->
-                {% if context.NomePre is not null %}
-                <td><b>Nome Autore Prefazione: </b>{{context.NomePre}}</td>
-                {% endif %} {% if context.CognomePre is not null %}
-                <td><b>Cognome Autore Prefazione: </b>{{context.CognomePre}}</td>
-                {% endif %} {% if context.NazionePre is not null %}
-                <td><b>Nazione Autore Prefazione: </b>{{context.NazionePre}}</td>
-                {% endif %}
-            </tr>
-            <!-- Info Libro -->
-            <tr>
-                <td><b>Titolo Originale:</b> {{context.TitoloOrig}}</td>
-                <td><b>Titolo: </b>{{context.Titolo}}</td>
-                {% if context.Sottotitolo != "" %}
-                <td><b>Sottotitolo: </b>{{context.Sottotitolo}}</td>
-                {% endif %}
-            </tr>
-            <tr>
-                <td><b>Genere:</b> {{context.Genere}}</td>
-                <td><b>Straniero:</b> {{context.Straniero}}</td>
-                {% if ide != "" %}
-                <td> {{ide}}</td>
-                {% endif %}
-            </tr>
-            <tr>
-                <td><b>Numero Pubblicazione: </b>{{context.NumPub}}</td>
-                <td><b>edizione: </b>{{context.Edizione}}</td>
-                <td><b>Anno Edizione: </b>{{context.AnnoEd}}</td>
-            </tr>
-            <tr>
-                <td><b>Copertina Rigida:</b> {{context.CopertinaRigida}}</td>
-                <td><b>Illustrazioni:</b> {{context.Illustrazioni}}</td>
-                <td><b>Curatore:</b> {{context.Curatore}}</td>
-            </tr>
-            <tr>
-                <td><b>Numero di Pagine: </b>{{context.NumPagine}}</td>
-                {% if context.NomeCo != "" %}
-                <td><b>Nome Collana: </b>{{context.NomeCo}}</td>
-                {% endif %} {% if context.nRistampa != "" %}
-                <td><b>Numero di Ristampa: </b>{{context.nRistampa}}</td>
-                {% endif %}
-            </tr>
-            <tr>
-                <td><b>Ristampa:</b> {{context.Ristampa}}</td>
-            </tr>
-            <tr>
-                <td><b>Casa Editrice: </b>{{context.NomeCa}}</td>
-                <td><b>Sede Casa Editrice: </b>{{context.Sede}}</td>
-                <td><b>ISBN/ISSN: </b>{{context.ISBN_ISSN}}</td>
-            </tr>
-            <tr>
-                <!--Info traduttore-->
-                {% if context.NomeTr != "" %}
-                <td><b>Nome Traduttore: </b>{{context.NomeTr}}</td>
-                {% endif %} {% if context.CognomeTr != "" %}
-                <td><b>Cognome Traduttore</b>{{context.CognomeTr}}</td>
-                {% endif %} {% if context.NazioneTr != "" %}
-                <td><b>Nazione Traduttore: </b>{{context.NazioneTr}}</td>
-                {% endif %}
-            </tr>
-            <tr>
-                <!--Info curatore-->
-                {% if context.NomeCu != "" %}
-                <td><b>Nome Curatore: </b>{{context.NomeCu}}</td>
-                {% endif %} {% if context.CognomeCu != "" %}
-                <td><b>Cognome Curatore: </b>{{context.CognomeCu}}</td>
-                {% endif %} {% if context.NazioneCu != "" %}
-                <td><b>Nazione Curatore: </b>{{context.NazioneCu}}</td>
-                {% endif %}
-            </tr>
-        </table>
+       
+<div class="dettaglio-box">
+    <img src="http://covers.openlibrary.org/b/isbn/{{context.ISBN_ISSN}}-L.jpg">
+
+    <div class="informazioni-box">
+        <p><b>Nome Autore:</b> {{context.NomeAu}}</p>
+        <p><b>Cognome Autore:</b> {{context.CognomeAu}}</p>
+        <p><b>Nazione Autore:</b> {{context.NazioneAu}}</p>
+
+        {% if context.NomePost is not null %}
+        <p><b>Nome Autore Postfazione: </b>{{context.NomePost}}</p>
+        {% endif %} {% if context.CognomePost is not null %}
+        <p><b>Cognome Autore Postfazione: </b>{{context.CognomePost}}</p>
+        {% endif %} {% if context.NazionePost is not null %}
+        <p><b>Nazione Autore Postfazione: </b>{{context.NazionePost}}</p>
+        {% endif %}
+
+        {% if context.NomePre is not null %}
+        <p><b>Nome Autore Prefazione: </b>{{context.NomePre}}</p>
+        {% endif %} {% if context.CognomePre is not null %}
+        <p><b>Cognome Autore Prefazione: </b>{{context.CognomePre}}</p>
+        {% endif %} {% if context.NazionePre is not null %}
+        <p><b>Nazione Autore Prefazione: </b>{{context.NazionePre}}</p>
+        {% endif %}
+
+        <p><b>Titolo Originale:</b> {{context.TitoloOrig}}</p>
+        <p><b>Titolo: </b>{{context.Titolo}}</p>
+        {% if context.Sottotitolo != "" %}
+        <p><b>Sottotitolo: </b>{{context.Sottotitolo}}</p>
+        {% endif %}
+
+        <p><b>Genere:</b> {{context.Genere}}</p>
+        {% if context.Straniero is False %}
+        <p><b>Straniero:</b> NO</p>
+        {% else %}
+        <p><b>Straniero:</b> SI</p>
+        {% endif %}
+
+
+        <p><b>Numero Pubblicazione: </b>{{context.NumPub}}</p>
+        <p><b>Edizione: </b>{{context.Edizione}}</p>
+        <p><b>Anno Edizione: </b>{{context.AnnoEd}}</p>
+
+        {% if context.CopertinaRigida is False %}
+        <p><b>Copertina Rigida:</b> NO</p>
+        {% else %}
+        <p><b>Copertina Rigida:</b> SI</p>
+        {% endif %}
+        {% if context.Illustrazioni is False %}
+        <p><b>Illustrazioni:</b> NO</p>
+        {% else %}
+        <p><b>Illustrazioni:</b> SI</p>
+        {% endif %}
+        {% if context.Curatore is False %}
+        <p><b>Curatore:</b> NO</p>
+        {% else %}
+        <p><b>Curatore:</b> SI</p>
+        {% endif %}
+
+        <p><b>Numero di Pagine: </b>{{context.NumPagine}}</p>
+        {% if context.NomeCo != "" %}
+        <p><b>Nome Collana: </b>{{context.NomeCo}}</p>
+        {% endif %} {% if context.nRistampa != "" %}
+        <p><b>Numero di Ristampa: </b>{{context.nRistampa}}</p>
+        {% endif %}
+
+        {% if context.Ristampa is False %}
+        <p><b>Ristampa:</b> NO</p>
+        {% else %}
+        <p><b>Ristampa:</b> SI</p>
+        {% endif %}
+
+        <p><b>Casa Editrice: </b>{{context.NomeCa}}</p>
+        <p><b>Sede Casa Editrice: </b>{{context.Sede}}</p>
+        <p><b>ISBN/ISSN: </b>{{context.ISBN_ISSN}}</p>
+
+        {% if context.NomeTr != "" %}
+        <p><b>Nome Traduttore: </b>{{context.NomeTr}}</p>
+        {% endif %} {% if context.CognomeTr != "" %}
+        <p><b>Cognome Traduttore</b>{{context.CognomeTr}}</p>
+        {% endif %} {% if context.NazioneTr != "" %}
+        <p><b>Nazione Traduttore: </b>{{context.NazioneTr}}</p>
+        {% endif %}
+
+        {% if context.NomeCu != "" %}
+        <p><b>Nome Curatore: </b>{{context.NomeCu}}</p>
+        {% endif %} {% if context.CognomeCu != "" %}
+        <p><b>Cognome Curatore: </b>{{context.CognomeCu}}</p>
+        {% endif %} {% if context.NazioneCu != "" %}
+        <p><b>Nazione Curatore: </b>{{context.NazioneCu}}</p>
+        {% endif %}
     </div>
+
+</div>
 
 {% endblock content %}
