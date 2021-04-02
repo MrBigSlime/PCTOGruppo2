@@ -783,8 +783,11 @@ def Register(request):
             CognomeU = request.POST.get("CognomeU")
             Password = request.POST.get("Password")
 
-            user = User.objects.create_user(Username, '', Password, CognomeU, NomeU)
+            user = User.objects.create_user(Username,'',Password)
+            user.last_name = CognomeU
+            user.first_name = NomeU
             user.save()
+            return render(request,'base.html')
         else:
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))
@@ -803,6 +806,8 @@ def loginView(request):
         user = authenticate(request, username=user, password=password)
         if user is not None:
             login(request, user)
+            return render(request,'base.html')
+        return render(request, 'login.html',{'form':form}) 
 
 def logoutview(request):
     logout(request)
