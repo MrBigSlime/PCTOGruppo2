@@ -80,54 +80,22 @@ class objlist():
         self.CognomeCu = CognomeCu
         self.NazioneCu = NazioneCu
 
-    def inserimentoHome(self,Titolo, Autore, Genere,Cod):
+    def inserimentoHome(self,Titolo, Autore, Genere,Cod, ISBN):
         self.Titolo = Titolo
         self.Autore = Autore
         self.Genere = Genere
         self.CodLibro = Cod
+        self.ISBN_ISSN = ISBN
         
-
-def check(cod):
-    if cod[0]=='N':
-        query = "SELECT CodLibro FROM libri_NonSeriale WHERE CodLibro=%s"
-    if cod[0]=='S':
-        query = "SELECT CodLibro FROM libri_Seriale WHERE CodLibri=%s"
-    if cod[0]=='A':
-        query = "SELECT CodAutore FROM libri_TradAutCur WHERE CodAutore=%s"
-    if cod[0]=='P':
-        query = "SELECT CodPostfazione FROM libri_PostfazionePre WHERE CodPostfazione=%s"
-    if cod[0]=='C':
-        query = "SELECT CodCollane FROM libri_Collane WHERE CodCollane=%s"
-    if cod[0]=='E':
-        query = "SELECT CodCasaEd FROM libri_CasaEditrice WHERE CodCasaEd=%s"
-    if cod[0]=='U':
-        query = "SELECT CodUser FROM libri_Utenti WHERE CodUser=%s"
-    if cod[0]=='P':
-        query = "SELECT CodPrestito FROM libri_Prestito WHERE CodPrestito=%s"
-
-    cursor = connection.cursor()
-    cursor.execute(query,cod)
-    ris=cursor.fetchone()
-    if ris is None:
-        return True
-    else:
-        return False
-
 def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di libro, dati=dizionario con i dati da inserire, id=identificatore tipo di libro 
-
+    
     if id=="N":
         query="INSERT INTO libri_NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"          #controllo del tipo di libro che si vuole inserire 
-        while True:
-            cod="N"+str(randrange(1000))
-            if check(cod):
-                break
+        cod="N"+str(randrange(1000))
 
     else:
         query="INSERT INTO libri_Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"             
-        while True:
-            cod="S"+str(randrange(1000))
-            if check(cod):
-                break
+        cod="S"+str(randrange(1000))
 
     Dati=[cod,dati['Straniero'],dati['TitoloOrig'],dati['Titolo'],dati['Sottotitolo'],dati['AnnoEd'],dati['Illustrazioni'],dati['ISBN_ISSN'],dati['Genere'],dati['NumPub'],dati['CopertinaRigida'],dati['Ristampa'],dati['nRistampa'],dati['Edizione'],dati['NumPagine'],dati['Curatore'],dati['CodCri'],dati['CodAutore'],dati['CodCasaEd'],dati['CodCollane'],dati['CodPost'],dati['CodTrad']]
     cursor = connection.cursor()        #Apertura connessione al db
@@ -137,21 +105,14 @@ def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di
 def in_TradAutCur(dati):
     
     query="INSERT INTO libri_TradAutCur VALUES(%s,%s,%s,%s)"
-    while True:
-        cod="A"+str(randrange(1000))
-        if check(cod):
-            break
+    cod="A"+str(randrange(1000))
     cursor = connection.cursor()
     cursor.execute(query,[cod,dati["NazioneTr"],dati["CognomeTr"],dati["NomeTr"]])
     return cod
 
 def in_Collana(dati):
     query="INSERT INTO libri_Collane VALUES(%s, %s)"                #inserimento nuova collana
-
-    while True:
-        cod = "C"+str(randrange(1000))
-        if check(cod):
-            break
+    cod = "C"+str(randrange(1000))
     cursor = connection.cursor()
     cursor.execute(query,[cod, dati["NomeCo"]])
     cursor.close()
@@ -159,12 +120,7 @@ def in_Collana(dati):
 
 def in_CasaEd(dati):
     query="INSERT INTO libri_CasaEditrice VALUES(%s, %s, %s)"           #inseriment nuova CasaEditrice
-
-    while True:
-        cod = "E"+str(randrange(1000))     
-        if check(cod):
-            break                     
-
+    cod = "E"+str(randrange(1000))                          
     cursor = connection.cursor()
     cursor.execute(query,[cod, dati["Sede"], dati["NomeCa"],])
     cursor.close()
@@ -196,10 +152,7 @@ def in_PostfazionePre(dati):    #Funzione per l'inserimento delle chiavi alla ta
     ris=cursor.fetchone()               
     if ris is None:             #Check se la coppia di codici autore è gia esistente nel db            
         query="INSERT INTO libri_PostfazionePre VALUES(%s,%s,%s)"
-        while True:
-            cod="P"+str(randrange(1000))
-            if check(cod):
-                break
+        cod="P"+str(randrange(1000))
         cursor.execute(query,[cod,autPostfazione,autPrefazione])
         cursor.close()
         return cod
@@ -357,10 +310,7 @@ def inserimento(request):
             
             if identificatore=='off':
                 query="INSERT INTO libri_NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                while True:
-                    cod="N"+str(randrange(1000))
-                    if check(cod):
-                        break
+                cod="N"+str(randrange(1000))
                 Dati=[cod,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodCri,CodAutore,CodCasaEd,CodCollane,CodPost,CodTrad]
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
@@ -368,10 +318,7 @@ def inserimento(request):
                                                                                                         #inserimenti in base alla tabella 
             if identificatore=='on':
                 query="INSERT INTO libri_Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                while True:
-                    cod="S"+str(randrange(1000))
-                    if check(cod):
-                        break
+                cod="S"+str(randrange(1000))
                 Dati=[cod,Straniero,TitoloOrig,Titolo,Sottotitolo,AnnoEd,Illustrazioni,ISBN_ISSN,Genere,NumPub,CopertinaRigida,Ristampa,nRistampa,Edizione,NumPagine,Curatore,CodCri,CodAutore,CodCasaEd,CodCollane,CodPost,CodTrad]
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
@@ -769,20 +716,20 @@ def HomePageView(request):
     if request.method == 'GET':
         context=[]
         #visualizza campi essenziale per libri non seriali
-        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
+        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere,N.ISBN FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro,record.ISBN)
             #print(elemento.CodLibro)
             context.append(elemento)
         #visualizza campi essenziali per libri seriali
         for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro," ")
             #print(elemento.CodLibro)
             context.append(elemento)
 
 
-        return render(request, 'base.html',{'context_list':context}) 
+        return render(request, 'index.html',{'context_list':context}) 
     else:
         print("Errore")
 
