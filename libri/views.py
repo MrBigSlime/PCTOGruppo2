@@ -693,6 +693,14 @@ def LibroDetailView(request,Cod):
 
     if request.method == 'GET':
             #controllo Seriale o Non Seriale
+            invDef(Cod)
+            cursor = connection.cursor()
+            cursor.execute("SELECT COUNT(S.CodLibro) FROM libri_SingoliLibri S")
+            totale=cursor.fetchone()
+            form = DetailForm(initial={"QLibri":totale[0]})
+            print(totale)
+            cursor.close()
+
             if Cod[0]=='N':
                 query="SELECT * FROM libri_NonSeriale WHERE CodLibro=%s"
 
@@ -759,7 +767,7 @@ def LibroDetailView(request,Cod):
             
                 elemento = objlist()
                 elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr, NomeCu, CognomeCu, NazioneCu)
-            return render(request, 'detail.html', {'context':elemento})
+            return render(request, 'detail.html', {'context':elemento,'form':form})
     else:
         print("Errore")
 """
@@ -915,28 +923,18 @@ def PrestitoPageView(request):
             elemento.inserimento(record.DataInizio, record.DataFine, record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
             context.append(elemento)
 
-def invDef(codlib,identificatore):
+def invDef(codlib):
     cursor = connection.cursor()
 
-    if identificatore == 'D':
-        cod="L"+str(randrange(1000))
-       
-        if codlib[0] == 'N':                                                                  #In base al identificatore si decide se eliminare o inserire un libro
-            query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
-        else:
-            query="INSERT INTO libri_SingoliLibri(CodLibro,IDSeriale) VALUES(%s,%s)"
+    cod="L"+str(randrange(1000))
+    
+    if codlib[0] == 'N':                                                                  #In base al identificatore si decide se eliminare o inserire un libro
+        query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale_id) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
+    else:
+        query="INSERT INTO libri_SingoliLibri(CodLibro,IDSeriale_id) VALUES(%s,%s)"
 
-        cursor.execute(query,[cod,codlib])
-        cursor.close()
-
-    elif identificatore == 'I':
-
-        cursor.execute("SELECT S.CodLibro FROM SingoliLibri S, Prestito P WHERE S.CodLibro!=P.IDLibro")
-        record=cursor.fetchone()                                                                                    #fetch di un singolo codice che non è in prestito e seguente eliminazione
-
-        cursor.execute("DELETE FROM libri_SingoliLibri WHERE CodLibro=%s",[record[0],])
-
-        cursor.close()            
+    cursor.execute(query,[cod,codlib])
+    cursor.close()        
  
         #return
 def Ghet(request, Cod):
@@ -944,10 +942,10 @@ def Ghet(request, Cod):
         cursor = connection.cursor()
         form = DetailForm()
         if Cod[0]=='N':
-            query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale=%s"
+            query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
 
         if Cod[0]=='S':
-            query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDSeriale=%s"
+            query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDSeriale_id=%s"
         
         cursor.execute(query, [Cod,])
         numero_libri = cursor.fetchone()
@@ -958,12 +956,12 @@ def Ghet(request, Cod):
         form = DetailForm(request.POST)
         if form.is_valid():
             if Cod[0]=='N':
-                query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale=%s"
-                is_ser = False
+                query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
+            
 
             if Cod[0]=='S':
-                query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDSeriale=%s"
-                is_ser = True
+                query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDSeriale_id=%s"
+               
         
                 cursor.execute(query, [Cod,])
                 numero_libri = cursor.fetchone()
@@ -973,12 +971,12 @@ def Ghet(request, Cod):
             if numero_inserito > numero_libri :
                 ris = numero_inserito - numero_libri
                 for x in range(ris):
-                    invDef(Cod,is_ser)
+                    invDef(Cod)
     else:
         print(form.errors)
         return HttpResponseRedirect(reverse('#errore'))
             
-def del_singolo(request):
+def del_singoloView(request):
     cursor = connection.cursor()
     #elimina la row in base al codice inserito
     if request.method =='POST':
