@@ -1,7 +1,4 @@
-{% extends 'base.html' %} 
-
-{% block content %}
-
+{% extends 'base.html' %} {% block content %} {% if user.is_authenticated %}
 <div class="add-box">
     <h1>Modifica</h1>
     <form method="post" autocomplete="off" class="addForm-box">
@@ -80,5 +77,4 @@
         <input type="submit" value="Modifica" class="insBtn">
     </form>
 </div>
-
-{% endblock content %}
+{% endif %} {% endblock content %}

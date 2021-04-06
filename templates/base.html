@@ -20,7 +20,7 @@
                 <h4><a href="{% url 'base' %}">BiblioBase</a></h4>
             </div>
             <div class="search-bar">
-                <input type="text" list="BookList" placeholder="Inserisci il titolo del libro..."/>
+                <input type="text" list="BookList" placeholder="Inserisci il titolo del libro..." />
                 <datalist id="BookList">
                     {% for results in lista%}
                     <option>{{results}}</option>
@@ -32,8 +32,8 @@
             </div>
             <div class="links">
                 <ul>
-                    <li><a href="Team.html">Team</a></li>
-                    <li><a href="https://www.einaudicorreggio.edu.it/pvw/app/REIT0006/pvw_sito.php" target="_blank">Contatti</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -50,9 +50,8 @@
     </nav>
 </header>
 
-    {% block content %}
+{% block content %} {% endblock content %}
 
-    {% endblock content %}
 
 </body>
 
