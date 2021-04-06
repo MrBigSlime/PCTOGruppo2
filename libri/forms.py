@@ -74,15 +74,11 @@ class InserimentoLibro(forms.Form):
     #CodScaffale = forms.CharField(label="Codice Scaffale", max_length=4, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     #CatScaffale = forms.CharField(label="Categoria Scaffale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     
-class UtentePForm(forms.Form):
+class PrenotazioneForm(forms.Form):
     NomeU = forms.CharField(label="NomeU",max_length = 256)
     CognomeU = forms.CharField(label="CognomeU",max_length = 256)
     Email = forms.CharField(label="Email",max_length = 256,required=False)
     NumTelefono = forms.CharField(label="NumTelefono",max_length = 10)
-    
-class DataForm(forms.Form):
     DataInizio = forms.DateField(label = "Data Inizio", widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Inizio*'}))
     DataFine = forms.DateField(label = "Data Fine", widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Fine*'}))
-
-class CodiceForm(forms.Form):
     IDLibro = forms.CharField(label = "IDLibro", max_length = 4,  widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'IDLibro'}))

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django import forms
 from django.db import connection
-from libri.forms import InserimentoLibro
+from libri.forms import *
 from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -221,6 +221,7 @@ def inspector(dati,identificatore):                                 #funzione ch
     if(identificatore=="U"):
         query="SELECT U.CodUser FROM libri_Utenti U WHERE U.NomeUt=%s AND U.CognomeUt=%s AND U.Email=%s AND U.NumTelefono=%s "
         dato=[dati["NomeUt"],dati["Cognome"],dati["Email"],dati["NumTelefono"]]
+
     if(identificatore=="A"):            
         query="SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.NazioneTr=%s"
         dato=[dati["NomeTr"],dati["CognomeTr"],dati["NazioneTr"]]
@@ -246,6 +247,7 @@ def inspector(dati,identificatore):                                 #funzione ch
 
         if(identificatore=="U"):
             cod=in_Utenti(dati)
+        
         if(identificatore=="A"):
             cod=in_TradAutCur(dati)
 
@@ -793,33 +795,34 @@ def HomePageView(request):
     else:
         print("Errore")
 
-def UtentiIn(request):
-
-    if request.method == 'GET':
-        form=UtentePForm()
-        return render(request, 'base.html',{"form":form})     
+def UtentiIn(request): 
 
     if request.method == 'POST':
+        form = PrenotazioneForm(request.POST)
         NomeUt=request.POST.get("NomeU")
         CognomeUt=request.POST.get("CognomeU")
         Email=request.POST.get("Email")
         NumeroTelefono=request.POST.get("NumTelefono")
         dati={"NomeUt":NomeUt,"CognomeUt":CognomeUt,"Email":Email,"NumeroTelefono":NumeroTelefono}
         cod=inspector(dati,"U")
+
         return cod
 
 def PrenotazioneView(request):
 
     if request.method == 'GET':
-
-        #GET DI TUTTE LE FUNZ PER PRENOTAZIONE
-        UtentiIn(request)
-
+        form=PrenotazioneForm()
+        return render(request, 'base.html',{"form":form})    
+        
     if request.method == 'POST':
+
         ritardo=False
 
-        #POST DI TUTTE LE FUNZ PER PRENOTAZIONE
+        UtentiIn(request)
+        data=inData(request)
+        idlib=CodLibro(request)
         codU=UtentiIn(request)
+
         while True:
             cod = "R"+str(randrange(1000))
             if check(cod):
@@ -828,7 +831,7 @@ def PrenotazioneView(request):
         cod = "R"+str(randrange(1000))
 
         query="INSERT INTO libri_Prestito VALUES(%s,%s,%s,%s,%s,%s)"                                                        #CHECK
-        dati=[cod,datain,datafin,ritardo,idlib,codU]
+        dati=[cod,data[1],data[0],ritardo,idlib,codU]
 
         cursor=cursor.connection()
         cursor.execute(query,dati)
@@ -836,42 +839,42 @@ def PrenotazioneView(request):
 
 def UtentiIn(request):
 
-    if request.method == 'GET':
-        form=UtentePForm()
-        return render(request, 'base.html',{"form":form})     
-
     if request.method == 'POST':
+        form = PrenotazioneForm(request.POST)
         NomeUt=request.POST.get("NomeU")
         CognomeUt=request.POST.get("CognomeU")
         Email=request.POST.get("Email")
         NumeroTelefono=request.POST.get("NumTelefono")
         dati={"NomeUt":NomeUt,"CognomeUt":CognomeUt,"Email":Email,"NumeroTelefono":NumeroTelefono}
         cod=inspector(dati,"U")
+
         return cod
         
 def inData(request):
-    cursor = connection.cursor()
+    
     if request.method == 'POST':
-        form = DataForm(request.POST)
+        form = PrenotazioneForm(request.POST)
         if form.is_valid():
+
             DataInizio = request.POST.get("DataInizio")
             DataFine = request.POST.get("DataFine")
-            query = "INSERT INTO libri_prestito(DataInizio, DataFine) VALUES(%s, %s)"
-            cursor.execute(query,[DataInizio, DataFine,])
-            cursor.close()
+            return [DataFine,DataInizio]
+
         else:
+
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))
 
 def CodLibro(request):
-    cursor = connection.cursor()
+    
     if request.method == 'POST':
-        form = CodiceForm(request.POST)
+        cursor = connection.cursor()
+        form = PrenotazioneForm(request.POST)
         if form.is_valid():
+
             IDLibro = request.POST.get("IDLibro")
-            query = "INSERT INTO libri_prestito(IDLibro) VALUES(%s)"
-            cursor.execute(query,[IDLibro,])
-            cursor.close()
+            return IDLibro
+
         else:
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))
