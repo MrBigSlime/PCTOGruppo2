@@ -9,15 +9,15 @@
     <title>REGISTRATION</title>
     <link rel="icon" href="{% static 'favicon.ico' %}">
     <link rel="stylesheet" href="{% static './css/base_style.css' %}">
-    <link rel="stylesheet" href="{% static './css/ins_style.css' %}">
+    <link rel="stylesheet" href="{% static './css/login_style.css' %}">
 </head>
 
 <body>
     {% block content %}
-    <div class="register">
+    <div class="logIn">
         <h2>REGISTRATION</h2>
         <form method="post" autocomplete="off" class="addForm-box">
-            {% csrf_token %} {{form.Username}} {{form.Password}} {{form.NomeU}} {{form.CognomeU}}
+            {% csrf_token %} {{form.Username}} {{form.Password}}
             <br><button type="submit">REGISTRATION</button>
         </form>
     </div>
