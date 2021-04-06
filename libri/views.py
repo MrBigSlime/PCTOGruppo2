@@ -6,6 +6,9 @@ from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from random import randrange
+from libri.forms import InserimentoLibro,UserLoginForm,UserRegistrationForm,DetailForm,DelSingLib
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 
 class objlist():                        
     def __Init__(self):
