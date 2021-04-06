@@ -86,7 +86,4 @@ class UserLoginForm(forms.Form):
     Username = forms.CharField(label="Username", max_length = 256, widget=forms.TextInput(attrs={'class' : 'logclass', 'placeholder':'Username'}))
     Password = forms.CharField(label="Password", max_length = 256, widget=forms.PasswordInput(attrs={'class' : 'logclass', 'placeholder':'Password'}))
 
-class DetailForm(forms.Form):
-    QLibri = forms.CharField(label="QLibri", max_length=256)
-class DelSingLib(forms.Form):
-    Numero = forms.CharField(label="CodLib", max_length=256)
+
