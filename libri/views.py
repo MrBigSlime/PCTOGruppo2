@@ -86,7 +86,23 @@ class objlist():
         self.Autore = Autore
         self.Genere = Genere
         self.CodLibro = Cod
-        
+    
+class listaPrestiti():
+    def __Init__(self):
+        self.DataInizio = ""
+        self.DataFine = ""
+        self.NomeUt = ""
+        self.CognomeUt = ""
+        self.NumTelefono = ""
+        self.Ritardo = False
+
+    def inserimento(self, DataInizio, DataFine, NomeUt, CognomeUt, NumTelefono, Ritardo):
+        self.DataInizio = DataInizio
+        self.DataFine = DataFine
+        self.NomeUt = NomeUt
+        self.CognomeUt = CognomeUt
+        self.NumTelefono = NumTelefono
+        self.Ritardo = Ritardo
 
 def check(cod):
     if cod[0]=='N':
