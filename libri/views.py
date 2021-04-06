@@ -804,12 +804,12 @@ def loginView(request):
         password = request.POST.get("Password")
         user = request.POST.get("Username")
         user = authenticate(request, username=user, password=password)
-        
-        if user is not None:
+
+        if user is None:
+            return render(request, 'login.html',{'form':form}) 
+        else:
             login(request, user)
             return render(request,'base.html')
-        else:
-            return render(request, 'login.html',{'form':form}) 
 
 def logoutview(request):
     logout(request)
