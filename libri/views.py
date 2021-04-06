@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect
 from django import forms
 from django.db import connection
-from libri.forms import InserimentoLibro,UserLoginForm,UserRegistrationForm,DetailForm,DelSingLib
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from libri.forms import *
 from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from random import randrange
-
 
 class objlist():                        
     def __Init__(self):
@@ -83,13 +80,13 @@ class objlist():
         self.CognomeCu = CognomeCu
         self.NazioneCu = NazioneCu
 
-    def inserimentoHome(self,Titolo, Autore, Genere,Cod):
+    def inserimentoHome(self,Titolo, Autore, Genere,Cod, ISBN):
         self.Titolo = Titolo
         self.Autore = Autore
         self.Genere = Genere
         self.CodLibro = Cod
-
-
+        self.ISBN_ISSN = ISBN
+        
 def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di libro, dati=dizionario con i dati da inserire, id=identificatore tipo di libro 
     
     if id=="N":
@@ -205,33 +202,6 @@ def inspector(dati,identificatore):                                 #funzione ch
         return ris[0]
 
     cursor.close()
-
-def invDef(codlib):
-    cursor = connection.cursor()
-
-    cod="L"+str(randrange(1000))
-    
-    if codlib[0] == 'N':                                                                  #In base al identificatore si decide se eliminare o inserire un libro
-        query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
-    else:
-        query="INSERT INTO libri_SingoliLibri(CodLibro,IDSeriale) VALUES(%s,%s)"
-
-    cursor.execute(query,[cod,codlib])
-    cursor.close()
-
-def invDel(codlib):
-
-        cursor = connection.cursor()
-
-        cursor.execute("SELECT S.CodLibro FROM SingoliLibri S, Prestito P WHERE S.CodLibro!=P.IDLibro AND S.CodLibro=%s",[codlib,])
-        record=cursor.fetchone()     
-                                                                                       #fetch di un singolo codice che non è in prestito e seguente eliminazione
-        if record is None:
-            print("il libro è in prestito")
-        else:
-            cursor.execute("DELETE FROM libri_SingoliLibri WHERE CodLibro=%s",[record[0],])
-        cursor.close()
-               
 
 
 def inserimento(request):
@@ -644,8 +614,6 @@ def LibroDetailView(request,Cod):
 
     if request.method == 'GET':
             #controllo Seriale o Non Seriale
-            numlib=Ghet(request, Cod)
-
             if Cod[0]=='N':
                 query="SELECT * FROM libri_NonSeriale WHERE CodLibro=%s"
 
@@ -671,6 +639,7 @@ def LibroDetailView(request,Cod):
                 NomePr = record.IDPostPrefazione.autPrefazione.NomeTr
                 CognomePr = record.IDPostPrefazione.autPrefazione.CognomeTr
                 NazionePr = record.IDPostPrefazione.autPrefazione.NazioneTr
+
                 #dati autore postfazione
                 NomePo = record.IDPostPrefazione.autPostfazione.NomeTr
                 CognomePo = record.IDPostPrefazione.autPostfazione.CognomeTr
@@ -711,9 +680,9 @@ def LibroDetailView(request,Cod):
             
                 elemento = objlist()
                 elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr, NomeCu, CognomeCu, NazioneCu)
-            return render(request, 'detail.html', {'context':elemento,'Numlibs':numlib})
-    if request.method == 'POST':
-        Ghet(request, Cod)
+            return render(request, 'detail.html', {'context':elemento})
+    else:
+        print("Errore")
 """
 def HomePageViewSeriale(request):
     #visualizza solo libri seriali
@@ -747,20 +716,20 @@ def HomePageView(request):
     if request.method == 'GET':
         context=[]
         #visualizza campi essenziale per libri non seriali
-        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
+        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere,N.ISBN FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro,record.ISBN)
             #print(elemento.CodLibro)
             context.append(elemento)
         #visualizza campi essenziali per libri seriali
         for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro," ")
             #print(elemento.CodLibro)
             context.append(elemento)
 
 
-        return render(request, 'base.html',{'context_list':context}) 
+        return render(request, 'index.html',{'context_list':context}) 
     else:
         print("Errore")
 
@@ -869,4 +838,3 @@ def del_singolo(request):
         else:
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))
-
