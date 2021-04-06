@@ -787,7 +787,7 @@ def Register(request):
             user.last_name = CognomeU
             user.first_name = NomeU
             user.save()
-            return render(request,'base.html')
+            return HomePageView(request)
         else:
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))
@@ -809,10 +809,11 @@ def loginView(request):
             return render(request, 'login.html',{'form':form}) 
         else:
             login(request, user)
-            return render(request,'base.html')
+            return HttpResponseRedirect(reverse('base'))
 
 def logoutview(request):
     logout(request)
+    return HttpResponseRedirect(reverse('base'))
         
 def Ghet(request, Cod):
     if request.method == 'GET':
