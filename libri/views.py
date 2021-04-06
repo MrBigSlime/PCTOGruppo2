@@ -94,28 +94,35 @@ def vricerca(request):
         context=[]
         cursor=connection.cursor()
 
-        cursor.execute("SELECT S.CodLibro, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore AND S.Titolo=%s OR S.Genere=%s",[dato,dato])
+        cursor.execute("SELECT S.CodLibro, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.Titolo=%s AND S.IDAutoreCuratore_id=T.CodAutore OR S.Genere=%s AND S.IDAutoreCuratore_id=T.CodAutore",[dato,dato])
         ris=cursor.fetchmany()
         for record in ris:
             elemento = objlist()
             elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
             context.append(elemento)
-        cursor.execute("SELECT N.CodLibro, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore AND N.Titolo=%s OR N.Genere=%s",[dato,dato])
+        cursor.execute("SELECT N.CodLibro, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.Titolo=%s AND N.IDAutoreCuratore_id=T.CodAutore OR N.Genere=%s AND N.IDAutoreCuratore_id=T.CodAutore",[dato,dato])
         ris=cursor.fetchmany()
         for record in ris:
-            print("wtf")
             elemento = objlist()
             elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
             context.append(elemento)
         
         datos=dato.split(" ",1)
-
-        cursor.execute("SELECT T.CodAutore, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore AND T.NomeTr=%s OR T.CognomeTr=%s OR T.NomeTr=%s OR T.CognomeTr=%s",[datos[0],datos[1],datos[1],datos[0]])
+        datos.append(" ")
+        cursor.execute("SELECT T.CodAutore, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE T.NomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.NomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore",[datos[0],datos[1],datos[1],datos[0]])
         ris=cursor.fetchmany()  
         for record in ris: 
             elemento = objlist()
             elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
-            context.append(elemento)   
+            context.append(elemento) 
+        
+        cursor.execute("SELECT T.CodAutore, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE T.NomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.NomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore",[datos[0],datos[1],datos[1],datos[0]])
+        ris=cursor.fetchmany()  
+        for record in ris: 
+            elemento = objlist()
+            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
+            context.append(elemento) 
+
         return context
         
 def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di libro, dati=dizionario con i dati da inserire, id=identificatore tipo di libro 
