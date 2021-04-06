@@ -914,7 +914,30 @@ def PrestitoPageView(request):
             elemento = listaPrestiti()
             elemento.inserimento(record.DataInizio, record.DataFine, record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
             context.append(elemento)
-            
+
+def invDef(codlib,identificatore):
+    cursor = connection.cursor()
+
+    if identificatore == 'D':
+        cod="L"+str(randrange(1000))
+       
+        if codlib[0] == 'N':                                                                  #In base al identificatore si decide se eliminare o inserire un libro
+            query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
+        else:
+            query="INSERT INTO libri_SingoliLibri(CodLibro,IDSeriale) VALUES(%s,%s)"
+
+        cursor.execute(query,[cod,codlib])
+        cursor.close()
+
+    elif identificatore == 'I':
+
+        cursor.execute("SELECT S.CodLibro FROM SingoliLibri S, Prestito P WHERE S.CodLibro!=P.IDLibro")
+        record=cursor.fetchone()                                                                                    #fetch di un singolo codice che non è in prestito e seguente eliminazione
+
+        cursor.execute("DELETE FROM libri_SingoliLibri WHERE CodLibro=%s",[record[0],])
+
+        cursor.close()            
+ 
         #return
 def Ghet(request, Cod):
     if request.method == 'GET':
