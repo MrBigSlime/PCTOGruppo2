@@ -6,6 +6,7 @@ from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from random import randrange
+import datetime
 
 class objlist():                        
     def __Init__(self):
@@ -878,3 +879,25 @@ def CodLibro(request):
         else:
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))
+        
+def CheckRitardo():
+    oggi = datetime.date.today()
+    cursor = connection.cursor()
+    query = "UPDATE Prestito SET Ritardo = true WHERE DataFine < %s"
+    cursor.execute(query,[oggi,])
+    cursor.close()
+
+def PrestitoPageView(request):
+    CheckRitardo()
+    if request.method == 'GET':
+        context = []
+        query = "SELECT P.DataInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo FROM libri_Prestito P, libri_Utenti U WHERE P.IDUtente = U.CodUser ORDER BY P.Datafine"
+        ris = Prestito.objects.raw(query)
+
+        for record in ris:
+            elemento = listaPrestiti()
+            elemento.inserimento(record.DataInizio, record.DataFine, record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
+            context.append(elemento)
+            
+        #return
+    
