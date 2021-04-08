@@ -972,3 +972,17 @@ def del_singoloView(request):
         else:
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))    
+        
+def del_singololibro(request, Cod):
+    cursor = connection.cursor()
+    if request.method =='GET':
+        query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
+        cursor.execute(query,[Cod,])
+        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro"
+        cursor.execute(query)
+        cursor.close()
+        return HttpResponseRedirect(reverse('base'))
+    else:
+        print(form.errors)
+        return HttpResponseRedirect(reverse('#errore'))    
+
