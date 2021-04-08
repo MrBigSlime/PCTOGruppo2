@@ -964,6 +964,9 @@ def Ghet(request, Cod):
 def del_singoloView(request):
     cursor = connection.cursor()
     #elimina la row in base al codice inserito
+    if request.method =='GET':
+        form = DelSingLib()
+        return(render(request,"delSlibro.html",{'form':form}))
     if request.method =='POST':
         form = DelSingLib(request.POST)
         if form.is_valid():
