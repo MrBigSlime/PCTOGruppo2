@@ -964,22 +964,26 @@ def Ghet(request, Cod):
 def del_singoloView(request):
     cursor = connection.cursor()
     #elimina la row in base al codice inserito
+    if request.method =='GET':
+        form = DelSingLib()
+        return(render(request,"delSlibro.html",{'form':form}))
     if request.method =='POST':
         form = DelSingLib(request.POST)
         if form.is_valid():
             CodLibro = request.POST.get("CodLibro")
-            query ="SELECT P.IDLibro FROM Prestito P, SingoliLibri S WHERE IDLibro_id=%s"
+            query ="SELECT P.IDLibro FROM libri_Prestito P, libri_SingoliLibri S WHERE IDLibro_id=%s"
             cursor.execute(query,[CodLibro,])
             ris=cursor.fetchone()
             if ris is None:
                 query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
                 cursor.execute(query,[CodLibro,])
                 cursor.close()
+                return HttpResponseRedirect(reverse('base'))
 
             else:
                 print("Il libro è in prestito")
-
-            return HttpResponseRedirect(reverse('base'))
+                return HttpResponseRedirect(reverse('delS'))
+            
 
         else:
 
