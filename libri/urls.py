@@ -10,5 +10,5 @@ urlpatterns = [
     path('del/<Cod>/', views.del_libro, name='cancella'),
     path('prenotazione/', views.PrenotazioneView, name='prnt'),
     path('SLibro/', views.del_singoloView, name='delS')
-   
+    path('ritardi/', views.PrestitoPageView, name = 'ritardi'),
 ]
