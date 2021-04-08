@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+{% if user.is_authenticated %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,5 +11,5 @@
 <body>
     <p>Prova</p>
 </body>
-
+{% endif %}
 </html>

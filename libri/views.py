@@ -109,6 +109,7 @@ class listaPrestiti():
         self.Ritardo = Ritardo
 
 def check(cod):
+    print(cod)
     if cod[0]=='N':
         query = "SELECT CodLibro FROM libri_NonSeriale WHERE CodLibro=%s"
     if cod[0]=='S':
@@ -123,11 +124,11 @@ def check(cod):
         query = "SELECT CodCasaEd FROM libri_CasaEditrice WHERE CodCasaEd=%s"
     if cod[0]=='U':
         query = "SELECT CodUser FROM libri_Utenti WHERE CodUser=%s"
-    if cod[0]=='P':
+    if cod[0]=='R':
         query = "SELECT CodPrestito FROM libri_Prestito WHERE CodPrestito=%s"
 
     cursor = connection.cursor()
-    cursor.execute(query,cod)
+    cursor.execute(query,[cod,])
     ris=cursor.fetchone()
     if ris is None:
         return True
@@ -220,7 +221,7 @@ def inspector(dati,identificatore):                                 #funzione ch
 
     if(identificatore=="U"):
         query="SELECT U.CodUser FROM libri_Utenti U WHERE U.NomeUt=%s AND U.CognomeUt=%s AND U.Email=%s AND U.NumTelefono=%s "
-        dato=[dati["NomeUt"],dati["Cognome"],dati["Email"],dati["NumTelefono"]]
+        dato=[dati["NomeUt"],dati["CognomeUt"],dati["Email"],dati["NumTelefono"]]
 
     if(identificatore=="A"):            
         query="SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.NazioneTr=%s"
@@ -396,13 +397,8 @@ def inserimento(request):
 def mod_libro(request,cod):
     context=[]
     if request.method == 'GET':
-
-        cursor = connection.cursor()
-        cursor.execute("SELECT COUNT(S.CodLibro) FROM libri_SingoliLibri S")
-        tota=cursor.fetchone()
-        cursor.close()
-        total=list(tota)
-        totale=total.pop()
+        
+        totale=Ghet(request,cod,"")
         
         """
         nomiautori=[]
@@ -607,8 +603,9 @@ def mod_libro(request,cod):
         NazionePre=request.POST.get("NazionePre") 
 
         #Singoli Libri
-        Qlibri=request.POST.get("QLibri")
-        invDef(Qlibri)
+        QLibri=request.POST.get("QLibri") 
+        Ghet(request,CodLibro,QLibri)
+
         cursor = connection.cursor()
     
         if identificatore=='on':                        #Controllo se l'utente ha modificato la serialità del libro 
@@ -827,28 +824,33 @@ def PrenotazioneView(request):
         return render(request, 'prenotazione.html',{"form":form})    
         
     if request.method == 'POST':
+        cursor=connection.cursor()
+        query="SELECT P.CodPrestito FROM libri_Prestito P, libri_SingoliLibri S WHERE S.CodLibro=%s"
 
         ritardo=False
-
         UtentiIn(request)
         data=inData(request)
         idlib=CodLibro(request)
         codU=UtentiIn(request)
+        cursor.execute(query,[idlib,])
+        if cursor.fetchone() is None:
+                
+            while True:
+                cod = "R"+str(randrange(1000))
+                if check(cod):
+                    break
 
-        while True:
             cod = "R"+str(randrange(1000))
-            if check(cod):
-                break
 
-        cod = "R"+str(randrange(1000))
-
-        query="INSERT INTO libri_Prestito VALUES(%s,%s,%s,%s,%s,%s)"                                                        #CHECK
-        dati=[cod,data[1],data[0],ritardo,idlib,codU]
-
-        cursor=cursor.connection()
-        cursor.execute(query,dati)
-        cursor.close()
-        return render(request, 'base.html',{"form":form})  
+            query="INSERT INTO libri_Prestito VALUES(%s,%s,%s,%s,%s,%s)"                                                        #CHECK
+            dati=[cod,data[1],data[0],ritardo,idlib,codU]
+            print(dati)
+            
+            cursor.execute(query,dati)
+            cursor.close()
+            return HttpResponseRedirect(reverse('base')) 
+        else:
+            print("libro gia prenotato")
 
 def UtentiIn(request):
 
@@ -858,7 +860,7 @@ def UtentiIn(request):
         CognomeUt=request.POST.get("CognomeU")
         Email=request.POST.get("Email")
         NumeroTelefono=request.POST.get("NumTelefono")
-        dati={"NomeUt":NomeUt,"CognomeUt":CognomeUt,"Email":Email,"NumeroTelefono":NumeroTelefono}
+        dati={"NomeUt":NomeUt,"CognomeUt":CognomeUt,"Email":Email,"NumTelefono":NumeroTelefono}
         cod=inspector(dati,"U")
 
         return cod
@@ -916,10 +918,10 @@ def PrestitoPageView(request):
 
 def invDef(codlib):
     cursor = connection.cursor()
-
+    print(codlib)
     cod="L"+str(randrange(1000))
     
-    if codlib[0] == 'N':                                                                  #In base al identificatore si decide se eliminare o inserire un libro
+    if codlib[0] == 'N':                                                                     #In base al identificatore si decide se eliminare o inserire un libro
         query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale_id) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
     else:
         query="INSERT INTO libri_SingoliLibri(CodLibro,IDSeriale_id) VALUES(%s,%s)"
@@ -928,9 +930,12 @@ def invDef(codlib):
     cursor.close()        
  
         #return
-def Ghet(request, Cod):
+def Ghet(request,Cod,Nlibs):
+    print(request.method)
+    cursor = connection.cursor()
     if request.method == 'GET':
-        cursor = connection.cursor()
+        
+        
         if Cod[0]=='N':
             query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
 
@@ -939,10 +944,12 @@ def Ghet(request, Cod):
         
         cursor.execute(query, [Cod,])
         numero_libri = cursor.fetchone()
+        Listlib=list(numero_libri)
+        numero_libri=Listlib.pop()
         return numero_libri
 
     elif request.method == 'POST':
- 
+     
         form = InserimentoLibro(request.POST)
         if form.is_valid():
             if Cod[0]=='N':
@@ -953,13 +960,16 @@ def Ghet(request, Cod):
                 query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDSeriale_id=%s"
                
         
-                cursor.execute(query, [Cod,])
-                numero_libri = cursor.fetchone()
-
-            numero_inserito = request.POST.get("numero_inserito")
-            
-            if numero_inserito > numero_libri :
-                ris = numero_inserito - numero_libri
+            cursor.execute(query, [Cod,])
+            numero_libri = cursor.fetchone()
+            Listlib=list(numero_libri)
+            numero_libri=Listlib.pop()
+            if numero_libri is None:
+                numero_libri=0
+            Nlibs=int(Nlibs)
+            if Nlibs > numero_libri :
+                ris = Nlibs - numero_libri
+                print(ris)
                 for x in range(ris):
                     invDef(Cod)
     else:

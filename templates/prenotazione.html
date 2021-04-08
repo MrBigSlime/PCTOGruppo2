@@ -1,5 +1,5 @@
 {% extends 'base.html' %} 
-
+{% if user.is_authenticated %}
 {% load static %}
 
 {% block content %}
@@ -14,6 +14,7 @@
             <tr>
                 <td><span title="IDLibro">{{form.IDLibro}}</span></td>
                 <td><span title="Nome Utente">{{form.NomeU}}</span></td>
+                <td><span title="Cognome Utente">{{form.CognomeU}}</span></td>
                 <td><span title="Email">{{form.Email}}</span></td>
             </tr>
             <tr>
@@ -28,3 +29,4 @@
 </div>
 
 {% endblock content %}
+{% endif %}
