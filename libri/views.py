@@ -820,7 +820,7 @@ def PrenotazioneView(request):
 
     if request.method == 'GET':
         form=PrenotazioneForm()
-        return render(request, 'base.html',{"form":form})    
+        return render(request, 'prenotazione.html',{"form":form})    
         
     if request.method == 'POST':
 
@@ -984,8 +984,8 @@ def del_singololibro(request, Cod):
     if request.method =='GET':
         query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
         cursor.execute(query,[Cod,])
-        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro"
-        cursor.execute(query)
+        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"
+        cursor.execute(query,[Cod,])
         cursor.close()
         return HttpResponseRedirect(reverse('#'))
     else:

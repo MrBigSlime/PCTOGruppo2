@@ -80,10 +80,10 @@ class InserimentoLibro(forms.Form):
     #CatScaffale = forms.CharField(label="Categoria Scaffale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     
 class PrenotazioneForm(forms.Form):
-    NomeU = forms.CharField(label="NomeU",max_length = 256)
-    CognomeU = forms.CharField(label="CognomeU",max_length = 256)
-    Email = forms.CharField(label="Email",max_length = 256,required=False)
-    NumTelefono = forms.CharField(label="NumTelefono",max_length = 10)
+    NomeU = forms.CharField(label="NomeU",max_length = 256, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Inizio*'}))
+    CognomeU = forms.CharField(label="CognomeU",max_length = 256, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Inizio*'}))
+    Email = forms.CharField(label="Email",max_length = 256,required=False, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Inizio*'}))
+    NumTelefono = forms.CharField(label="NumTelefono",max_length = 10, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Inizio*'}))
     DataInizio = forms.DateField(label = "Data Inizio", widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Inizio*'}))
     DataFine = forms.DateField(label = "Data Fine", widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Fine*'}))
     IDLibro = forms.CharField(label = "IDLibro", max_length = 4,  widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'IDLibro'}))
