@@ -981,8 +981,8 @@ def del_singololibro(request, Cod):
     if request.method =='GET':
         query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
         cursor.execute(query,[Cod,])
-        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro"
-        cursor.execute(query)
+        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"
+        cursor.execute(query,[Cod,])
         cursor.close()
         return HttpResponseRedirect(reverse('base'))
     else:
