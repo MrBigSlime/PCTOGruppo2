@@ -602,6 +602,9 @@ def mod_libro(request,cod):
         CognomePre=request.POST.get("CognomePre")
         NazionePre=request.POST.get("NazionePre") 
 
+        #Singoli Libri
+        Qlibri=request.POST.get("QLibri")
+        invDef(Qlibri)
         cursor = connection.cursor()
     
         if identificatore=='on':                        #Controllo se l'utente ha modificato la serialità del libro 
@@ -817,7 +820,7 @@ def PrenotazioneView(request):
 
     if request.method == 'GET':
         form=PrenotazioneForm()
-        return render(request, 'base.html',{"form":form})    
+        return render(request, 'prenotazione.html',{"form":form})    
         
     if request.method == 'POST':
 
@@ -964,7 +967,7 @@ def del_singoloView(request):
         form = DelSingLib(request.POST)
         if form.is_valid():
             CodLibro = request.POST.get("CodLibro")
-            query ="SELECT P.IDLibro FROM Prestito P, SingoliLibri S WHERE "
+            query ="SELECT P.IDLibro FROM Prestito P, SingoliLibri S WHERE IDLibro_id=%s"
             query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
             cursor.execute(query,[CodLibro,])
             cursor.close()
@@ -981,11 +984,10 @@ def del_singololibro(request, Cod):
     if request.method =='GET':
         query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
         cursor.execute(query,[Cod,])
-        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro"
-        cursor.execute(query)
+        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"
+        cursor.execute(query,[Cod,])
         cursor.close()
-        return HttpResponseRedirect(reverse('base'))
+        return HttpResponseRedirect(reverse('#'))
     else:
-        print(form.errors)
         return HttpResponseRedirect(reverse('#errore'))    
 

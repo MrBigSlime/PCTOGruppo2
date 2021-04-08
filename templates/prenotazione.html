@@ -1,0 +1,30 @@
+{% extends 'base.html' %} 
+
+{% load static %}
+
+{% block content %}
+
+<div class="prnt-box">
+    <h1>Prenotazione</h1>
+    <form method="post" autocomplete="off" class="prntForm-box">
+
+        {% csrf_token %}
+
+        <table class="prnt-detail">
+            <tr>
+                <td><span title="IDLibro">{{form.IDLibro}}</span></td>
+                <td><span title="Nome Utente">{{form.NomeU}}</span></td>
+                <td><span title="Email">{{form.Email}}</span></td>
+            </tr>
+            <tr>
+                <td><span title="Numero di Telefono">{{form.NumTelefono}}</span></td>
+                <td><span title="Data Inizio">{{form.DataInizio}}</span></td>
+                <td><span title="Data Fine">{{form.DataFine}}</span></td>
+            </tr>
+        </table>
+
+        <input type="submit" value="Prenota" class="insBtn">
+    </form>
+</div>
+
+{% endblock content %}
