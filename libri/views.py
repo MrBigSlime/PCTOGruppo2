@@ -893,7 +893,7 @@ def CodLibro(request):
 def CheckRitardo():
     oggi = datetime.date.today()
     cursor = connection.cursor()
-    query = "UPDATE Prestito SET Ritardo = true WHERE DataFine < %s"
+    query = "UPDATE libri_Prestito SET Ritardo = true WHERE DataFine < %s"
     cursor.execute(query,[oggi,])
     cursor.close()
 
@@ -901,13 +901,16 @@ def PrestitoPageView(request):
     CheckRitardo()
     if request.method == 'GET':
         context = []
-        query = "SELECT P.DataInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo FROM libri_Prestito P, libri_Utenti U WHERE P.IDUtente = U.CodUser ORDER BY P.Datafine"
+        query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo FROM libri_Prestito P, libri_Utenti U WHERE P.IDUtente_id = U.CodUser ORDER BY P.Datafine"
         ris = Prestito.objects.raw(query)
 
         for record in ris:
             elemento = listaPrestiti()
             elemento.inserimento(record.DataInizio, record.DataFine, record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
             context.append(elemento)
+        return render(request, 'ritardi.html',{'context_list':context}) 
+    else:
+        print("Errore")
 
 def invDef(codlib):
     cursor = connection.cursor()
@@ -966,7 +969,7 @@ def del_singoloView(request):
     #elimina la row in base al codice inserito
     if request.method =='GET':
         form = DelSingLib()
-        return(render(request,"delSlibro.html",{'form':form}))
+        return(render(request,".html",{'form':form}))
     if request.method =='POST':
         form = DelSingLib(request.POST)
         if form.is_valid():
