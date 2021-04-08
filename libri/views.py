@@ -750,7 +750,7 @@ def LibroDetailView(request,Cod):
             
                 elemento = objlist()
                 elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr, NomeCu, CognomeCu, NazioneCu)
-            return render(request, 'detail.html', {'context':elemento,'form':form})
+            return render(request, 'detail.html', {'context':elemento})
     else:
         print("Errore")
 """
@@ -968,10 +968,14 @@ def del_singoloView(request):
             CodLibro = request.POST.get("CodLibro")
             query ="SELECT P.IDLibro FROM Prestito P, SingoliLibri S WHERE IDLibro_id=%s"
             cursor.execute(query,[CodLibro,])
-            cursor.
-            query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
-            cursor.execute(query,[CodLibro,])
-            cursor.close()
+            ris=cursor.fetchone()
+            if ris is None:
+                query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
+                cursor.execute(query,[CodLibro,])
+                cursor.close()
+            else:
+
+
             return HttpResponseRedirect(reverse('base'))
         else:
             print(form.errors)
