@@ -818,7 +818,7 @@ def PrenotazioneView(request):
 
     if request.method == 'GET':
         form=PrenotazioneForm()
-        return render(request, 'base.html',{"form":form})    
+        return render(request, 'prenotazione.html',{"form":form})    
         
     if request.method == 'POST':
 
