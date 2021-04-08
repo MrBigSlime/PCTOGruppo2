@@ -397,9 +397,11 @@ def mod_libro(request,cod):
 
         cursor = connection.cursor()
         cursor.execute("SELECT COUNT(S.CodLibro) FROM libri_SingoliLibri S")
-        totale=cursor.fetchone()
+        tota=cursor.fetchone()
         cursor.close()
-
+        total=list(tota)
+        totale=total.pop()
+        
         """
         nomiautori=[]
         cognomiautori=[]
@@ -973,17 +975,24 @@ def del_singoloView(request):
                 query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
                 cursor.execute(query,[CodLibro,])
                 cursor.close()
+
             else:
                 print("Il libro è in prestito")
-                
+
             return HttpResponseRedirect(reverse('base'))
 
         else:
+
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))   
 
 def ResetSingoloView(request,Cod):
-    Testo=[]
+    cursor = connection.cursor()
+    if request.method =='GET':
+        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"
+        cursor.execute(query,[Cod,])
+        cursor.close()
+        return HttpResponseRedirect(reverse('#'))
         
 def del_singololibro(request, Cod):
     cursor = connection.cursor()
