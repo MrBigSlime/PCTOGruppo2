@@ -9,6 +9,6 @@ urlpatterns = [
     path('mod/<cod>/', views.mod_libro, name= 'modifica_libro'),
     path('del/<Cod>/', views.del_libro, name='cancella'),
     path('prenotazione/', views.PrenotazioneView, name='prnt'),
-    path('SLibro/', views.del_singoloView, name='delS')
+    path('SLibro/', views.del_singoloView, name='delS'),
     path('ritardi/', views.PrestitoPageView, name = 'ritardi'),
 ]
