@@ -394,13 +394,19 @@ def inserimento(request):
 def mod_libro(request,cod):
     context=[]
     if request.method == 'GET':
-        form = InserimentoLibro()
 
+        cursor = connection.cursor()
+        cursor.execute("SELECT COUNT(S.CodLibro) FROM libri_SingoliLibri S")
+        totale=cursor.fetchone()
+        cursor.close()
+
+        """
         nomiautori=[]
         cognomiautori=[]
         casaed=[]
         sedeed=[]
-        collane=[]                                                                                               #invio delle liste per i datalist
+        collane=[]  
+                                                                                                     #invio delle liste per i datalist
         for ris in TradAutCur.objects.raw("SELECT A.NomeTr,A.CognomeTr,A.CodAutore FROM libri_TradAutCur A"):
             nomiautori.append(ris.NomeTr)
             cognomiautori.append(ris.CognomeTr)
@@ -411,7 +417,7 @@ def mod_libro(request,cod):
 
         for ris in Collane.objects.raw("SELECT C.NomeCo,C.CodCollane FROM libri_Collane C"):
             collane.append(ris.NomeCo)
-
+        """
         if cod[0]=='N':
             ide='off'
             query="SELECT N.CodLibro, N.IDCollana_id, N.IDCasaEd_id, N.IDAutoreCuratore_id, N.Straniero, N.TitoloOrig, N.Titolo, N.Sottotitolo, N.AnnoEd, N.Illustrazioni, N.ISBN, N.Genere, N.NumPub, N.CopertinaRigida, N.Ristampa, N.nRistampa, N.Edizione, N.NumPagine, N.Curatore, N.Traduttore_id, N.Critico_id FROM libri_NonSeriale N WHERE N.CodLibro=%s"
@@ -506,10 +512,11 @@ def mod_libro(request,cod):
             elemento={'Straniero':Stranieroo,'TitoloOrig':TitoloOrig,'Titolo':Titolo,'Sottotitolo':Sottotitolo,'AnnoEd':AnnoEd,'Illustrazioni':Illustrazionii,'Genere':str(Genere),'NumPub':NumPub,'CopertinaRigida':Copertina,
             'Ristampa':Ristampaa,'nRistampa':nRistampa,'Edizione':Edizione,'NumPagine':NumPagine,'Curatore':Curatoree,'Traduttore':Traduttore,'Critico':Critico,'NomeCo':NomeCo,'SedeCa':Sede,
             'NomeCa':NomeCa,'NomeAu':NomeAu,'CognomeAu':CognomeAu,'NazioneAu':NazioneAu,'NomeTr':NomeTr,'CognomeTr':CognomeTr,'NazioneTr':NazioneTr,'NomeCu':NomeCu,'CognomeCu':CognomeCu,'NazioneCu':NazioneCu,
-            'NomePost':NomePo,'CognomePost':CognomePo,'NazionePost':NazionePo,'NomePre':NomePr,'CognomePre':CognomePr,'NazionePre':NazionePr,'ISBN_ISSN':ISBN,'IsSerial':ide}
+            'NomePost':NomePo,'CognomePost':CognomePo,'NazionePost':NazionePo,'NomePre':NomePr,'CognomePre':CognomePr,'NazionePre':NazionePr,'ISBN_ISSN':ISBN,'IsSerial':ide,"QLibri":totale}
            
             form = InserimentoLibro(initial=elemento)       
-        return(render(request,"modifica.html",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed,'collane':collane}))
+        #return(render(request,"modifica.html",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed,'collane':collane}))
+        return(render(request,"modifica.html",{'form':form}))
 
     if request.method== 'POST':
         form = InserimentoLibro(request.POST)
@@ -674,14 +681,6 @@ def LibroDetailView(request,Cod):
 
     if request.method == 'GET':
             #controllo Seriale o Non Seriale
-            invDef(Cod)
-            cursor = connection.cursor()
-            cursor.execute("SELECT COUNT(S.CodLibro) FROM libri_SingoliLibri S")
-            totale=cursor.fetchone()
-            form = DetailForm(initial={"QLibri":totale[0]})
-            print(totale)
-            cursor.close()
-
             if Cod[0]=='N':
                 query="SELECT * FROM libri_NonSeriale WHERE CodLibro=%s"
 
@@ -842,6 +841,7 @@ def PrenotazioneView(request):
         cursor=cursor.connection()
         cursor.execute(query,dati)
         cursor.close()
+        return render(request, 'base.html',{"form":form})  
 
 def UtentiIn(request):
 
@@ -964,11 +964,15 @@ def del_singoloView(request):
         form = DelSingLib(request.POST)
         if form.is_valid():
             CodLibro = request.POST.get("CodLibro")
-
+            query ="SELECT P.IDLibro FROM Prestito P, SingoliLibri S WHERE "
             query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
             cursor.execute(query,[CodLibro,])
             cursor.close()
             return HttpResponseRedirect(reverse('base'))
         else:
             print(form.errors)
-            return HttpResponseRedirect(reverse('#errore'))    
+            return HttpResponseRedirect(reverse('#errore'))   
+
+def ResetSingoloView(request,Cod):
+    Testo=[]
+
