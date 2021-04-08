@@ -974,9 +974,10 @@ def del_singoloView(request):
                 cursor.execute(query,[CodLibro,])
                 cursor.close()
             else:
-
-
+                print("Il libro è in prestito")
+                
             return HttpResponseRedirect(reverse('base'))
+
         else:
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))   
