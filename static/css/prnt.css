@@ -40,3 +40,25 @@
     padding: 10px 10px;
     margin-top: 20px;
 }
+
+.Slibro-box {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.Slibro-box h1 {
+    text-align: center;
+}
+
+.SlibroForm-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.Slibro-detail {
+    margin-left: 20px;
+    font-size: 13.99px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
