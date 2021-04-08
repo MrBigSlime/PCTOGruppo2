@@ -72,6 +72,9 @@ class InserimentoLibro(forms.Form):
     CognomeCu = forms.CharField(label="Cognome Critico", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Cognome critico'}))
     NazioneCu = forms.CharField(label="Nazione Critico", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione critico'}))
     
+    #Singoli libri
+    QLibri = forms.CharField(label="QLibri", max_length=256)
+    
     #Scaffale
     #CodScaffale = forms.CharField(label="Codice Scaffale", max_length=4, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     #CatScaffale = forms.CharField(label="Categoria Scaffale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
@@ -84,8 +87,6 @@ class PrenotazioneForm(forms.Form):
     DataInizio = forms.DateField(label = "Data Inizio", widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Inizio*'}))
     DataFine = forms.DateField(label = "Data Fine", widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Fine*'}))
     IDLibro = forms.CharField(label = "IDLibro", max_length = 4,  widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'IDLibro'}))
-
-class DetailForm(forms.Form):
-    QLibri = forms.CharField(label="QLibri", max_length=256)
+    
 class DelSingLib(forms.Form):
     Numero = forms.CharField(label="CodLib", max_length=256)
