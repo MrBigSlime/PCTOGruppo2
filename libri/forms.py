@@ -1,6 +1,8 @@
 from django import forms
 from libri.models import *
 
+
+
 class InserimentoLibro(forms.Form):
     #Casa Editrice
     NomeCa = forms.CharField(label="Nome CasaEd", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Casa Editrice*'}))
