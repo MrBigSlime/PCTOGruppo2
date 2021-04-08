@@ -109,7 +109,7 @@ class listaPrestiti():
         self.Ritardo = Ritardo
 
 def check(cod):
-    print(cod)
+    
     if cod[0]=='N':
         query = "SELECT CodLibro FROM libri_NonSeriale WHERE CodLibro=%s"
     if cod[0]=='S':
@@ -844,7 +844,7 @@ def PrenotazioneView(request):
 
             query="INSERT INTO libri_Prestito VALUES(%s,%s,%s,%s,%s,%s)"                                                        #CHECK
             dati=[cod,data[1],data[0],ritardo,idlib,codU]
-            print(dati)
+            
             
             cursor.execute(query,dati)
             cursor.close()
@@ -918,7 +918,6 @@ def PrestitoPageView(request):
 
 def invDef(codlib):
     cursor = connection.cursor()
-    print(codlib)
     cod="L"+str(randrange(1000))
     
     if codlib[0] == 'N':                                                                     #In base al identificatore si decide se eliminare o inserire un libro
@@ -931,7 +930,7 @@ def invDef(codlib):
  
         #return
 def Ghet(request,Cod,Nlibs):
-    print(request.method)
+
     cursor = connection.cursor()
     if request.method == 'GET':
         
@@ -969,7 +968,7 @@ def Ghet(request,Cod,Nlibs):
             Nlibs=int(Nlibs)
             if Nlibs > numero_libri :
                 ris = Nlibs - numero_libri
-                print(ris)
+
                 for x in range(ris):
                     invDef(Cod)
     else:
@@ -981,12 +980,12 @@ def del_singoloView(request):
     #elimina la row in base al codice inserito
     if request.method =='GET':
         form = DelSingLib()
-        return(render(request,".html",{'form':form}))
+        return(render(request,"delSlibro.html",{'form':form}))
     if request.method =='POST':
         form = DelSingLib(request.POST)
         if form.is_valid():
-            CodLibro = request.POST.get("CodLibro")
-            query ="SELECT P.IDLibro FROM libri_Prestito P, libri_SingoliLibri S WHERE IDLibro_id=%s"
+            CodLibro = request.POST.get("Numero")
+            query ="SELECT P.IDLibro_id FROM libri_Prestito P, libri_SingoliLibri S WHERE S.Codlibro = P.IDLibro_id AND S.CodLibro=%s"
             cursor.execute(query,[CodLibro,])
             ris=cursor.fetchone()
             if ris is None:
