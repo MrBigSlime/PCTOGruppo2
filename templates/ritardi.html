@@ -1,15 +1,59 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ritardi</title>
+    <link rel="stylesheet" href="{% static './css/base_style.css' %}">
+    <link rel="stylesheet" href="{% static './css/newBook-style.css' %}">
+    <link rel="stylesheet" href="{% static './css/ins_style.css' %}">
+    <link rel="stylesheet" href="{% static './css/prnt.css' %}">
+    <link rel="icon" href="{% static 'favicon.ico' %}">
 </head>
 
-<body>
-    <p>Prova</p>
+<header>
+    <nav>
+        <div class="nav-box">
+            <div class="logo">
+                <h4><a href="{% url 'base' %}">BiblioBase</a></h4>
+            </div>
+            <div class="search-bar">
+                <input type="text" list="BookList" placeholder="Inserisci il titolo del libro..." />
+                <datalist id="BookList">
+                    {% for results in lista %}
+                    <option>{{results}}</option>
+                    {% endfor %}
+                </datalist>
+                <div class="lente">
+                    <img src="{% static './img/iconmonstr-magnifier-2.svg' %}">
+                </div>
+            </div>
+            <div class="links">
+                <ul>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="nav-links">
+            <div class="under-links">
+                <ul>
+                    <li><a href="notSerial.html">Libri NON Seriali</a></li>
+                    <li><a href="Serial.html">Libri Seriali</a></li>
+                    <li><a href="CaseEditrici.html">Case Editrici</a></li>
+                    <li><a href="{% url 'nuovo_libro' %}">Nuovo Libro</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+{% block content %} {% endblock content %}
+
+
 </body>
 
 </html>
