@@ -924,7 +924,6 @@ def invDef(codlib):
 def Ghet(request, Cod):
     if request.method == 'GET':
         cursor = connection.cursor()
-        form = DetailForm()
         if Cod[0]=='N':
             query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
 
@@ -937,7 +936,7 @@ def Ghet(request, Cod):
 
     elif request.method == 'POST':
  
-        form = DetailForm(request.POST)
+        form = InserimentoLibro(request.POST)
         if form.is_valid():
             if Cod[0]=='N':
                 query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
@@ -968,6 +967,8 @@ def del_singoloView(request):
         if form.is_valid():
             CodLibro = request.POST.get("CodLibro")
             query ="SELECT P.IDLibro FROM Prestito P, SingoliLibri S WHERE IDLibro_id=%s"
+            cursor.execute(query,[CodLibro,])
+            cursor.
             query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
             cursor.execute(query,[CodLibro,])
             cursor.close()
