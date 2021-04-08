@@ -6,6 +6,8 @@ from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from random import randrange
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 import datetime
 
 class objlist():                        
@@ -1013,3 +1015,53 @@ def del_singololibro(request, Cod):
     else:
         return HttpResponseRedirect(reverse('#errore'))    
 
+def Register(request):
+
+    if request.method == 'GET':
+        form = UserRegistrationForm()
+
+        return render(request,'register.html',{'form':form})
+ 
+    if request.method =='POST':
+    
+        form = UserRegistrationForm(request.POST)
+
+        if form.is_valid():
+
+            CodUtente = request.POST.get("CodUtente")
+            Username = request.POST.get("Username")
+            NomeU = request.POST.get("NomeU")
+            CognomeU = request.POST.get("CognomeU")
+            Password = request.POST.get("Password")
+
+            user = User.objects.create_user(Username,'',Password)
+            user.last_name = CognomeU
+            user.first_name = NomeU
+            user.save()
+            return HomePageView(request)
+        else:
+            print(form.errors)
+            return HttpResponseRedirect(reverse('#errore'))
+
+def loginView(request):
+
+    if request.method == 'GET':
+
+        form = UserLoginForm()
+        return render(request, 'login.html',{'form':form})          
+
+    if request.method == 'POST':
+        form = UserLoginForm(request.POST)
+        password = request.POST.get("Password")
+        user = request.POST.get("Username")
+        user = authenticate(request, username=user, password=password)
+
+        if user is None:
+            return render(request, 'login.html',{'form':form}) 
+        else:
+            login(request, user)
+            return HttpResponseRedirect(reverse('base'))
+
+def logoutview(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('base'))

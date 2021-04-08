@@ -1,7 +1,7 @@
-{% extends 'base.html' %} {% block content %}
-
+{% extends 'base.html' %} {% block content %} {% if user.is_authenticated %}
 <div class="add-box">
     <h1>Nuovo Libro</h1>
+
     <form method="post" autocomplete="off" class="addForm-box">
 
         {% csrf_token %}
@@ -73,6 +73,6 @@
 
         <input type="submit" value="Inserisci Libro" class="insBtn">
     </form>
-</div>
 
-{% endblock content %}
+</div>
+{% endif %} {% endblock content %}

@@ -11,4 +11,8 @@ urlpatterns = [
     path('prenotazione/', views.PrenotazioneView, name='prnt'),
     path('SLibro/', views.del_singoloView, name='delS'),
     path('ritardi/', views.PrestitoPageView, name = 'ritardi'),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('login/',views.loginView, name='login'),
+    path('register/',views.Register, name='register'),
+    path('logout/',views.logoutview, name='logout'),
 ]
