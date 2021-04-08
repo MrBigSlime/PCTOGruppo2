@@ -966,7 +966,7 @@ def del_singoloView(request):
     #elimina la row in base al codice inserito
     if request.method =='GET':
         form = DelSingLib()
-        return(render(request,"delSlibro.html",{'form':form}))
+        return(render(request,".html",{'form':form}))
     if request.method =='POST':
         form = DelSingLib(request.POST)
         if form.is_valid():
