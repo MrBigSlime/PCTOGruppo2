@@ -149,6 +149,7 @@ def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di
     cursor = connection.cursor()        #Apertura connessione al db
     cursor.execute(query,Dati)                  
     cursor.close()
+    return cod
     
 def in_TradAutCur(dati):
     
@@ -612,10 +613,13 @@ def mod_libro(request,cod):
             if cod[0]=='N':
                 
                 dati={'CodLibro':CodLibro,'CodCollane':IDCollana.CodCollane,'CodCasaEd':IDCasaEd.CodCasaEd,'CodAutore':IDAutoreCuratore.CodAutore,'CodPost':IDPostPrefazione.CodPostfazione,'CodTrad':Traduttore.CodAutore,'CodCri':Critico.CodAutore,'TitoloOrig':TitoloOrig,'Titolo':Titolo,'Sottotitolo':Sottotitolo,'AnnoEd':AnnoEd,'ISBN_ISSN':ISBN_ISSN,'Genere':Genere,'NumPub':NumPub,'nRistampa':nRistampa,'Edizione':Edizione,'NumPagine':NumPagine,'Ristampa':Ristampa,'Straniero':Straniero,'Illustrazioni':Illustrazioni,'Curatore':Curatore,'CopertinaRigida':CopertinaRigida}
-                in_serNotser(dati,'S')
-                #viene chiamata la funzione per l'inserimento ed viene eliminato la riga 
+                cod=in_serNotser(dati,'S')
+                #viene chiamata la funzione per l'inserimento ed viene eliminato la riga  
+                query = "UPDATE libri_SingoliLibri SET IDNonseriale_id=NULL,IDSeriale_id=%s WHERE IDNonseriale_id=%s" 
+                dato=[cod,CodLibro,]  
+                cursor.execute(query,dato)  
                 query="DELETE FROM libri_NonSeriale WHERE CodLibro=%s"
-                cursor.execute(query,[cod,])        
+                cursor.execute(query,[CodLibro,])   
             else:
                 #query per l'update
                 query="UPDATE libri_Seriale SET TitoloOrig=%s, Titolo=%s, Sottotitolo=%s, AnnoEd=%s, ISSN=%s, Genere=%s, NumPub=%s, nRistampa=%s, Edizione=%s, NumPagine=%s, Ristampa=%s, Straniero=%s, Illustrazioni=%s, Curatore=%s,CopertinaRigida=%s WHERE CodLibro=%s"
@@ -625,10 +629,17 @@ def mod_libro(request,cod):
             if cod[0]=="S":
                 
                 dati={'CodLibro':CodLibro,'CodCollane':IDCollana.CodCollane,'CodCasaEd':IDCasaEd.CodCasaEd,'CodAutore':IDAutoreCuratore.CodAutore,'CodPost':IDPostPrefazione.CodPostfazione,'CodTrad':Traduttore.CodAutore,'CodCri':Critico.CodAutore,'TitoloOrig':TitoloOrig,'Titolo':Titolo,'Sottotitolo':Sottotitolo,'AnnoEd':AnnoEd,'ISBN_ISSN':ISBN_ISSN,'Genere':Genere,'NumPub':NumPub,'nRistampa':nRistampa,'Edizione':Edizione,'NumPagine':NumPagine,'Ristampa':Ristampa,'Straniero':Straniero,'Illustrazioni':Illustrazioni,'Curatore':Curatore,'CopertinaRigida':CopertinaRigida}
-                in_serNotser(dati,'N')
+                cod=in_serNotser(dati,'N')
                 #viene chiamata la funzione per l'inserimento ed viene eliminato la riga 
+
+                query = "UPDATE libri_SingoliLibri SET IDSeriale_id=NULL,IDNonseriale_id=%s WHERE IDSeriale_id=%s" 
+                dato=[cod,CodLibro,]  
+                cursor.execute(query,dato) 
+
                 query="DELETE FROM libri_Seriale WHERE CodLibro=%s"
-                cursor.execute(query,[cod,])
+                cursor.execute(query,[CodLibro,])
+
+                
             else:
                 #query per l'update
                 query="UPDATE libri_NonSeriale SET TitoloOrig=%s,Titolo=%s,Sottotitolo=%s,AnnoEd=%s,ISBN=%s,Genere=%s,NumPub=%s,nRistampa=%s,Edizione=%s,NumPagine=%s,Ristampa=%s,Straniero=%s,Curatore=%s,CopertinaRigida=%s,Illustrazioni=%s WHERE CodLibro=%s"
@@ -661,12 +672,17 @@ def del_libro(request, Cod):
     cursor = connection.cursor()
     #elimina la row in base al codice inserito
     if request.method =='GET':
+
         if Cod[0]=='N':
+            query="DELETE FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
+            cursor.execute(query,[Cod,])
             query="DELETE FROM libri_NonSeriale WHERE CodLibro=%s"
-            
+            cursor.execute(query,[Cod,])
         if Cod[0]=='S':
+            query="DELETE FROM libri_SingoliLibri WHERE IDSeriale_id=%s"
+            cursor.execute(query,[Cod,])
             query="DELETE FROM libri_Seriale WHERE CodLibro=%s"
-        cursor.execute(query,[Cod,])
+            cursor.execute(query,[Cod,])
         cursor.close()
         return HttpResponseRedirect(reverse('base'))
 
@@ -788,12 +804,14 @@ def HomePageView(request):
         context=[]
         #visualizza campi essenziale per libri non seriali
         for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere,N.ISBN FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
+            print(record,"a")
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro,record.ISBN)
             #print(elemento.CodLibro)
             context.append(elemento)
         #visualizza campi essenziali per libri seriali
         for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
+            print(record)
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro," ")
             #print(elemento.CodLibro)
@@ -871,9 +889,24 @@ def inData(request):
         form = PrenotazioneForm(request.POST)
         if form.is_valid():
 
-            DataInizio = request.POST.get("DataInizio")
-            DataFine = request.POST.get("DataFine")
-            return [DataFine,DataInizio]
+            DataInizioG = request.POST.get("DataInizioG")
+            DataInizioM = request.POST.get("DataInizioM")
+            DataInizioA = request.POST.get("DataInizioA")
+
+            DataFineG = request.POST.get("DataFineG")
+            DataFineM = request.POST.get("DataFineM")
+            DataFineA = request.POST.get("DataFineA")
+
+            if DataInizioA>DataFineA:
+                return HttpResponseRedirect(reverse('prnt'))
+            elif DataInizioM>DataFineM:
+                return HttpResponseRedirect(reverse('prnt'))
+            elif DataFineG>DataInizioG:
+                return HttpResponseRedirect(reverse('prnt'))
+            else:
+                DataInizio =  DataInizioA + "-" + DataInizioM + "-" + DataInizioG
+                DataFine = DataFineA + "-" + DataFineM + "-" + DataFineG
+                return [DataFine,DataInizio]
 
         else:
 
@@ -906,12 +939,15 @@ def PrestitoPageView(request):
     if request.method == 'GET':
         context = []
         query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo FROM libri_Prestito P, libri_Utenti U WHERE P.IDUtente_id = U.CodUser ORDER BY P.Datafine"
-        ris = Prestito.objects.raw(query)
+        
 
-        for record in ris:
+        for record in Prestito.objects.raw(query):
+            context=[]
             elemento = listaPrestiti()
-            elemento.inserimento(record.DataInizio, record.DataFine, record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
+            elemento.inserimento(str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
+            print(elemento.DataFine,elemento.DataInizio,elemento.Ritardo)
             context.append(elemento)
+            
         return render(request, 'ritardi.html',{'context_list':context}) 
     else:
         print("Errore")

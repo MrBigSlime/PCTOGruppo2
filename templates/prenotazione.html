@@ -1,9 +1,9 @@
 {% extends 'base.html' %} 
-{% if user.is_authenticated %}
+
 {% load static %}
 
 {% block content %}
-
+{% if user.is_authenticated %}
 <div class="prnt-box">
     <h1>Prenotazione</h1>
     <form method="post" autocomplete="off" class="prntForm-box">
@@ -19,14 +19,20 @@
             </tr>
             <tr>
                 <td><span title="Numero di Telefono">{{form.NumTelefono}}</span></td>
-                <td><span title="Data Inizio">{{form.DataInizio}}</span></td>
-                <td><span title="Data Fine">{{form.DataFine}}</span></td>
+
+                <td><span title="Data Inizio">{{form.DataInizioG}}</span></td>
+                <td><span title="Data Inizio">{{form.DataInizioM}}</span></td>
+                <td><span title="Data Inizio">{{form.DataInizioA}}</span></td>
+
+                <td><span title="Data Fine">{{form.DataFineG}}</span></td>
+                <td><span title="Data Fine">{{form.DataFineM}}</span></td>
+                <td><span title="Data Fine">{{form.DataFineA}}</span></td>
+
             </tr>
         </table>
 
         <input type="submit" value="Prenota" class="insBtn">
     </form>
 </div>
-
-{% endblock content %}
 {% endif %}
+{% endblock content %}

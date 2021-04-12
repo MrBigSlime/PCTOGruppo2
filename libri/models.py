@@ -72,8 +72,8 @@ class NonSeriale(models.Model):
 
 class SingoliLibri(models.Model):
     CodLibro = models.CharField(max_length = 4, primary_key = True)
-    IDSeriale = models.ForeignKey(Seriale, on_delete = models.RESTRICT, null=True)
-    IDNonseriale = models.ForeignKey(NonSeriale, on_delete = models.RESTRICT, null=True)
+    IDSeriale = models.ForeignKey(Seriale, on_delete = models.CASCADE, null=True)
+    IDNonseriale = models.ForeignKey(NonSeriale, on_delete = models.CASCADE, null=True)
 
 class Utenti(models.Model):
     CodUser = models.CharField(max_length = 4, primary_key = True)

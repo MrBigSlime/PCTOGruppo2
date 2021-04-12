@@ -84,8 +84,15 @@ class PrenotazioneForm(forms.Form):
     CognomeU = forms.CharField(label="CognomeU",max_length = 256, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Cognome Utente*'}))
     Email = forms.CharField(label="Email",max_length = 256,required=False, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Email*'}))
     NumTelefono = forms.CharField(label="NumTelefono",max_length = 10, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero Telefono*'}))
-    DataInizio = forms.DateField(label = "Data Inizio", widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Inizio*'}))
-    DataFine = forms.DateField(label = "Data Fine", widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Data Fine*'}))
+
+    DataInizioG = forms.CharField(label="DataInizioG",max_length = 2, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'gg'}))
+    DataInizioM = forms.CharField(label="DataInizioM",max_length = 2, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'mm'}))
+    DataInizioA = forms.CharField(label="DataInizioA",max_length = 4, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'aa'}))
+
+    DataFineG = forms.CharField(label="DataFineG",max_length = 2, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'gg'}))
+    DataFineM = forms.CharField(label="DataFineM",max_length = 2, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'mm'}))
+    DataFineA = forms.CharField(label="DataFineA",max_length = 4, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'aa'}))
+
     IDLibro = forms.CharField(label = "IDLibro", max_length = 4,  widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'IDLibro'}))
     
 class DelSingLib(forms.Form):
