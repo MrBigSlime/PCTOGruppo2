@@ -93,6 +93,7 @@ class objlist():
     
 class listaPrestiti():
     def __Init__(self):
+        self.CodLibro=""
         self.DataInizio = ""
         self.DataFine = ""
         self.NomeUt = ""
@@ -100,7 +101,8 @@ class listaPrestiti():
         self.NumTelefono = ""
         self.Ritardo = False
 
-    def inserimento(self, DataInizio, DataFine, NomeUt, CognomeUt, NumTelefono, Ritardo):
+    def inserimento(self,CodLibro,DataInizio, DataFine, NomeUt, CognomeUt, NumTelefono, Ritardo):
+        self.CodLibro=CodLibro
         self.DataInizio = DataInizio
         self.DataFine = DataFine
         self.NomeUt = NomeUt
@@ -851,6 +853,9 @@ def PrenotazioneView(request):
         idlib=CodLibro(request)
         codU=UtentiIn(request)
         cursor.execute(query,[idlib,])
+        if data is None:
+            return HttpResponseRedirect(reverse('prnt'))
+
         if cursor.fetchone() is None:
                 
             while True:
@@ -898,15 +903,25 @@ def inData(request):
             DataFineA = request.POST.get("DataFineA")
 
             if DataInizioA>DataFineA:
-                return HttpResponseRedirect(reverse('prnt'))
-            elif DataInizioM>DataFineM:
-                return HttpResponseRedirect(reverse('prnt'))
-            elif DataFineG>DataInizioG:
-                return HttpResponseRedirect(reverse('prnt'))
-            else:
-                DataInizio =  DataInizioA + "-" + DataInizioM + "-" + DataInizioG
-                DataFine = DataFineA + "-" + DataFineM + "-" + DataFineG
-                return [DataFine,DataInizio]
+                return None
+
+            if DataInizioA==DataFineA:
+                if DataInizioM>DataFineM:
+                    return None
+
+            if DataInizioA==DataFineA:
+                if DataInizioM==DataFineM:
+                    if DataFineG>DataInizioG:
+                        return None
+
+            if DataInizioA==DataFineA:
+                if DataInizioM==DataFineM:
+                    if DataFineG==DataInizioG:
+                        return None
+            
+            DataInizio =  DataInizioA + "-" + DataInizioM + "-" + DataInizioG
+            DataFine = DataFineA + "-" + DataFineM + "-" + DataFineG
+            return [DataFine,DataInizio]
 
         else:
 
@@ -944,8 +959,7 @@ def PrestitoPageView(request):
         for record in Prestito.objects.raw(query):
             context=[]
             elemento = listaPrestiti()
-            elemento.inserimento(str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
-            print(elemento.DataFine,elemento.DataInizio,elemento.Ritardo)
+            elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
             context.append(elemento)
             
         return render(request, 'ritardi.html',{'context_list':context}) 
@@ -1046,17 +1060,17 @@ def ResetSingoloView(request,Cod):
         query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"
         cursor.execute(query,[Cod,])
         cursor.close()
-        return HttpResponseRedirect(reverse('#'))
+        return HttpResponseRedirect(reverse('ritardi'))
         
 def del_singololibro(request, Cod):
     cursor = connection.cursor()
     if request.method =='GET':
-        query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
-        cursor.execute(query,[Cod,])
         query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"
         cursor.execute(query,[Cod,])
+        query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
+        cursor.execute(query,[Cod,])
         cursor.close()
-        return HttpResponseRedirect(reverse('#'))
+        return HttpResponseRedirect(reverse('ritardi'))
     else:
         return HttpResponseRedirect(reverse('#errore'))    
 
