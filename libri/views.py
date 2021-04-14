@@ -1026,7 +1026,7 @@ def Ghet(request,Cod,Nlibs):
                 for x in range(ris):
                     a = invDef(Cod)
                     codgen.append(a)
-         
+         return render(request, 'listanuovi.html', {'context':codgen})
     else:
         print(form.errors)
         return HttpResponseRedirect(reverse('#errore'))
