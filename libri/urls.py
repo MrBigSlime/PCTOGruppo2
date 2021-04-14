@@ -21,5 +21,6 @@ urlpatterns = [
     path('login/',views.loginView, name='login'),
     path('register/',views.Register, name='register'),
     path('logout/',views.logoutview, name='logout'),
+    path('listNew', views.Ghet, name='newList')
 
 ]
