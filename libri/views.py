@@ -289,7 +289,7 @@ def inspector(dati,identificatore):                                 #funzione ch
     cursor.close()
 
 
-def inserimento(request):
+def inserimentoView(request):
     if request.method =='GET':
         form = InserimentoLibro()
         nomiautori=[]
@@ -311,6 +311,12 @@ def inserimento(request):
         return(render(request,"inserimento.html",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed,'collane':collane}))
 
     elif request.method =='POST':
+
+        if request.POST.get("Ricerca") == " ":
+            context=vricerca(request)
+            form = ricercaform()
+            return render(request, 'index.html',{'form':form,'context_list':context})
+ 
     
         form = InserimentoLibro(request.POST)
         obj=objlist()
@@ -424,7 +430,7 @@ def inserimento(request):
                 return HttpResponseRedirect(reverse('nuovo_libro'))
 
 
-def mod_libro(request,cod):
+def mod_libroView(request,cod):
     context=[]
     if request.method == 'GET':
         
@@ -531,6 +537,11 @@ def mod_libro(request,cod):
         return(render(request,"modifica.html",{'form':form}))
 
     if request.method== 'POST':
+        if request.POST.get("Ricerca") == " ":
+            context=vricerca(request)
+            form = ricercaform()
+            return render(request, 'index.html',{'form':form,'context_list':context})
+
         form = InserimentoLibro(request.POST)
 
         if cod[0]=='N':
@@ -671,7 +682,7 @@ def mod_libro(request,cod):
             return render(request, 'listanuovi.html', {'context':http})
 
 
-def del_libro(request, Cod):
+def del_libroView(request, Cod):
     cursor = connection.cursor()
     #elimina la row in base al codice inserito
     if request.method =='GET':
@@ -761,11 +772,15 @@ def LibroDetailView(request,Cod):
                 elemento.inserimento( CodLibro,  NomeCo,  Sede,  NomeCa,  NomeAu,  CognomeAu,  NazioneAu,  NomePo,  CognomePo,  NazionePo,  NomePr,  CognomePr,  NazionePr,  Straniero,  TitoloOrig,  Titolo,  Sottotitolo,  AnnoEd,  Illustrazioni,  ISBN,  Genere,  NumPub,  CopertinaRigida,  Ristampa,  nRistampa,  Edizione,  NumPagine,  Curatore,  NomeTr,  CognomeTr,  NazioneTr, NomeCu, CognomeCu, NazioneCu)
             return render(request, 'detail.html', {'context':elemento})
     else:
-        print("Errore")
+          if request.POST.get("Ricerca") == " ":
+            context=vricerca(request)
+            form = ricercaform()
+            return render(request, 'index.html',{'form':form,'context_list':context})
 
 def vricerca(request):
 
     if request.method == 'POST':
+
         form=ricercaform(request.POST)
         dato=request.POST.get("Campo")
         context=[]
@@ -860,6 +875,13 @@ def PrenotazioneView(request):
         return render(request, 'prenotazione.html',{"form":form})    
         
     if request.method == 'POST':
+
+        if request.POST.get("Ricerca") == " ":
+            print("YE")
+            context=vricerca(request)
+            form = ricercaform()
+            return render(request, 'index.html',{'form':form,'context_list':context})
+
         cursor=connection.cursor()
         query="SELECT P.CodPrestito FROM libri_Prestito P, libri_SingoliLibri S WHERE S.CodLibro=%s"
 
@@ -963,7 +985,7 @@ def CheckRitardo():                                                             
     cursor.execute(query,[oggi,])
     cursor.close()
 
-def PrestitoPageView(request):                                                                  
+def RitardiPageView(request):                                                                  
     CheckRitardo()
     if request.method == 'GET':
         context = []
@@ -978,6 +1000,12 @@ def PrestitoPageView(request):
             
         return render(request, 'ritardi.html',{'context_list':context}) 
     else:
+
+        if request.POST.get("Ricerca") == " ":
+            context=vricerca(request)
+            form = ricercaform()
+            return render(request, 'index.html',{'form':form,'context_list':context})
+
         print("Errore")
 
 def invDef(codlib):
@@ -1057,6 +1085,13 @@ def del_singoloView(request):
         form = DelSingLib()
         return(render(request,"delSlibro.html",{'form':form}))
     if request.method =='POST':
+
+        if request.POST.get("Ricerca") == " ":
+            context=vricerca(request)
+            form = ricercaform()
+            return render(request, 'index.html',{'form':form,'context_list':context})
+            
+
         form = DelSingLib(request.POST)
         if form.is_valid():
             CodLibro = request.POST.get("Numero")
@@ -1078,7 +1113,7 @@ def del_singoloView(request):
             print(form.errors)
             return HttpResponseRedirect(reverse('delS'))   
 
-def ResetSingoloView(request,Cod):
+def ResetSingolo(request,Cod):
     cursor = connection.cursor()
     if request.method =='GET':
         query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"                   #eliminazione del0itardo di un singolo libro 
@@ -1098,7 +1133,7 @@ def del_singololibro(request, Cod):
     else:
         return HttpResponseRedirect(reverse('#errore'))    
 
-def Register(request):
+def RegisterView(request):
 
     if request.method == 'GET':
         form = UserRegistrationForm()
@@ -1106,7 +1141,7 @@ def Register(request):
         return render(request,'register.html',{'form':form})
  
     if request.method =='POST':
-    
+        
         form = UserRegistrationForm(request.POST)
 
         if form.is_valid():
