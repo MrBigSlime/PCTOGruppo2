@@ -401,7 +401,7 @@ def inserimento(request):
 
         else:
                 print(form.errors)
-                return HttpResponseRedirect(reverse('#errore'))
+                return HttpResponseRedirect(reverse('nuovo_libro'))
 
 
 def mod_libro(request,cod):
@@ -796,7 +796,6 @@ def HomePageView(request):
 
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.ISBN,record.CodLibro)
-            print(elemento.CodLibro)
             context.append(elemento)
 
         #visualizza campi essenziali per libri seriali e caricamento datalist per ricerca 
@@ -807,7 +806,6 @@ def HomePageView(request):
 
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.ISSN,record.CodLibro)
-            print(elemento.CodLibro)
             context.append(elemento)
        
         for ris in Collane.objects.raw("SELECT C.NomeCo,C.CodCollane FROM libri_Collane C"):
@@ -869,7 +867,7 @@ def PrenotazioneView(request):
             cursor.close()
             return HttpResponseRedirect(reverse('base')) 
         else:
-            print("libro gia prenotato")
+            return HttpResponseRedirect(reverse('delS')) 
 
 def UtentiIn(request):
 
@@ -922,7 +920,7 @@ def inData(request):
         else:
 
             print(form.errors)
-            return HttpResponseRedirect(reverse('#errore'))
+            return HttpResponseRedirect(reverse('prnt'))
 
 def CodLibro(request):
     
@@ -936,7 +934,7 @@ def CodLibro(request):
 
         else:
             print(form.errors)
-            return HttpResponseRedirect(reverse('#errore'))
+            return HttpResponseRedirect(reverse('prnt'))
         
 def CheckRitardo():                                                                             #view per il controllo sul ritardo
     oggi = datetime.date.today()
@@ -1027,7 +1025,7 @@ def Ghet(request,Cod,Nlibs):
                 return codgen
     else:
         print(form.errors)
-        return HttpResponseRedirect(reverse('#errore'))
+        return HttpResponseRedirect(reverse('base'))
             
 def del_singoloView(request):
     cursor = connection.cursor()
@@ -1049,14 +1047,13 @@ def del_singoloView(request):
                 return HttpResponseRedirect(reverse('base'))
 
             else:
-                print("Il libro è in prestito")
                 return HttpResponseRedirect(reverse('delS'))
             
 
         else:
 
             print(form.errors)
-            return HttpResponseRedirect(reverse('#errore'))   
+            return HttpResponseRedirect(reverse('delS'))   
 
 def ResetSingoloView(request,Cod):
     cursor = connection.cursor()
@@ -1104,7 +1101,7 @@ def Register(request):
             return HomePageView(request)
         else:
             print(form.errors)
-            return HttpResponseRedirect(reverse('#errore'))
+            return HttpResponseRedirect(reverse('register'))
 
 def loginView(request):
 

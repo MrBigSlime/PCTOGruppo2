@@ -16,11 +16,13 @@ urlpatterns = [
     path('ritardi/', views.PrestitoPageView, name = 'ritardi'),
     path('ResetS/<Cod>/',views.ResetSingoloView, name='reset'),
     path('DelRit/<Cod>/',views.del_singololibro, name='delrit'),
-
+    path('listNew', views.Ghet, name='newList'),
+    
     path('accounts/', include('django.contrib.auth.urls')),
     path('login/',views.loginView, name='login'),
     path('register/',views.Register, name='register'),
-    path('logout/',views.logoutview, name='logout'),
-    path('listNew', views.Ghet, name='newList')
+    path('logout/',views.logoutview, name='logout')
+
+    
 
 ]
