@@ -219,7 +219,10 @@ def in_PostfazionePre(dati):    #Funzione per l'inserimento delle chiavi alla ta
     ris=cursor.fetchone()               
     if ris is None:             #Check se la coppia di codici autore è gia esistente nel db            
         query="INSERT INTO libri_PostfazionePre VALUES(%s,%s,%s)"
-        cod="P"+str(randrange(1000))
+        while True:
+            cod="P"+str(randrange(1000))
+            if check(cod):
+                break
         cursor.execute(query,[cod,autPostfazione,autPrefazione])
         cursor.close()
         return cod
@@ -979,7 +982,10 @@ def PrestitoPageView(request):
 
 def invDef(codlib):
     cursor = connection.cursor()
-    cod="L"+str(randrange(1000))
+    while True:
+        cod="L"+str(randrange(1000))
+        if check(cod):
+            break
     
     if codlib[0] == 'N':                                                                     #In base al identificatore si decide se eliminare o inserire un libro
         query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale_id) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
