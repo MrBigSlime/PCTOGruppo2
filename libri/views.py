@@ -367,6 +367,8 @@ def inserimento(request):
             CognomeC=request.POST.get("CognomeCu")
             NazioneC=request.POST.get("NazioneCu")
 
+            QLibri = request.POST.get("QLibri")
+
             CodCollane=inspector({'NomeCo':NomeCo},"O")                                                                                         #controllo e fetch dei codici per l'inserimento
             CodCasaEd=inspector({'Sede':SedeCa,'NomeCa':NomeCa},"E")
             CodAutore=inspector({'NomeTr':NomeAu ,'CognomeTr':CognomeAu ,'NazioneTr':NazioneAu},"A")
@@ -389,6 +391,12 @@ def inserimento(request):
                 cursor = connection.cursor()
                 cursor.execute(query,Dati)
                 cursor.close()
+            http=Ghet(request,cod,QLibri)
+            if http is None:
+                return HttpResponseRedirect(reverse('base'))
+            else:
+                return render(request, 'listanuovi.html', {'context':http})
+
             return HttpResponseRedirect(reverse('base'))
                 
 
@@ -659,7 +667,6 @@ def mod_libro(request,cod):
         if http is None:
             return HttpResponseRedirect(reverse('base'))
         else:
-            print(http)
             return render(request, 'listanuovi.html', {'context':http})
 
 
