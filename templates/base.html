@@ -21,18 +21,18 @@
             <h4><a href="{% url 'base' %}">BiblioBase</a></h4>
         </div>
         <div class="search-bar">
-            <input type="text" list="BookList" placeholder="Inserisci il titolo del libro..." />
-            <datalist id="BookList">
-                    {% for results in context_list %}
-                    <option>{{results.Titolo}}</option>
-                    <option>{{results.Autore}}</option>
-                    <option>{{results.Genere}}</option>
-
-                    {% endfor %}
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="Campo" list="BookList" placeholder="Cerca..." />
+                <datalist id="BookList">
+                        {% for results in context_list %}
+                        <option>{{results.Titolo}}</option>
+                        <option>{{results.Autore}}</option>
+                        <option>{{results.Genere}}</option>
+                        {% endfor %}
                 </datalist>
-            <div class="lente">
-                <img src="{% static './img/iconmonstr-magnifier-2.svg' %}">
-            </div>
+                <input type="submit" value=" " class="lente">
+            </form>
         </div>
         <div class="links">
             <ul>

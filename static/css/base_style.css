@@ -45,8 +45,9 @@ a {
     color: #457b9d;
 }
 
-.search-bar {
+.search-bar form{
     display: flex;
+    flex-direction: row;
 }
 
 .search-bar input{
@@ -60,7 +61,7 @@ a {
     cursor: text;
 }
 
-.lente {
+form .lente {
     display: flex;
     background-color: #457b9d;
     border: none;
@@ -71,6 +72,9 @@ a {
     transition: all .3s ease 0s;
     justify-content: center;
     justify-items: center;
+    background-image: url(../img/iconmonstr-magnifier-2.svg);
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .lente img {
