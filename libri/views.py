@@ -697,7 +697,7 @@ def HomePageView(request):
     else:
         print("Errore")
 
-def Register(request):
+def Register(request):                                                                  #view per la registrazione
 
     if request.method == 'GET':
         form = UserRegistrationForm()
@@ -725,7 +725,7 @@ def Register(request):
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))
 
-def loginView(request):
+def loginView(request):                                                                                 #view per login
 
     if request.method == 'GET':
 
@@ -744,7 +744,7 @@ def loginView(request):
             login(request, user)
             return HttpResponseRedirect(reverse('base'))
 
-def logoutview(request):
+def logoutview(request):                                                                                #view per il logout
     logout(request)
     return HttpResponseRedirect(reverse('base'))
         
