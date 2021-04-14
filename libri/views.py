@@ -607,8 +607,7 @@ def mod_libro(request,cod):
 
         #Singoli Libri
         QLibri=request.POST.get("QLibri") 
-        Ghet(request,CodLibro,QLibri)
-
+       
         cursor = connection.cursor()
     
         if identificatore=='on':                        #Controllo se l'utente ha modificato la serialità del libro 
@@ -656,6 +655,8 @@ def mod_libro(request,cod):
         cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomeC,CognomeC,NazioneC,Critico.CodAutore,])
         cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomeTr,CognomeTr,NazioneTr,Traduttore.CodAutore,])
         cursor.close()
+         Ghet(request,CodLibro,QLibri)
+
         return HttpResponseRedirect(reverse('base'))
         
         
@@ -949,7 +950,7 @@ def CheckRitardo():                                                             
     cursor.execute(query,[oggi,])
     cursor.close()
 
-def PrestitoPageView(request):
+def PrestitoPageView(request):                                                                  
     CheckRitardo()
     if request.method == 'GET':
         context = []
