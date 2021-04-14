@@ -127,6 +127,8 @@ def check(cod):
         query = "SELECT CodUser FROM libri_Utenti WHERE CodUser=%s"
     if cod[0]=='R':
         query = "SELECT CodPrestito FROM libri_Prestito WHERE CodPrestito=%s"
+    if cod[0]=='L':
+        query = "SELECT CodLibro FROM libri_SingoliLibri WHERE CodLibro=%s"
 
     cursor = connection.cursor()
     cursor.execute(query,[cod,])
@@ -140,11 +142,17 @@ def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di
     
     if id=="N":
         query="INSERT INTO libri_NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"          #controllo del tipo di libro che si vuole inserire 
-        cod="N"+str(randrange(1000))
+        while True:
+            cod="N"+str(randrange(1000))
+            if check(cod):
+                break
 
     else:
         query="INSERT INTO libri_Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"             
-        cod="S"+str(randrange(1000))
+        while True:
+            cod="S"+str(randrange(1000))
+            if check(cod):
+                break
 
     Dati=[cod,dati['Straniero'],dati['TitoloOrig'],dati['Titolo'],dati['Sottotitolo'],dati['AnnoEd'],dati['Illustrazioni'],dati['ISBN_ISSN'],dati['Genere'],dati['NumPub'],dati['CopertinaRigida'],dati['Ristampa'],dati['nRistampa'],dati['Edizione'],dati['NumPagine'],dati['Curatore'],dati['CodCri'],dati['CodAutore'],dati['CodCasaEd'],dati['CodCollane'],dati['CodPost'],dati['CodTrad']]
     cursor = connection.cursor()        #Apertura connessione al db
@@ -155,14 +163,20 @@ def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di
 def in_TradAutCur(dati):
     
     query="INSERT INTO libri_TradAutCur VALUES(%s,%s,%s,%s)"
-    cod="A"+str(randrange(1000))
+    while True:
+        cod="A"+str(randrange(1000))
+        if check(cod):
+            break
     cursor = connection.cursor()
     cursor.execute(query,[cod,dati["NazioneTr"],dati["CognomeTr"],dati["NomeTr"]])
     return cod
 
 def in_Collana(dati):
     query="INSERT INTO libri_Collane VALUES(%s, %s)"                #inserimento nuova collana
-    cod = "C"+str(randrange(1000))
+    while True:
+        cod = "C"+str(randrange(1000))
+        if check(cod):
+            break
     cursor = connection.cursor()
     cursor.execute(query,[cod, dati["NomeCo"]])
     cursor.close()
@@ -170,7 +184,10 @@ def in_Collana(dati):
 
 def in_CasaEd(dati):
     query="INSERT INTO libri_CasaEditrice VALUES(%s, %s, %s)"           #inseriment nuova CasaEditrice
-    cod = "E"+str(randrange(1000))                          
+    while True:
+        cod = "E"+str(randrange(1000)) 
+        if check(cod):
+            break
     cursor = connection.cursor()
     cursor.execute(query,[cod, dati["Sede"], dati["NomeCa"],])
     cursor.close()
