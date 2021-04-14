@@ -603,18 +603,6 @@ def del_libro(request, Cod):
         return HttpResponseRedirect(reverse('base'))
 
 def LibroDetailView(request,Cod):
-    """
-    if request.method == 'GET':             #controllo seriale o non seriale
-        cursor = connection.cursor()
-        cursor.execute("SELECT S.IDSeriale, S.IDNonseriale FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
-        ris = cursor.fetchall()
-        for record in ris:
-            IDSeriale = record.IDSeriale
-            IDNonseriale = record.IDNonseriale
-    else:
-        print("Errore")
-    """
-
     if request.method == 'GET':
             #controllo Seriale o Non Seriale
             if Cod[0]=='N':
@@ -686,33 +674,6 @@ def LibroDetailView(request,Cod):
             return render(request, 'detail.html', {'context':elemento})
     else:
         print("Errore")
-"""
-def HomePageViewSeriale(request):
-    #visualizza solo libri seriali
-    if request.method == 'GET':
-        context=[]
-        #visualizza campi essenziale per libri seriali
-        for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
-            elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
-            context.append(elemento)
-        return render(request, 'Serial.html',{'context_list':context}) 
-    else:
-        print("Errore")
-        
-def HomePageViewNonSeriale(request):
-    #visualizza solo libri non seriali
-    if request.method == 'GET':
-        context=[]
-        #visualizza campi essenziale per libri non seriali
-        for record in NonSeriale.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
-            elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
-            context.append(elemento)
-        return render(request, 'notSerial.html',{'context_list':context}) 
-    else:
-        print("Errore")
-"""
 
 def HomePageView(request):
     #homepage che visualizza tutti i libri
