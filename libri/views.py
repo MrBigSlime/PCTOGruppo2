@@ -127,6 +127,8 @@ def check(cod):
         query = "SELECT CodUser FROM libri_Utenti WHERE CodUser=%s"
     if cod[0]=='R':
         query = "SELECT CodPrestito FROM libri_Prestito WHERE CodPrestito=%s"
+    if cod[0]=='L':
+        query = "SELECT CodLibro FROM libri_SingoliLibri WHERE CodLibro=%s"
 
     cursor = connection.cursor()
     cursor.execute(query,[cod,])
@@ -140,11 +142,17 @@ def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di
     
     if id=="N":
         query="INSERT INTO libri_NonSeriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"          #controllo del tipo di libro che si vuole inserire 
-        cod="N"+str(randrange(1000))
+        while True:
+            cod="N"+str(randrange(1000))
+            if check(cod):
+                break
 
     else:
         query="INSERT INTO libri_Seriale VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"             
-        cod="S"+str(randrange(1000))
+        while True:
+            cod="S"+str(randrange(1000))
+            if check(cod):
+                break
 
     Dati=[cod,dati['Straniero'],dati['TitoloOrig'],dati['Titolo'],dati['Sottotitolo'],dati['AnnoEd'],dati['Illustrazioni'],dati['ISBN_ISSN'],dati['Genere'],dati['NumPub'],dati['CopertinaRigida'],dati['Ristampa'],dati['nRistampa'],dati['Edizione'],dati['NumPagine'],dati['Curatore'],dati['CodCri'],dati['CodAutore'],dati['CodCasaEd'],dati['CodCollane'],dati['CodPost'],dati['CodTrad']]
     cursor = connection.cursor()        #Apertura connessione al db
@@ -155,14 +163,20 @@ def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di
 def in_TradAutCur(dati):
     
     query="INSERT INTO libri_TradAutCur VALUES(%s,%s,%s,%s)"
-    cod="A"+str(randrange(1000))
+    while True:
+        cod="A"+str(randrange(1000))
+        if check(cod):
+            break
     cursor = connection.cursor()
     cursor.execute(query,[cod,dati["NazioneTr"],dati["CognomeTr"],dati["NomeTr"]])
     return cod
 
 def in_Collana(dati):
     query="INSERT INTO libri_Collane VALUES(%s, %s)"                #inserimento nuova collana
-    cod = "C"+str(randrange(1000))
+    while True:
+        cod = "C"+str(randrange(1000))
+        if check(cod):
+            break
     cursor = connection.cursor()
     cursor.execute(query,[cod, dati["NomeCo"]])
     cursor.close()
@@ -170,7 +184,10 @@ def in_Collana(dati):
 
 def in_CasaEd(dati):
     query="INSERT INTO libri_CasaEditrice VALUES(%s, %s, %s)"           #inseriment nuova CasaEditrice
-    cod = "E"+str(randrange(1000))                          
+    while True:
+        cod = "E"+str(randrange(1000)) 
+        if check(cod):
+            break
     cursor = connection.cursor()
     cursor.execute(query,[cod, dati["Sede"], dati["NomeCa"],])
     cursor.close()
@@ -202,7 +219,10 @@ def in_PostfazionePre(dati):    #Funzione per l'inserimento delle chiavi alla ta
     ris=cursor.fetchone()               
     if ris is None:             #Check se la coppia di codici autore è gia esistente nel db            
         query="INSERT INTO libri_PostfazionePre VALUES(%s,%s,%s)"
-        cod="P"+str(randrange(1000))
+        while True:
+            cod="P"+str(randrange(1000))
+            if check(cod):
+                break
         cursor.execute(query,[cod,autPostfazione,autPrefazione])
         cursor.close()
         return cod
@@ -401,7 +421,7 @@ def inserimento(request):
 
         else:
                 print(form.errors)
-                return HttpResponseRedirect(reverse('#errore'))
+                return HttpResponseRedirect(reverse('nuovo_libro'))
 
 
 def mod_libro(request,cod):
@@ -751,33 +771,33 @@ def vricerca(request):
         context=[]
         cursor=connection.cursor()
 
-        cursor.execute("SELECT S.CodLibro, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.Titolo=%s AND S.IDAutoreCuratore_id=T.CodAutore OR S.Genere=%s AND S.IDAutoreCuratore_id=T.CodAutore",[dato,dato])
+        cursor.execute("SELECT S.CodLibro, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere, S.ISSN FROM libri_Seriale S, libri_TradAutCur T WHERE S.Titolo=%s AND S.IDAutoreCuratore_id=T.CodAutore OR S.Genere=%s AND S.IDAutoreCuratore_id=T.CodAutore",[dato,dato])
         ris=cursor.fetchmany()
         for record in ris:
             elemento = objlist()
-            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
+            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[5],record[0])
             context.append(elemento)
-        cursor.execute("SELECT N.CodLibro, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.Titolo=%s AND N.IDAutoreCuratore_id=T.CodAutore OR N.Genere=%s AND N.IDAutoreCuratore_id=T.CodAutore",[dato,dato])
+        cursor.execute("SELECT N.CodLibro, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere, N.ISBN FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.Titolo=%s AND N.IDAutoreCuratore_id=T.CodAutore OR N.Genere=%s AND N.IDAutoreCuratore_id=T.CodAutore",[dato,dato])
         ris=cursor.fetchmany()
         for record in ris:
             elemento = objlist()
-            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
+            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[5],record[0])
             context.append(elemento)
         
         datos=dato.split(" ",1)
         datos.append(" ")
-        cursor.execute("SELECT T.CodAutore, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE T.NomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.NomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore",[datos[0],datos[1],datos[1],datos[0]])
+        cursor.execute("SELECT T.CodAutore, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere, N.ISBN FROM libri_NonSeriale N, libri_TradAutCur T WHERE T.NomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.NomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore",[datos[0],datos[1],datos[1],datos[0]])
         ris=cursor.fetchmany()  
         for record in ris: 
             elemento = objlist()
-            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
+            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[5],record[0])
             context.append(elemento) 
         
-        cursor.execute("SELECT T.CodAutore, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE T.NomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.NomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore",[datos[0],datos[1],datos[1],datos[0]])
+        cursor.execute("SELECT T.CodAutore, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere, S.ISSN FROM libri_Seriale S, libri_TradAutCur T WHERE T.NomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.NomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore",[datos[0],datos[1],datos[1],datos[0]])
         ris=cursor.fetchmany()  
         for record in ris: 
             elemento = objlist()
-            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
+            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[5],record[0])
             context.append(elemento) 
 
         return context
@@ -796,7 +816,6 @@ def HomePageView(request):
 
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.ISBN,record.CodLibro)
-            print(elemento.CodLibro)
             context.append(elemento)
 
         #visualizza campi essenziali per libri seriali e caricamento datalist per ricerca 
@@ -807,7 +826,6 @@ def HomePageView(request):
 
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.ISSN,record.CodLibro)
-            print(elemento.CodLibro)
             context.append(elemento)
        
         for ris in Collane.objects.raw("SELECT C.NomeCo,C.CodCollane FROM libri_Collane C"):
@@ -861,8 +879,6 @@ def PrenotazioneView(request):
                 if check(cod):
                     break
 
-            cod = "R"+str(randrange(1000))
-
             query="INSERT INTO libri_Prestito VALUES(%s,%s,%s,%s,%s,%s)"                                                        #CHECK
             dati=[cod,data[1],data[0],ritardo,idlib,codU]
             
@@ -871,7 +887,7 @@ def PrenotazioneView(request):
             cursor.close()
             return HttpResponseRedirect(reverse('base')) 
         else:
-            print("libro gia prenotato")
+            return HttpResponseRedirect(reverse('delS')) 
 
 def UtentiIn(request):
 
@@ -924,7 +940,7 @@ def inData(request):
         else:
 
             print(form.errors)
-            return HttpResponseRedirect(reverse('#errore'))
+            return HttpResponseRedirect(reverse('prnt'))
 
 def CodLibro(request):
     
@@ -938,7 +954,7 @@ def CodLibro(request):
 
         else:
             print(form.errors)
-            return HttpResponseRedirect(reverse('#errore'))
+            return HttpResponseRedirect(reverse('prnt'))
         
 def CheckRitardo():                                                                             #view per il controllo sul ritardo
     oggi = datetime.date.today()
@@ -966,7 +982,10 @@ def PrestitoPageView(request):
 
 def invDef(codlib):
     cursor = connection.cursor()
-    cod="L"+str(randrange(1000))
+    while True:
+        cod="L"+str(randrange(1000))
+        if check(cod):
+            break
     
     if codlib[0] == 'N':                                                                     #In base al identificatore si decide se eliminare o inserire un libro
         query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale_id) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
@@ -1029,7 +1048,7 @@ def Ghet(request,Cod,Nlibs):
                 return codgen
     else:
         print(form.errors)
-        return HttpResponseRedirect(reverse('#errore'))
+        return HttpResponseRedirect(reverse('base'))
             
 def del_singoloView(request):
     cursor = connection.cursor()
@@ -1051,14 +1070,13 @@ def del_singoloView(request):
                 return HttpResponseRedirect(reverse('base'))
 
             else:
-                print("Il libro è in prestito")
                 return HttpResponseRedirect(reverse('delS'))
             
 
         else:
 
             print(form.errors)
-            return HttpResponseRedirect(reverse('#errore'))   
+            return HttpResponseRedirect(reverse('delS'))   
 
 def ResetSingoloView(request,Cod):
     cursor = connection.cursor()
@@ -1106,7 +1124,7 @@ def Register(request):
             return HomePageView(request)
         else:
             print(form.errors)
-            return HttpResponseRedirect(reverse('#errore'))
+            return HttpResponseRedirect(reverse('register'))
 
 def loginView(request):
 
