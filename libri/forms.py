@@ -87,3 +87,5 @@ class UserLoginForm(forms.Form):
     Password = forms.CharField(label="Password", max_length = 256, widget=forms.PasswordInput(attrs={'class' : 'logclass', 'placeholder':'Password'}))
 
 
+class ricercaform(forms.Form):
+    Campo = forms.CharField(label="camporicerca", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Ricerca per NomeAutore,Genere,Titolo,'}))
