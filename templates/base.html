@@ -22,11 +22,6 @@
             </div>
             <div class="search-bar">
                 <input type="text" list="BookList" placeholder="Inserisci il titolo del libro..." />
-                <datalist id="BookList">
-                    {% for results in lista %}
-                    <option>{{results}}</option>
-                    {% endfor %}
-                </datalist>
                 <div class="lente">
                     <img src="{% static './img/iconmonstr-magnifier-2.svg' %}">
                 </div>
@@ -44,12 +39,22 @@
         <div class="nav-links">
             <div class="under-links">
                 <ul>
-                    <li><a href="notSerial.html">Libri NON Seriali</a></li>
-                    <li><a href="Serial.html">Libri Seriali</a></li>
-                    <li><a href="CaseEditrici.html">Case Editrici</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'register' %}">Registrazione</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'prnt' %}">Prenotazione</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'delS' %}">Elimina Libro</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'ritardi' %}">Ritardi</a></li>
+                    {% endif %}
                     {% if user.is_authenticated %}   
                     <li><a href="{% url 'nuovo_libro' %}">Nuovo Libro</a></li>
                     {% endif %}
+                    <li><a href="https://www.einaudicorreggio.edu.it/" target="blank">Contatti</a></li>
                 </ul>
             </div>
         </div>
