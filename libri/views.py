@@ -861,8 +861,6 @@ def PrenotazioneView(request):
                 if check(cod):
                     break
 
-            cod = "R"+str(randrange(1000))
-
             query="INSERT INTO libri_Prestito VALUES(%s,%s,%s,%s,%s,%s)"                                                        #CHECK
             dati=[cod,data[1],data[0],ritardo,idlib,codU]
             
