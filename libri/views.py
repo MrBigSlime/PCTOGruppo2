@@ -655,9 +655,15 @@ def mod_libro(request,cod):
         cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomeC,CognomeC,NazioneC,Critico.CodAutore,])
         cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomeTr,CognomeTr,NazioneTr,Traduttore.CodAutore,])
         cursor.close()
-         Ghet(request,CodLibro,QLibri)
+        http=Ghet(request,CodLibro,QLibri)
+        if http is None:
+            return HttpResponseRedirect(reverse('base'))
+        else:
+            print(http)
+            return render(request, 'listanuovi.html', {'context':http})
 
-        return HttpResponseRedirect(reverse('base'))
+
+        
         
         
     """
@@ -984,7 +990,7 @@ def invDef(codlib):
 def Ghet(request,Cod,Nlibs):
 #funzione che ritorna il numero di libri di un modello
     
-    codgen = []
+    
     
     cursor = connection.cursor()
     if request.method == 'GET':
@@ -1023,12 +1029,13 @@ def Ghet(request,Cod,Nlibs):
 
             Nlibs=int(Nlibs)                    #numero totale dei libri
             if Nlibs > numero_libri :
+                codgen = []
                 ris = Nlibs - numero_libri
                 #aggiunta del libro fino al raggiungimento del numero totale dei libri
                 for x in range(ris):
                     a = invDef(Cod)
-                    codgen.append(a)
-         return render(request, 'listanuovi.html', {'context':codgen})
+                    codgen.append(a)  
+                return codgen
     else:
         print(form.errors)
         return HttpResponseRedirect(reverse('#errore'))
