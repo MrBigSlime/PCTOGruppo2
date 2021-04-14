@@ -83,13 +83,12 @@ class objlist():
         self.CognomeCu = CognomeCu
         self.NazioneCu = NazioneCu
 
-    def inserimentoHome(self,Titolo, Autore, Genere,Cod, ISBN):
+    def inserimentoHome(self,Titolo, Autore, Genere,ISBN,Cod):
         self.Titolo = Titolo
         self.Autore = Autore
         self.Genere = Genere
         self.CodLibro = Cod
         self.ISBN_ISSN = ISBN
-
     
 class listaPrestiti():
     def __Init__(self):
@@ -813,30 +812,84 @@ def HomePageViewNonSeriale(request):
     else:
         print("Errore")
 """
+def vricerca(request):
+
+    if request.method == 'POST':
+        form=ricercaform(request.POST)
+        dato=request.POST.get("Campo")
+        context=[]
+        cursor=connection.cursor()
+
+        cursor.execute("SELECT S.CodLibro, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.Titolo=%s AND S.IDAutoreCuratore_id=T.CodAutore OR S.Genere=%s AND S.IDAutoreCuratore_id=T.CodAutore",[dato,dato])
+        ris=cursor.fetchmany()
+        for record in ris:
+            elemento = objlist()
+            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
+            context.append(elemento)
+        cursor.execute("SELECT N.CodLibro, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.Titolo=%s AND N.IDAutoreCuratore_id=T.CodAutore OR N.Genere=%s AND N.IDAutoreCuratore_id=T.CodAutore",[dato,dato])
+        ris=cursor.fetchmany()
+        for record in ris:
+            elemento = objlist()
+            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
+            context.append(elemento)
+        
+        datos=dato.split(" ",1)
+        datos.append(" ")
+        cursor.execute("SELECT T.CodAutore, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE T.NomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.NomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore",[datos[0],datos[1],datos[1],datos[0]])
+        ris=cursor.fetchmany()  
+        for record in ris: 
+            elemento = objlist()
+            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
+            context.append(elemento) 
+        
+        cursor.execute("SELECT T.CodAutore, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE T.NomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.NomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore",[datos[0],datos[1],datos[1],datos[0]])
+        ris=cursor.fetchmany()  
+        for record in ris: 
+            elemento = objlist()
+            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
+            context.append(elemento) 
+
+        return context
 
 def HomePageView(request):
     #homepage che visualizza tutti i libri
     if request.method == 'GET':
+        form = ricercaform()
         context=[]
-        #visualizza campi essenziale per libri non seriali
+        ricerca=[]
+        #visualizza campi essenziale per libri non seriali e inserimento del dato
         for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere,N.ISBN FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
-            print(record,"a")
+            ricerca.append(record.Titolo)
+            ricerca.append(record.NomeTr+" "+record.CognomeTr)
+            ricerca.append(record.Genere)
+
             elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro,record.ISBN)
-            #print(elemento.CodLibro)
-            context.append(elemento)
-        #visualizza campi essenziali per libri seriali
-        for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
-            print(record)
-            elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro," ")
-            #print(elemento.CodLibro)
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.ISBN,record.CodLibro)
+            print(elemento.CodLibro)
             context.append(elemento)
 
+        #visualizza campi essenziali per libri seriali e caricamento datalist per ricerca 
+        for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere,S.ISSN FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
+            ricerca.append(record.Titolo)
+            ricerca.append(record.NomeTr+" "+record.CognomeTr)
+            ricerca.append(record.Genere)
 
-        return render(request, 'index.html',{'context_list':context}) 
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.ISSN,record.CodLibro)
+            print(elemento.CodLibro)
+            context.append(elemento)
+       
+        for ris in Collane.objects.raw("SELECT C.NomeCo,C.CodCollane FROM libri_Collane C"):
+            ricerca.append(ris.NomeCo)
+
+        for ris in CasaEditrice.objects.raw("SELECT C.NomeCa,C.Sede,C.CodCasaEd FROM libri_CasaEditrice C"):
+            ricerca.append(ris.NomeCa)
+        
+        return render(request, 'index.html',{'form':form,'context_list':context,'ricerca':ricerca}) 
     else:
-        print("Errore")
+        context=vricerca(request)
+        form = ricercaform()
+        return render(request, 'index.html',{'form':form,'context_list':context})
 
 def UtentiIn(request): 
 
