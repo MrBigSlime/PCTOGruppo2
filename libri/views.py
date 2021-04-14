@@ -127,6 +127,8 @@ def check(cod):
         query = "SELECT CodUser FROM libri_Utenti WHERE CodUser=%s"
     if cod[0]=='R':
         query = "SELECT CodPrestito FROM libri_Prestito WHERE CodPrestito=%s"
+    if cod[0]=='L':
+        query = "SELECT CodLibro FROM libri_SingoliLibri WHERE CodLibro=%s"
 
     cursor = connection.cursor()
     cursor.execute(query,[cod,])
