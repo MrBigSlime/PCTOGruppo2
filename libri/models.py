@@ -89,7 +89,7 @@ class Scaffale(models.Model):
 class Prestito(models.Model):
     CodPrestito = models.CharField(max_length = 4, primary_key = True)
     IDLibro = models.ForeignKey(SingoliLibri, on_delete = models.RESTRICT)
-    IDUtente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.RESTRICT)
+    IDUtente = models.ForeignKey(Utenti, on_delete = models.RESTRICT)
     Dateinizio = models.DateField()
     DataFine = models.DateField()
     Ritardo = models.BooleanField(default = False)

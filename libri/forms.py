@@ -72,9 +72,31 @@ class InserimentoLibro(forms.Form):
     CognomeCu = forms.CharField(label="Cognome Critico", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Cognome critico'}))
     NazioneCu = forms.CharField(label="Nazione Critico", max_length=256, required=False, widget=forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nazione critico'}))
     
+    #Singoli libri
+    QLibri = forms.CharField(label="QLibri", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
+    
     #Scaffale
     #CodScaffale = forms.CharField(label="Codice Scaffale", max_length=4, widget=forms.TextInput(attrs={'class' : 'formBox'}))
     #CatScaffale = forms.CharField(label="Categoria Scaffale", max_length=256, widget=forms.TextInput(attrs={'class' : 'formBox'}))
+    
+class PrenotazioneForm(forms.Form):
+    NomeU = forms.CharField(label="NomeU",max_length = 256, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Nome Utente*'}))
+    CognomeU = forms.CharField(label="CognomeU",max_length = 256, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Cognome Utente*'}))
+    Email = forms.CharField(label="Email",max_length = 256,required=False, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Email*'}))
+    NumTelefono = forms.CharField(label="NumTelefono",max_length = 10, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'Numero Telefono*'}))
+
+    DataInizioG = forms.CharField(label="DataInizioG",max_length = 2, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'gg'}))
+    DataInizioM = forms.CharField(label="DataInizioM",max_length = 2, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'mm'}))
+    DataInizioA = forms.CharField(label="DataInizioA",max_length = 4, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'aa'}))
+
+    DataFineG = forms.CharField(label="DataFineG",max_length = 2, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'gg'}))
+    DataFineM = forms.CharField(label="DataFineM",max_length = 2, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'mm'}))
+    DataFineA = forms.CharField(label="DataFineA",max_length = 4, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'aa'}))
+
+    IDLibro = forms.CharField(label = "IDLibro", max_length = 4,  widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'IDLibro'}))
+    
+class DelSingLib(forms.Form):
+    Numero = forms.CharField(label="CodLib", max_length=256, widget = forms.TextInput(attrs={'class' : 'formBox', 'placeholder':'IDLibro*'}))
 
 class UserRegistrationForm(forms.Form):
     Username = forms.CharField(label="Username", max_length = 256, widget=forms.TextInput(attrs={'class' : 'logclass', 'placeholder':'Username'}))

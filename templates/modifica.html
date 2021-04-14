@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% block content %} {% if user.is_authenticated %}
+
 <div class="add-box">
     <h1>Modifica</h1>
     <form method="post" autocomplete="off" class="addForm-box">
@@ -59,6 +60,9 @@
             <tr>
                 <td><span title="Nome Casa Editrice">{{form.NomeCa}}</span></td>
                 <td><span title="Sede casa Editrice">{{form.SedeCa}}</span></td>
+                <td>{{form.NomeCa}}</td>
+                <td>{{form.SedeCa}}</td>
+                <td>{{form.QLibri}}</td>
             </tr>
             <tr>
                 <!--Info traduttore-->

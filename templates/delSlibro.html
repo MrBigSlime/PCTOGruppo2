@@ -1,0 +1,23 @@
+{% extends 'base.html' %} 
+
+{% load static %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="Slibro-box">
+    <h1>Eliminazione</h1>
+    <form method="post" autocomplete="off" class="SlibroForm-box">
+
+        {% csrf_token %}
+
+        <table class="Slibro-detail">
+            <tr>
+                <td><span title="IDLibro">{{form.Numero}}</span></td>
+            </tr>
+        </table>
+
+        <input type="submit" value="Prenota" class="insBtn">
+    </form>
+</div>
+{% endif %}
+{% endblock content %}

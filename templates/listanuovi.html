@@ -1,0 +1,17 @@
+{% extends 'base.html' %} 
+
+{% load static %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+<div class="codici-box">
+  <ul>
+    {% for ris in context %}
+      <li>{{ ris }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% endif %}
+{% endblock content %}

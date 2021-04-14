@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static './css/base_style.css' %}">
     <link rel="stylesheet" href="{% static './css/newBook-style.css' %}">
     <link rel="stylesheet" href="{% static './css/ins_style.css' %}">
+    <link rel="stylesheet" href="{% static './css/prnt.css' %}">
     <link rel="icon" href="{% static 'favicon.ico' %}">
 </head>
 
@@ -44,22 +45,45 @@
                     <a onclick="return confirm('Sei sicuro?')", href="{% url 'cancella' record.CodLibro %}">Elimina</a>
                     <a href="{% url 'modifica_libro' record.CodLibro %}">Modifica</a>
                     <a href="{% url 'detail' record.CodLibro %}">Dettaglio</a>
+        <div class="nav-box">
+            <div class="logo">
+                <h4><a href="{% url 'base' %}">BiblioBase</a></h4>
+            </div>
+            <div class="search-bar">
+                <input type="text" list="BookList" placeholder="Inserisci il titolo del libro..." />
+                <div class="lente">
+                    <img src="{% static './img/iconmonstr-magnifier-2.svg' %}">
                 </div>
             </div>
             <div class="links">
                 <ul>
-                    <li><a href="{% url 'login' %}">Login</a></li>
+                    {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
         <div class="nav-links">
             <div class="under-links">
                 <ul>
-                    <li><a href="notSerial.html">Libri NON Seriali</a></li>
-                    <li><a href="Serial.html">Libri Seriali</a></li>
-                    <li><a href="CaseEditrici.html">Case Editrici</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'register' %}">Registrazione</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'prnt' %}">Prenotazione</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'delS' %}">Elimina Libro</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'ritardi' %}">Ritardi</a></li>
+                    {% endif %}
+                    {% if user.is_authenticated %}   
                     <li><a href="{% url 'nuovo_libro' %}">Nuovo Libro</a></li>
+                    {% endif %}
+                    <li><a href="https://www.einaudicorreggio.edu.it/" target="blank">Contatti</a></li>
                 </ul>
             </div>
         </div>

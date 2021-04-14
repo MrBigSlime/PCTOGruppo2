@@ -6,9 +6,9 @@ from libri.models import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from random import randrange
-from libri.forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+import datetime
 
 class objlist():                        
     def __Init__(self):
@@ -89,46 +89,54 @@ class objlist():
         self.Genere = Genere
         self.CodLibro = Cod
         self.ISBN_ISSN = ISBN
-        
-def vricerca(request):
 
-    if request.method == 'POST':
-        form=ricercaform(request.POST)
-        dato=request.POST.get("Campo")
-        context=[]
-        cursor=connection.cursor()
+    
+class listaPrestiti():
+    def __Init__(self):
+        self.CodLibro=""
+        self.DataInizio = ""
+        self.DataFine = ""
+        self.NomeUt = ""
+        self.CognomeUt = ""
+        self.NumTelefono = ""
+        self.Ritardo = False
 
-        cursor.execute("SELECT S.CodLibro, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.Titolo=%s AND S.IDAutoreCuratore_id=T.CodAutore OR S.Genere=%s AND S.IDAutoreCuratore_id=T.CodAutore",[dato,dato])
-        ris=cursor.fetchmany()
-        for record in ris:
-            elemento = objlist()
-            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
-            context.append(elemento)
-        cursor.execute("SELECT N.CodLibro, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.Titolo=%s AND N.IDAutoreCuratore_id=T.CodAutore OR N.Genere=%s AND N.IDAutoreCuratore_id=T.CodAutore",[dato,dato])
-        ris=cursor.fetchmany()
-        for record in ris:
-            elemento = objlist()
-            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
-            context.append(elemento)
-        
-        datos=dato.split(" ",1)
-        datos.append(" ")
-        cursor.execute("SELECT T.CodAutore, N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE T.NomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.NomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND N.IDAutoreCuratore_id=T.CodAutore",[datos[0],datos[1],datos[1],datos[0]])
-        ris=cursor.fetchmany()  
-        for record in ris: 
-            elemento = objlist()
-            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
-            context.append(elemento) 
-        
-        cursor.execute("SELECT T.CodAutore, S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE T.NomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.NomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore OR T.CognomeTr=%s AND S.IDAutoreCuratore_id=T.CodAutore",[datos[0],datos[1],datos[1],datos[0]])
-        ris=cursor.fetchmany()  
-        for record in ris: 
-            elemento = objlist()
-            elemento.inserimentoHome(record[1],record[2]+" "+record[3],record[4],record[0])
-            context.append(elemento) 
+    def inserimento(self,CodLibro,DataInizio, DataFine, NomeUt, CognomeUt, NumTelefono, Ritardo):
+        self.CodLibro=CodLibro
+        self.DataInizio = DataInizio
+        self.DataFine = DataFine
+        self.NomeUt = NomeUt
+        self.CognomeUt = CognomeUt
+        self.NumTelefono = NumTelefono
+        self.Ritardo = Ritardo
 
-        return context
-        
+def check(cod):
+    
+    if cod[0]=='N':
+        query = "SELECT CodLibro FROM libri_NonSeriale WHERE CodLibro=%s"
+    if cod[0]=='S':
+        query = "SELECT CodLibro FROM libri_Seriale WHERE CodLibri=%s"
+    if cod[0]=='A':
+        query = "SELECT CodAutore FROM libri_TradAutCur WHERE CodAutore=%s"
+    if cod[0]=='P':
+        query = "SELECT CodPostfazione FROM libri_PostfazionePre WHERE CodPostfazione=%s"
+    if cod[0]=='C':
+        query = "SELECT CodCollane FROM libri_Collane WHERE CodCollane=%s"
+    if cod[0]=='E':
+        query = "SELECT CodCasaEd FROM libri_CasaEditrice WHERE CodCasaEd=%s"
+    if cod[0]=='U':
+        query = "SELECT CodUser FROM libri_Utenti WHERE CodUser=%s"
+    if cod[0]=='R':
+        query = "SELECT CodPrestito FROM libri_Prestito WHERE CodPrestito=%s"
+
+    cursor = connection.cursor()
+    cursor.execute(query,[cod,])
+    ris=cursor.fetchone()
+    if ris is None:
+        return True
+    else:
+        return False
+
 def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di libro, dati=dizionario con i dati da inserire, id=identificatore tipo di libro 
     
     if id=="N":
@@ -143,6 +151,7 @@ def in_serNotser(dati,id):          #Funzione per l'inserimento di un modello di
     cursor = connection.cursor()        #Apertura connessione al db
     cursor.execute(query,Dati)                  
     cursor.close()
+    return cod
     
 def in_TradAutCur(dati):
     
@@ -200,10 +209,22 @@ def in_PostfazionePre(dati):    #Funzione per l'inserimento delle chiavi alla ta
         return cod
     else:
         return ris[0]
-        
 
+def in_Utenti(dati):
+    query="INSERT INTO libri_Utenti VALUES(%s,%s,%s,%s,%s)"
+    while True:
+        cod="U"+str(randrange(1000))                                                                                            #CHECK
+        if check(cod):
+            break                                                                                           #CHECK
+    cursor = connection.cursor()
+    cursor.execute(query,[cod,dati["CognomeUt"],dati["NomeUt"],dati["Email"],dati["NumTelefono"]])
+    return cod
 
 def inspector(dati,identificatore):                                 #funzione che gestrisce il controllo della esistenza di un dato nel database
+
+    if(identificatore=="U"):
+        query="SELECT U.CodUser FROM libri_Utenti U WHERE U.NomeUt=%s AND U.CognomeUt=%s AND U.Email=%s AND U.NumTelefono=%s "
+        dato=[dati["NomeUt"],dati["CognomeUt"],dati["Email"],dati["NumTelefono"]]
 
     if(identificatore=="A"):            
         query="SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.NazioneTr=%s"
@@ -228,6 +249,9 @@ def inspector(dati,identificatore):                                 #funzione ch
     
     if ris is None:
 
+        if(identificatore=="U"):
+            cod=in_Utenti(dati)
+        
         if(identificatore=="A"):
             cod=in_TradAutCur(dati)
 
@@ -376,13 +400,16 @@ def inserimento(request):
 def mod_libro(request,cod):
     context=[]
     if request.method == 'GET':
-        form = InserimentoLibro()
-
+        
+        totale=Ghet(request,cod,"")
+        
+        """
         nomiautori=[]
         cognomiautori=[]
         casaed=[]
         sedeed=[]
-        collane=[]                                                                                               #invio delle liste per i datalist
+        collane=[]  
+                                                                                                     #invio delle liste per i datalist
         for ris in TradAutCur.objects.raw("SELECT A.NomeTr,A.CognomeTr,A.CodAutore FROM libri_TradAutCur A"):
             nomiautori.append(ris.NomeTr)
             cognomiautori.append(ris.CognomeTr)
@@ -393,7 +420,7 @@ def mod_libro(request,cod):
 
         for ris in Collane.objects.raw("SELECT C.NomeCo,C.CodCollane FROM libri_Collane C"):
             collane.append(ris.NomeCo)
-
+        """
         if cod[0]=='N':
             ide='off'
             query="SELECT N.CodLibro, N.IDCollana_id, N.IDCasaEd_id, N.IDAutoreCuratore_id, N.Straniero, N.TitoloOrig, N.Titolo, N.Sottotitolo, N.AnnoEd, N.Illustrazioni, N.ISBN, N.Genere, N.NumPub, N.CopertinaRigida, N.Ristampa, N.nRistampa, N.Edizione, N.NumPagine, N.Curatore, N.Traduttore_id, N.Critico_id FROM libri_NonSeriale N WHERE N.CodLibro=%s"
@@ -488,10 +515,11 @@ def mod_libro(request,cod):
             elemento={'Straniero':Stranieroo,'TitoloOrig':TitoloOrig,'Titolo':Titolo,'Sottotitolo':Sottotitolo,'AnnoEd':AnnoEd,'Illustrazioni':Illustrazionii,'Genere':str(Genere),'NumPub':NumPub,'CopertinaRigida':Copertina,
             'Ristampa':Ristampaa,'nRistampa':nRistampa,'Edizione':Edizione,'NumPagine':NumPagine,'Curatore':Curatoree,'Traduttore':Traduttore,'Critico':Critico,'NomeCo':NomeCo,'SedeCa':Sede,
             'NomeCa':NomeCa,'NomeAu':NomeAu,'CognomeAu':CognomeAu,'NazioneAu':NazioneAu,'NomeTr':NomeTr,'CognomeTr':CognomeTr,'NazioneTr':NazioneTr,'NomeCu':NomeCu,'CognomeCu':CognomeCu,'NazioneCu':NazioneCu,
-            'NomePost':NomePo,'CognomePost':CognomePo,'NazionePost':NazionePo,'NomePre':NomePr,'CognomePre':CognomePr,'NazionePre':NazionePr,'ISBN_ISSN':ISBN,'IsSerial':ide}
+            'NomePost':NomePo,'CognomePost':CognomePo,'NazionePost':NazionePo,'NomePre':NomePr,'CognomePre':CognomePr,'NazionePre':NazionePr,'ISBN_ISSN':ISBN,'IsSerial':ide,"QLibri":totale}
            
             form = InserimentoLibro(initial=elemento)       
-        return(render(request,"modifica.html",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed,'collane':collane}))
+        #return(render(request,"modifica.html",{'form':form,'NomiAu':nomiautori,'cognomiAu':cognomiautori,'casaEd':casaed,'sede':sedeed,'collane':collane}))
+        return(render(request,"modifica.html",{'form':form}))
 
     if request.method== 'POST':
         form = InserimentoLibro(request.POST)
@@ -557,7 +585,7 @@ def mod_libro(request,cod):
         CognomeC=request.POST.get("CognomeCu")
         NazioneC=request.POST.get("NazioneCu")
 
-        #Dati collane e casa editrice
+            #dati collane e casa editrice
         NomeCo=request.POST.get("NomeCo")
         NomeCa=request.POST.get("NomeCa")
         SedeCa =request.POST.get("SedeCa")
@@ -577,16 +605,22 @@ def mod_libro(request,cod):
         CognomePre=request.POST.get("CognomePre")
         NazionePre=request.POST.get("NazionePre") 
 
+        #Singoli Libri
+        QLibri=request.POST.get("QLibri") 
+       
         cursor = connection.cursor()
     
         if identificatore=='on':                        #Controllo se l'utente ha modificato la serialità del libro 
             if cod[0]=='N':
                 
                 dati={'CodLibro':CodLibro,'CodCollane':IDCollana.CodCollane,'CodCasaEd':IDCasaEd.CodCasaEd,'CodAutore':IDAutoreCuratore.CodAutore,'CodPost':IDPostPrefazione.CodPostfazione,'CodTrad':Traduttore.CodAutore,'CodCri':Critico.CodAutore,'TitoloOrig':TitoloOrig,'Titolo':Titolo,'Sottotitolo':Sottotitolo,'AnnoEd':AnnoEd,'ISBN_ISSN':ISBN_ISSN,'Genere':Genere,'NumPub':NumPub,'nRistampa':nRistampa,'Edizione':Edizione,'NumPagine':NumPagine,'Ristampa':Ristampa,'Straniero':Straniero,'Illustrazioni':Illustrazioni,'Curatore':Curatore,'CopertinaRigida':CopertinaRigida}
-                in_serNotser(dati,'S')
-                #viene chiamata la funzione per l'inserimento ed viene eliminato la riga 
+                cod=in_serNotser(dati,'S')
+                #viene chiamata la funzione per l'inserimento ed viene eliminato la riga  
+                query = "UPDATE libri_SingoliLibri SET IDNonseriale_id=NULL,IDSeriale_id=%s WHERE IDNonseriale_id=%s" 
+                dato=[cod,CodLibro,]  
+                cursor.execute(query,dato)  
                 query="DELETE FROM libri_NonSeriale WHERE CodLibro=%s"
-                cursor.execute(query,[cod,])        
+                cursor.execute(query,[CodLibro,])   
             else:
                 #query per l'update
                 query="UPDATE libri_Seriale SET TitoloOrig=%s, Titolo=%s, Sottotitolo=%s, AnnoEd=%s, ISSN=%s, Genere=%s, NumPub=%s, nRistampa=%s, Edizione=%s, NumPagine=%s, Ristampa=%s, Straniero=%s, Illustrazioni=%s, Curatore=%s,CopertinaRigida=%s WHERE CodLibro=%s"
@@ -596,10 +630,17 @@ def mod_libro(request,cod):
             if cod[0]=="S":
                 
                 dati={'CodLibro':CodLibro,'CodCollane':IDCollana.CodCollane,'CodCasaEd':IDCasaEd.CodCasaEd,'CodAutore':IDAutoreCuratore.CodAutore,'CodPost':IDPostPrefazione.CodPostfazione,'CodTrad':Traduttore.CodAutore,'CodCri':Critico.CodAutore,'TitoloOrig':TitoloOrig,'Titolo':Titolo,'Sottotitolo':Sottotitolo,'AnnoEd':AnnoEd,'ISBN_ISSN':ISBN_ISSN,'Genere':Genere,'NumPub':NumPub,'nRistampa':nRistampa,'Edizione':Edizione,'NumPagine':NumPagine,'Ristampa':Ristampa,'Straniero':Straniero,'Illustrazioni':Illustrazioni,'Curatore':Curatore,'CopertinaRigida':CopertinaRigida}
-                in_serNotser(dati,'N')
+                cod=in_serNotser(dati,'N')
                 #viene chiamata la funzione per l'inserimento ed viene eliminato la riga 
+
+                query = "UPDATE libri_SingoliLibri SET IDSeriale_id=NULL,IDNonseriale_id=%s WHERE IDSeriale_id=%s" 
+                dato=[cod,CodLibro,]  
+                cursor.execute(query,dato) 
+
                 query="DELETE FROM libri_Seriale WHERE CodLibro=%s"
-                cursor.execute(query,[cod,])
+                cursor.execute(query,[CodLibro,])
+
+                
             else:
                 #query per l'update
                 query="UPDATE libri_NonSeriale SET TitoloOrig=%s,Titolo=%s,Sottotitolo=%s,AnnoEd=%s,ISBN=%s,Genere=%s,NumPub=%s,nRistampa=%s,Edizione=%s,NumPagine=%s,Ristampa=%s,Straniero=%s,Curatore=%s,CopertinaRigida=%s,Illustrazioni=%s WHERE CodLibro=%s"
@@ -614,23 +655,59 @@ def mod_libro(request,cod):
         cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomeC,CognomeC,NazioneC,Critico.CodAutore,])
         cursor.execute("UPDATE libri_TradAutCur SET NomeTr=%s,CognomeTr=%s,NazioneTr=%s WHERE CodAutore=%s",[NomeTr,CognomeTr,NazioneTr,Traduttore.CodAutore,])
         cursor.close()
-        return HttpResponseRedirect(reverse('base'))
+        http=Ghet(request,CodLibro,QLibri)
+        if http is None:
+            return HttpResponseRedirect(reverse('base'))
+        else:
+            print(http)
+            return render(request, 'listanuovi.html', {'context':http})
+
+
         
+        
+        
+    """
+    def del_libro(request, Cod):
+        cursor = connection.cursor()
+        if request.method =='GET':
+            cursor.execute("DELETE FROM libri_SingoliLibri S WHERE S.CodLibro=%s",[Cod,])
+            return HttpResponseRedirect(reverse('base'))
+            cursor.close()
+        else:
+            print("Errore")
+    """
 
 def del_libro(request, Cod):
     cursor = connection.cursor()
     #elimina la row in base al codice inserito
     if request.method =='GET':
+
         if Cod[0]=='N':
+            query="DELETE FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
+            cursor.execute(query,[Cod,])
             query="DELETE FROM libri_NonSeriale WHERE CodLibro=%s"
-            
+            cursor.execute(query,[Cod,])
         if Cod[0]=='S':
+            query="DELETE FROM libri_SingoliLibri WHERE IDSeriale_id=%s"
+            cursor.execute(query,[Cod,])
             query="DELETE FROM libri_Seriale WHERE CodLibro=%s"
-        cursor.execute(query,[Cod,])
+            cursor.execute(query,[Cod,])
         cursor.close()
         return HttpResponseRedirect(reverse('base'))
 
 def LibroDetailView(request,Cod):
+    """
+    if request.method == 'GET':             #controllo seriale o non seriale
+        cursor = connection.cursor()
+        cursor.execute("SELECT S.IDSeriale, S.IDNonseriale FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
+        ris = cursor.fetchall()
+        for record in ris:
+            IDSeriale = record.IDSeriale
+            IDNonseriale = record.IDNonseriale
+    else:
+        print("Errore")
+    """
+
     if request.method == 'GET':
             #controllo Seriale o Non Seriale
             if Cod[0]=='N':
@@ -702,52 +779,317 @@ def LibroDetailView(request,Cod):
             return render(request, 'detail.html', {'context':elemento})
     else:
         print("Errore")
+"""
+def HomePageViewSeriale(request):
+    #visualizza solo libri seriali
+    if request.method == 'GET':
+        context=[]
+        #visualizza campi essenziale per libri seriali
+        for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
+            context.append(elemento)
+        return render(request, 'Serial.html',{'context_list':context}) 
+    else:
+        print("Errore")
+        
+def HomePageViewNonSeriale(request):
+    #visualizza solo libri non seriali
+    if request.method == 'GET':
+        context=[]
+        #visualizza campi essenziale per libri non seriali
+        for record in NonSeriale.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
+            elemento = objlist()
+            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
+            context.append(elemento)
+        return render(request, 'notSerial.html',{'context_list':context}) 
+    else:
+        print("Errore")
+"""
 
 def HomePageView(request):
     #homepage che visualizza tutti i libri
     if request.method == 'GET':
-        form = ricercaform()
         context=[]
-        ricerca=[]
-        #visualizza campi essenziale per libri non seriali e inserimento del dato
-        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
-            ricerca.append(record.Titolo)
-            ricerca.append(record.NomeTr+" "+record.CognomeTr)
-            ricerca.append(record.Genere)
-
+        #visualizza campi essenziale per libri non seriali
+        for record in NonSeriale.objects.raw("SELECT N.CodLibro,N.Titolo,T.NomeTr,T.CognomeTr,N.Genere,N.ISBN FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
+            print(record,"a")
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro,record.ISBN)
             #print(elemento.CodLibro)
             context.append(elemento)
-
-        #visualizza campi essenziali per libri seriali e caricamento datalist per ricerca 
+        #visualizza campi essenziali per libri seriali
         for record in Seriale.objects.raw("SELECT S.CodLibro,S.Titolo,T.NomeTr,T.CognomeTr,S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
-            ricerca.append(record.Titolo)
-            ricerca.append(record.NomeTr+" "+record.CognomeTr)
-            ricerca.append(record.Genere)
-
+            print(record)
             elemento = objlist()
             elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere,record.CodLibro," ")
             #print(elemento.CodLibro)
             context.append(elemento)
-       
-        for ris in Collane.objects.raw("SELECT C.NomeCo,C.CodCollane FROM libri_Collane C"):
-            ricerca.append(ris.NomeCo)
 
-        for ris in CasaEditrice.objects.raw("SELECT C.NomeCa,C.Sede,C.CodCasaEd FROM libri_CasaEditrice C"):
-            ricerca.append(ris.NomeCa)
-        
-        return render(request, 'base.html',{'form':form,'context_list':context,'ricerca':ricerca}) 
+
+        return render(request, 'index.html',{'context_list':context}) 
     else:
-        context=vricerca(request)
-        form = ricercaform()
-        return render(request, 'base.html',{'form':form,'context_list':context}) 
+        print("Errore")
 
+def UtentiIn(request): 
 
+    if request.method == 'POST':
+        form = PrenotazioneForm(request.POST)
+        NomeUt=request.POST.get("NomeU")
+        CognomeUt=request.POST.get("CognomeU")
+        Email=request.POST.get("Email")
+        NumeroTelefono=request.POST.get("NumTelefono")
+        dati={"NomeUt":NomeUt,"CognomeUt":CognomeUt,"Email":Email,"NumeroTelefono":NumeroTelefono}
+        cod=inspector(dati,"U")
 
+        return cod
 
+def PrenotazioneView(request):
 
-def Register(request):                                                                  #view per la registrazione
+    if request.method == 'GET':
+        form=PrenotazioneForm()
+        return render(request, 'prenotazione.html',{"form":form})    
+        
+    if request.method == 'POST':
+        cursor=connection.cursor()
+        query="SELECT P.CodPrestito FROM libri_Prestito P, libri_SingoliLibri S WHERE S.CodLibro=%s"
+
+        ritardo=False
+        UtentiIn(request)
+        data=inData(request)
+        idlib=CodLibro(request)
+        codU=UtentiIn(request)
+        cursor.execute(query,[idlib,])
+        if data is None:
+            return HttpResponseRedirect(reverse('prnt'))
+
+        if cursor.fetchone() is None:
+                
+            while True:
+                cod = "R"+str(randrange(1000))
+                if check(cod):
+                    break
+
+            cod = "R"+str(randrange(1000))
+
+            query="INSERT INTO libri_Prestito VALUES(%s,%s,%s,%s,%s,%s)"                                                        #CHECK
+            dati=[cod,data[1],data[0],ritardo,idlib,codU]
+            
+            
+            cursor.execute(query,dati)
+            cursor.close()
+            return HttpResponseRedirect(reverse('base')) 
+        else:
+            print("libro gia prenotato")
+
+def UtentiIn(request):
+
+    if request.method == 'POST':
+        form = PrenotazioneForm(request.POST)
+        NomeUt=request.POST.get("NomeU")
+        CognomeUt=request.POST.get("CognomeU")
+        Email=request.POST.get("Email")
+        NumeroTelefono=request.POST.get("NumTelefono")
+        dati={"NomeUt":NomeUt,"CognomeUt":CognomeUt,"Email":Email,"NumTelefono":NumeroTelefono}
+        cod=inspector(dati,"U")
+
+        return cod
+        
+def inData(request):
+    
+    if request.method == 'POST':
+        form = PrenotazioneForm(request.POST)
+        if form.is_valid():
+
+            DataInizioG = request.POST.get("DataInizioG")
+            DataInizioM = request.POST.get("DataInizioM")
+            DataInizioA = request.POST.get("DataInizioA")
+
+            DataFineG = request.POST.get("DataFineG")
+            DataFineM = request.POST.get("DataFineM")
+            DataFineA = request.POST.get("DataFineA")
+
+            if DataInizioA>DataFineA:
+                return None
+
+            if DataInizioA==DataFineA:
+                if DataInizioM>DataFineM:
+                    return None
+
+            if DataInizioA==DataFineA:
+                if DataInizioM==DataFineM:
+                    if DataFineG>DataInizioG:
+                        return None
+
+            if DataInizioA==DataFineA:
+                if DataInizioM==DataFineM:
+                    if DataFineG==DataInizioG:
+                        return None
+            
+            DataInizio =  DataInizioA + "-" + DataInizioM + "-" + DataInizioG
+            DataFine = DataFineA + "-" + DataFineM + "-" + DataFineG
+            return [DataFine,DataInizio]
+
+        else:
+
+            print(form.errors)
+            return HttpResponseRedirect(reverse('#errore'))
+
+def CodLibro(request):
+    
+    if request.method == 'POST':
+        cursor = connection.cursor()
+        form = PrenotazioneForm(request.POST)
+        if form.is_valid():
+
+            IDLibro = request.POST.get("IDLibro")
+            return IDLibro
+
+        else:
+            print(form.errors)
+            return HttpResponseRedirect(reverse('#errore'))
+        
+def CheckRitardo():                                                                             #view per il controllo sul ritardo
+    oggi = datetime.date.today()
+    cursor = connection.cursor()
+    query = "UPDATE libri_Prestito SET Ritardo = true WHERE DataFine < %s"                      #bool ritardo viene aggiornato a True se la data fine è minore di oggi
+    cursor.execute(query,[oggi,])
+    cursor.close()
+
+def PrestitoPageView(request):                                                                  
+    CheckRitardo()
+    if request.method == 'GET':
+        context = []
+        query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo FROM libri_Prestito P, libri_Utenti U WHERE P.IDUtente_id = U.CodUser ORDER BY P.Datafine"
+        
+
+        for record in Prestito.objects.raw(query):
+            context=[]
+            elemento = listaPrestiti()
+            elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
+            context.append(elemento)
+            
+        return render(request, 'ritardi.html',{'context_list':context}) 
+    else:
+        print("Errore")
+
+def invDef(codlib):
+    cursor = connection.cursor()
+    cod="L"+str(randrange(1000))
+    
+    if codlib[0] == 'N':                                                                     #In base al identificatore si decide se eliminare o inserire un libro
+        query="INSERT INTO libri_SingoliLibri(CodLibro,IDNonseriale_id) VALUES(%s,%s)"       #nel inserimento si controlla il codice per capire se è seriale oppure no
+    else:
+        query="INSERT INTO libri_SingoliLibri(CodLibro,IDSeriale_id) VALUES(%s,%s)"
+
+    cursor.execute(query,[cod,codlib])
+    cursor.close()        
+ 
+    return cod
+
+def Ghet(request,Cod,Nlibs):
+#funzione che ritorna il numero di libri di un modello
+    
+    
+    
+    cursor = connection.cursor()
+    if request.method == 'GET':
+        
+        
+        if Cod[0]=='N':
+            query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
+
+        if Cod[0]=='S':
+            query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDSeriale_id=%s"
+        
+        cursor.execute(query, [Cod,])
+        numero_libri = cursor.fetchone()
+        Listlib=list(numero_libri)
+        numero_libri=Listlib.pop()
+        return numero_libri
+
+    elif request.method == 'POST':
+#funzione che ritorna il numero di un modello
+        form = InserimentoLibro(request.POST)
+        if form.is_valid():
+            if Cod[0]=='N':
+                query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
+            
+
+            if Cod[0]=='S':
+                query="SELECT COUNT(*) FROM libri_SingoliLibri WHERE IDSeriale_id=%s"
+               
+        
+            cursor.execute(query, [Cod,])
+            numero_libri = cursor.fetchone()
+            Listlib=list(numero_libri)
+            numero_libri=Listlib.pop()
+            if numero_libri is None:
+                numero_libri=0
+
+            Nlibs=int(Nlibs)                    #numero totale dei libri
+            if Nlibs > numero_libri :
+                codgen = []
+                ris = Nlibs - numero_libri
+                #aggiunta del libro fino al raggiungimento del numero totale dei libri
+                for x in range(ris):
+                    a = invDef(Cod)
+                    codgen.append(a)  
+                return codgen
+    else:
+        print(form.errors)
+        return HttpResponseRedirect(reverse('#errore'))
+            
+def del_singoloView(request):
+    cursor = connection.cursor()
+    #elimina la row in base al codice inserito
+    if request.method =='GET':
+        form = DelSingLib()
+        return(render(request,"delSlibro.html",{'form':form}))
+    if request.method =='POST':
+        form = DelSingLib(request.POST)
+        if form.is_valid():
+            CodLibro = request.POST.get("Numero")
+            query ="SELECT P.IDLibro_id FROM libri_Prestito P, libri_SingoliLibri S WHERE S.Codlibro = P.IDLibro_id AND S.CodLibro=%s"                  #controllo dello stato di ritardo del libro
+            cursor.execute(query,[CodLibro,])
+            ris=cursor.fetchone()
+            if ris is None:
+                query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"                                                                                #eliminazione del libro se non è stato prestato
+                cursor.execute(query,[CodLibro,])
+                cursor.close()
+                return HttpResponseRedirect(reverse('base'))
+
+            else:
+                print("Il libro è in prestito")
+                return HttpResponseRedirect(reverse('delS'))
+            
+
+        else:
+
+            print(form.errors)
+            return HttpResponseRedirect(reverse('#errore'))   
+
+def ResetSingoloView(request,Cod):
+    cursor = connection.cursor()
+    if request.method =='GET':
+        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"                   #eliminazione del0itardo di un singolo libro 
+        cursor.execute(query,[Cod,])
+        cursor.close()
+        return HttpResponseRedirect(reverse('ritardi'))
+        
+def del_singololibro(request, Cod):
+    cursor = connection.cursor()
+    if request.method =='GET':
+        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"                       #eliminazione del ritardo di un singolo libro
+        cursor.execute(query,[Cod,])
+        query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"                                                                        #eliminazione del singolo libro stesso
+        cursor.execute(query,[Cod,])
+        cursor.close()
+        return HttpResponseRedirect(reverse('ritardi'))
+    else:
+        return HttpResponseRedirect(reverse('#errore'))    
+
+def Register(request):
 
     if request.method == 'GET':
         form = UserRegistrationForm()
@@ -759,15 +1101,14 @@ def Register(request):                                                          
         form = UserRegistrationForm(request.POST)
 
         if form.is_valid():
-            
-            #dati sull'utente
+
             CodUtente = request.POST.get("CodUtente")
             Username = request.POST.get("Username")
             NomeU = request.POST.get("NomeU")
             CognomeU = request.POST.get("CognomeU")
             Password = request.POST.get("Password")
-        
-            user = User.objects.create_user(Username,'',Password)                           #creazione dell'account
+
+            user = User.objects.create_user(Username,'',Password)
             user.last_name = CognomeU
             user.first_name = NomeU
             user.save()
@@ -776,19 +1117,18 @@ def Register(request):                                                          
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))
 
-def loginView(request):                                                                                 #view per login
+def loginView(request):
 
     if request.method == 'GET':
 
         form = UserLoginForm()
         return render(request, 'login.html',{'form':form})          
 
-    #nome utente e password
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         password = request.POST.get("Password")
         user = request.POST.get("Username")
-        user = authenticate(request, username=user, password=password)                      #autenticazione dell'utente
+        user = authenticate(request, username=user, password=password)
 
         if user is None:
             return render(request, 'login.html',{'form':form}) 
@@ -796,8 +1136,6 @@ def loginView(request):                                                         
             login(request, user)
             return HttpResponseRedirect(reverse('base'))
 
-def logoutview(request):                                                                                #view per il logout
+def logoutview(request):
     logout(request)
     return HttpResponseRedirect(reverse('base'))
-        
-

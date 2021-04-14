@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    box-sizing: border-box;
+    padding: 0%;
+    margin: 0%;
+    font-family: 'Poppins', sans-serif;
+}
+
+.prnt-box {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.prnt-box h1 {
+    text-align: center;
+}
+
+.prntForm-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.prnt-detail {
+    margin-left: 20px;
+    font-size: 13.99px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+.formBox {
+    border-bottom: 2px solid rgba(91, 110, 155, 0.692);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-size: 12px;
+    width: 200px;
+    text-align: center;
+    padding: 10px 10px;
+    margin-top: 20px;
+}
+
+.Slibro-box {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.Slibro-box h1 {
+    text-align: center;
+}
+
+.SlibroForm-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.Slibro-detail {
+    margin-left: 20px;
+    font-size: 13.99px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}

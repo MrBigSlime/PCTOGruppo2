@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if user.is_authenticated %}
+
+<div class="contenuto">
+    {% for record in context_list %}
+    <div class="view-detail">
+        <img src="http://covers.openlibrary.org/b/isbn/{{record.ISBN_ISSN}}-M.jpg">
+        
+        {% if record.Ritardo is True %}
+        <div class="buttons">
+            <a href="{% url 'reset' record.CodLibro %}"><button type="submit">Reset</button></a> 
+            <a href="{% url 'delrit' record.CodLibro %}"><button type="submit" style="background: #c22509;">Elimina</button></a>
+        </div>
+        {% endif %}
+        <div class="info-detail">
+            <ul>
+                <li style="font-weight: 500; font-size: 20px;">{{record.NomeUt}} {{record.CognomeUt}}</li>
+                <li>{{record.DataInizio}} {{record.DataFine}}</li>
+                <li style="font-style: italic; font-size: 15px;">{{record.NumTelefono}}</li>
+                <li style="font-style: italic; font-size: 15px;">{{record.Ritardo}}</li>
+            </ul>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock content %}
