@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static './css/newBook-style.css' %}">
     <link rel="stylesheet" href="{% static './css/ins_style.css' %}">
     <link rel="stylesheet" href="{% static './css/prnt.css' %}">
-    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <link rel="icon" href="{% static 'favicon.png' %}">
 </head>
 
 <header>
@@ -41,17 +41,13 @@
                 <ul>
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'register' %}">Registrazione</a></li>
-                    {% endif %}
-                    {% if user.is_authenticated %}
+                    {% endif %} {% if user.is_authenticated %}
                     <li><a href="{% url 'prnt' %}">Prenotazione</a></li>
-                    {% endif %}
-                    {% if user.is_authenticated %}
+                    {% endif %} {% if user.is_authenticated %}
                     <li><a href="{% url 'delS' %}">Elimina Libro</a></li>
-                    {% endif %}
-                    {% if user.is_authenticated %}
+                    {% endif %} {% if user.is_authenticated %}
                     <li><a href="{% url 'ritardi' %}">Ritardi</a></li>
-                    {% endif %}
-                    {% if user.is_authenticated %}   
+                    {% endif %} {% if user.is_authenticated %}
                     <li><a href="{% url 'nuovo_libro' %}">Nuovo Libro</a></li>
                     {% endif %}
                     <li><a href="https://www.einaudicorreggio.edu.it/" target="blank">Contatti</a></li>
