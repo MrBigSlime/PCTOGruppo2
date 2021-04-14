@@ -577,17 +577,6 @@ def mod_libro(request,cod):
         cursor.close()
         return HttpResponseRedirect(reverse('base'))
         
-        
-    """
-    def del_libro(request, Cod):
-        cursor = connection.cursor()
-        if request.method =='GET':
-            cursor.execute("DELETE FROM libri_SingoliLibri S WHERE S.CodLibro=%s",[Cod,])
-            return HttpResponseRedirect(reverse('base'))
-            cursor.close()
-        else:
-            print("Errore")
-    """
 
 def del_libro(request, Cod):
     cursor = connection.cursor()
@@ -709,14 +698,15 @@ def Register(request):                                                          
         form = UserRegistrationForm(request.POST)
 
         if form.is_valid():
-
+            
+            #dati sull'utente
             CodUtente = request.POST.get("CodUtente")
             Username = request.POST.get("Username")
             NomeU = request.POST.get("NomeU")
             CognomeU = request.POST.get("CognomeU")
             Password = request.POST.get("Password")
-
-            user = User.objects.create_user(Username,'',Password)
+        
+            user = User.objects.create_user(Username,'',Password)                           #creazione dell'account
             user.last_name = CognomeU
             user.first_name = NomeU
             user.save()
@@ -737,7 +727,7 @@ def loginView(request):                                                         
         form = UserLoginForm(request.POST)
         password = request.POST.get("Password")
         user = request.POST.get("Username")
-        user = authenticate(request, username=user, password=password)
+        user = authenticate(request, username=user, password=password)                      #autenticazione dell'utente
 
         if user is None:
             return render(request, 'login.html',{'form':form}) 
