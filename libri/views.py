@@ -410,24 +410,6 @@ def mod_libro(request,cod):
         
         totale=Ghet(request,cod,"")
         
-        """
-        nomiautori=[]
-        cognomiautori=[]
-        casaed=[]
-        sedeed=[]
-        collane=[]  
-                                                                                                     #invio delle liste per i datalist
-        for ris in TradAutCur.objects.raw("SELECT A.NomeTr,A.CognomeTr,A.CodAutore FROM libri_TradAutCur A"):
-            nomiautori.append(ris.NomeTr)
-            cognomiautori.append(ris.CognomeTr)
-
-        for ris in CasaEditrice.objects.raw("SELECT C.NomeCa,C.Sede,C.CodCasaEd FROM libri_CasaEditrice C"):
-            casaed.append(ris.NomeCa)
-            sedeed.append(ris.Sede)
-
-        for ris in Collane.objects.raw("SELECT C.NomeCo,C.CodCollane FROM libri_Collane C"):
-            collane.append(ris.NomeCo)
-        """
         if cod[0]=='N':
             ide='off'
             query="SELECT N.CodLibro, N.IDCollana_id, N.IDCasaEd_id, N.IDAutoreCuratore_id, N.Straniero, N.TitoloOrig, N.Titolo, N.Sottotitolo, N.AnnoEd, N.Illustrazioni, N.ISBN, N.Genere, N.NumPub, N.CopertinaRigida, N.Ristampa, N.nRistampa, N.Edizione, N.NumPagine, N.Curatore, N.Traduttore_id, N.Critico_id FROM libri_NonSeriale N WHERE N.CodLibro=%s"
@@ -669,20 +651,6 @@ def mod_libro(request,cod):
             return render(request, 'listanuovi.html', {'context':http})
 
 
-        
-        
-        
-    """
-    def del_libro(request, Cod):
-        cursor = connection.cursor()
-        if request.method =='GET':
-            cursor.execute("DELETE FROM libri_SingoliLibri S WHERE S.CodLibro=%s",[Cod,])
-            return HttpResponseRedirect(reverse('base'))
-            cursor.close()
-        else:
-            print("Errore")
-    """
-
 def del_libro(request, Cod):
     cursor = connection.cursor()
     #elimina la row in base al codice inserito
@@ -702,18 +670,7 @@ def del_libro(request, Cod):
         return HttpResponseRedirect(reverse('base'))
 
 def LibroDetailView(request,Cod):
-    """
-    if request.method == 'GET':             #controllo seriale o non seriale
-        cursor = connection.cursor()
-        cursor.execute("SELECT S.IDSeriale, S.IDNonseriale FROM libri_SingoliLibri S WHERE S.CodLibro=%s", [Cod,])
-        ris = cursor.fetchall()
-        for record in ris:
-            IDSeriale = record.IDSeriale
-            IDNonseriale = record.IDNonseriale
-    else:
-        print("Errore")
-    """
-
+    
     if request.method == 'GET':
             #controllo Seriale o Non Seriale
             if Cod[0]=='N':
@@ -785,33 +742,7 @@ def LibroDetailView(request,Cod):
             return render(request, 'detail.html', {'context':elemento})
     else:
         print("Errore")
-"""
-def HomePageViewSeriale(request):
-    #visualizza solo libri seriali
-    if request.method == 'GET':
-        context=[]
-        #visualizza campi essenziale per libri seriali
-        for record in Seriale.object.raw("SELECT S.Titolo, T.NomeTr, T.CognomeTr, S.Genere FROM libri_Seriale S, libri_TradAutCur T WHERE S.IDAutoreCuratore_id=T.CodAutore"):
-            elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
-            context.append(elemento)
-        return render(request, 'Serial.html',{'context_list':context}) 
-    else:
-        print("Errore")
-        
-def HomePageViewNonSeriale(request):
-    #visualizza solo libri non seriali
-    if request.method == 'GET':
-        context=[]
-        #visualizza campi essenziale per libri non seriali
-        for record in NonSeriale.object.raw("SELECT N.Titolo, T.NomeTr, T.CognomeTr, N.Genere FROM libri_NonSeriale N, libri_TradAutCur T WHERE N.IDAutoreCuratore_id=T.CodAutore"):
-            elemento = objlist()
-            elemento.inserimentoHome(record.Titolo,record.NomeTr+" "+record.CognomeTr,record.Genere)
-            context.append(elemento)
-        return render(request, 'notSerial.html',{'context_list':context}) 
-    else:
-        print("Errore")
-"""
+
 def vricerca(request):
 
     if request.method == 'POST':
