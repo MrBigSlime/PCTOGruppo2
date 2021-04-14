@@ -942,10 +942,10 @@ def CodLibro(request):
             print(form.errors)
             return HttpResponseRedirect(reverse('#errore'))
         
-def CheckRitardo():
+def CheckRitardo():                                                                             #view per il controllo sul ritardo
     oggi = datetime.date.today()
     cursor = connection.cursor()
-    query = "UPDATE libri_Prestito SET Ritardo = true WHERE DataFine < %s"
+    query = "UPDATE libri_Prestito SET Ritardo = true WHERE DataFine < %s"                      #bool ritardo viene aggiornato a True se la data fine è minore di oggi
     cursor.execute(query,[oggi,])
     cursor.close()
 
@@ -1019,10 +1019,11 @@ def Ghet(request,Cod,Nlibs):
             numero_libri=Listlib.pop()
             if numero_libri is None:
                 numero_libri=0
-            Nlibs=int(Nlibs)
+
+            Nlibs=int(Nlibs)                    #numero totale dei libri
             if Nlibs > numero_libri :
                 ris = Nlibs - numero_libri
-
+                #aggiunta del libro fino al raggiungimento del numero totale dei libri
                 for x in range(ris):
                     a = invDef(Cod)
                     codgen.append(a)
