@@ -732,6 +732,7 @@ def loginView(request):                                                         
         form = UserLoginForm()
         return render(request, 'login.html',{'form':form})          
 
+    #nome utente e password
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         password = request.POST.get("Password")
