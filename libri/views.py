@@ -840,21 +840,8 @@ def HomePageView(request):
         form = ricercaform()
         return render(request, 'index.html',{'form':form,'context_list':context})
 
-def UtentiIn(request): 
-
-    if request.method == 'POST':
-        form = PrenotazioneForm(request.POST)
-        NomeUt=request.POST.get("NomeU")
-        CognomeUt=request.POST.get("CognomeU")
-        Email=request.POST.get("Email")
-        NumeroTelefono=request.POST.get("NumTelefono")
-        dati={"NomeUt":NomeUt,"CognomeUt":CognomeUt,"Email":Email,"NumeroTelefono":NumeroTelefono}
-        cod=inspector(dati,"U")
-
-        return cod
-
 def PrenotazioneView(request):
-
+    #view per le prenotazioni
     if request.method == 'GET':
         form=PrenotazioneForm()
         return render(request, 'prenotazione.html',{"form":form})    
@@ -862,7 +849,7 @@ def PrenotazioneView(request):
     if request.method == 'POST':
         cursor=connection.cursor()
         query="SELECT P.CodPrestito FROM libri_Prestito P, libri_SingoliLibri S WHERE S.CodLibro=%s"
-
+        #dati del libro e dell'utente per la prenotazione
         ritardo=False
         UtentiIn(request)
         data=inData(request)
@@ -890,7 +877,7 @@ def PrenotazioneView(request):
             return HttpResponseRedirect(reverse('delS')) 
 
 def UtentiIn(request):
-
+    #inserimento dei dati dell'utente
     if request.method == 'POST':
         form = PrenotazioneForm(request.POST)
         NomeUt=request.POST.get("NomeU")
@@ -915,7 +902,7 @@ def inData(request):
             DataFineG = request.POST.get("DataFineG")
             DataFineM = request.POST.get("DataFineM")
             DataFineA = request.POST.get("DataFineA")
-
+        #controllo delle date
             if DataInizioA>DataFineA:
                 return None
 
@@ -943,7 +930,7 @@ def inData(request):
             return HttpResponseRedirect(reverse('prnt'))
 
 def CodLibro(request):
-    
+    #ritorna il modello del singolo libro
     if request.method == 'POST':
         cursor = connection.cursor()
         form = PrenotazioneForm(request.POST)
@@ -1099,7 +1086,7 @@ def del_singololibro(request, Cod):
         return HttpResponseRedirect(reverse('#errore'))    
 
 def Register(request):
-
+    #view per la registrazione
     if request.method == 'GET':
         form = UserRegistrationForm()
 
@@ -1110,13 +1097,13 @@ def Register(request):
         form = UserRegistrationForm(request.POST)
 
         if form.is_valid():
-
+            #dati dell'utente
             CodUtente = request.POST.get("CodUtente")
             Username = request.POST.get("Username")
             NomeU = request.POST.get("NomeU")
             CognomeU = request.POST.get("CognomeU")
             Password = request.POST.get("Password")
-
+            #funzione per la creazione dell'utente di Django
             user = User.objects.create_user(Username,'',Password)
             user.last_name = CognomeU
             user.first_name = NomeU
@@ -1127,16 +1114,18 @@ def Register(request):
             return HttpResponseRedirect(reverse('register'))
 
 def loginView(request):
-
+    #view per il login
     if request.method == 'GET':
 
         form = UserLoginForm()
         return render(request, 'login.html',{'form':form})          
 
     if request.method == 'POST':
+        #nome utente e password
         form = UserLoginForm(request.POST)
         password = request.POST.get("Password")
         user = request.POST.get("Username")
+        #funzione di autenticazione di Django
         user = authenticate(request, username=user, password=password)
 
         if user is None:
@@ -1146,5 +1135,6 @@ def loginView(request):
             return HttpResponseRedirect(reverse('base'))
 
 def logoutview(request):
+    #view per il logout
     logout(request)
     return HttpResponseRedirect(reverse('base'))
