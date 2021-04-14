@@ -978,9 +978,13 @@ def invDef(codlib):
     cursor.execute(query,[cod,codlib])
     cursor.close()        
  
-        #return
+    return cod
+
 def Ghet(request,Cod,Nlibs):
 #funzione che ritorna il numero di libri di un modello
+    
+    codgen = []
+    
     cursor = connection.cursor()
     if request.method == 'GET':
         
@@ -1020,7 +1024,9 @@ def Ghet(request,Cod,Nlibs):
                 ris = Nlibs - numero_libri
 
                 for x in range(ris):
-                    invDef(Cod)
+                    a = invDef(Cod)
+                    codgen.append(a)
+         
     else:
         print(form.errors)
         return HttpResponseRedirect(reverse('#errore'))
