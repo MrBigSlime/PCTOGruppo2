@@ -44,6 +44,7 @@
             </ul>
         </div>
     </div>
+    {% if user.is_authenticated %}
     <div class="nav-links">
         <div class="under-links">
             <ul>
@@ -59,9 +60,11 @@
                 <li><a href="{% url 'nuovo_libro' %}">Nuovo Libro</a></li>
                 {% endif %}
                 <li><a href="https://youtu.be/pCIc0FKD3dM?t=62" target="blank">Contatti</a></li>
+
             </ul>
         </div>
     </div>
+    {% endif %}
     </nav>
 </header>
 

@@ -4,11 +4,6 @@
     {% for record in context_list %}
     <div class="view-detail">
         <img src="http://covers.openlibrary.org/b/isbn/{{record.ISBN_ISSN}}-M.jpg">
-        <div class="buttons">
-            <a href="{% url 'detail' record.CodLibro %}"><button type="submit">Dettaglio</button></a> {% if user.is_authenticated %}
-            <a href="{% url 'cancella' record.CodLibro %}"><button type="submit" style="background: #c22509;">Cancella</button></a>
-            <a href="{% url 'modifica_libro' record.CodLibro %}"><button type="submit">Modifica</button></a>{% endif %}
-        </div>
         <div class="info-detail">
             <ul>
                 <li style="font-weight: 500; font-size: 20px;">{{record.Titolo}}</li>
@@ -16,7 +11,11 @@
                 <li style="font-style: italic; font-size: 15px;">{{record.Genere}}</li>
             </ul>
         </div>
-
+        <div class="buttons">
+            <a href="{% url 'detail' record.CodLibro %}"><button type="submit">Dettaglio</button></a> {% if user.is_authenticated %}
+            <a href="{% url 'cancella' record.CodLibro %}"><button type="submit" style="background: #c22509;">Cancella</button></a>
+            <a href="{% url 'modifica_libro' record.CodLibro %}"><button type="submit">Modifica</button></a>{% endif %}
+        </div>
     </div>
     {% endfor %}
 </div>
