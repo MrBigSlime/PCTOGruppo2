@@ -980,7 +980,7 @@ def invDef(codlib):
  
         #return
 def Ghet(request,Cod,Nlibs):
-
+#funzione che ritorna il numero di libri di un modello
     cursor = connection.cursor()
     if request.method == 'GET':
         
@@ -998,7 +998,7 @@ def Ghet(request,Cod,Nlibs):
         return numero_libri
 
     elif request.method == 'POST':
-     
+#funzione che ritorna il numero di un modello
         form = InserimentoLibro(request.POST)
         if form.is_valid():
             if Cod[0]=='N':
@@ -1035,11 +1035,11 @@ def del_singoloView(request):
         form = DelSingLib(request.POST)
         if form.is_valid():
             CodLibro = request.POST.get("Numero")
-            query ="SELECT P.IDLibro_id FROM libri_Prestito P, libri_SingoliLibri S WHERE S.Codlibro = P.IDLibro_id AND S.CodLibro=%s"
+            query ="SELECT P.IDLibro_id FROM libri_Prestito P, libri_SingoliLibri S WHERE S.Codlibro = P.IDLibro_id AND S.CodLibro=%s"                  #controllo dello stato di ritardo del libro
             cursor.execute(query,[CodLibro,])
             ris=cursor.fetchone()
             if ris is None:
-                query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
+                query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"                                                                                #eliminazione del libro se non è stato prestato
                 cursor.execute(query,[CodLibro,])
                 cursor.close()
                 return HttpResponseRedirect(reverse('base'))
@@ -1057,7 +1057,7 @@ def del_singoloView(request):
 def ResetSingoloView(request,Cod):
     cursor = connection.cursor()
     if request.method =='GET':
-        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"
+        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"                   #eliminazione del0itardo di un singolo libro 
         cursor.execute(query,[Cod,])
         cursor.close()
         return HttpResponseRedirect(reverse('ritardi'))
@@ -1065,9 +1065,9 @@ def ResetSingoloView(request,Cod):
 def del_singololibro(request, Cod):
     cursor = connection.cursor()
     if request.method =='GET':
-        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"
+        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"                       #eliminazione del ritardo di un singolo libro
         cursor.execute(query,[Cod,])
-        query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"
+        query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"                                                                        #eliminazione del singolo libro stesso
         cursor.execute(query,[Cod,])
         cursor.close()
         return HttpResponseRedirect(reverse('ritardi'))
