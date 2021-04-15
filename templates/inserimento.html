@@ -6,73 +6,66 @@
 
         {% csrf_token %}
 
-        <table class="tabella">
-            <tr>
-                <!-- Info autore -->
-                <td><span title="Nome Autore">{{form.NomeAu}}</span></td>
-                <td><span title="Cognome Autore">{{form.CognomeAu}}</span></td>
-                <td><span title="Nazionalità Autore">{{form.NazioneAu}}</span></td>
-            </tr>
-            <tr>
-                <!-- Postfazione -->
-                <td><span title="Nome Autore Postfazione">{{form.NomePost}}</span></td>
-                <td><span title="Cognome Autore Postfazione">{{form.CognomePost}}</span></td>
-                <td><span title="Nazionalità Autore Postfazione">{{form.NazionePost}}</span></td>
-            </tr>
-            <tr>
-                <!-- Prefazione -->
-                <td><span title="Nome Autore Prefazione">{{form.NomePre}}</span></td>
-                <td><span title="Cognome Autore Prefazione">{{form.CognomePre}}</span></td>
-                <td><span title="Nazionalità Autore Prefazione">{{form.NazionePre}}</span></td>
-            </tr>
+        <div class="addBoxes">
+
+            <!-- Info autore -->
+            {{form.NomeAu}}
+            {{form.CognomeAu}}
+            {{form.NazioneAu}}
+        
+            <!-- Postfazione -->
+            {{form.NomePost}}
+            {{form.CognomePost}}
+            {{form.NazionePost}}
+        
+        
+            <!-- Prefazione -->
+            {{form.NomePre}}
+            {{form.CognomePre}}
+            {{form.NazionePre}}
+        
             <!-- Info Libro -->
-            <tr>
-                <td><span title="Titolo Originale">{{form.TitoloOrig}}</span></td>
-                <td><span title="Titolo">{{form.Titolo}}</span></td>
-                <td><span title="Sottotitolo">{{form.Sottotitolo}}</span></td>
-            </tr>
-            <tr>
-                <td><span title="Genere">Genere: {{form.Genere}}</span></td>
-                <td>Straniero: {{form.Straniero}}</td>
-                <td>Seriale: {{form.IsSerial}} </td>
-            </tr>
-            <tr>
-                <td><span title="Numero di Pubblicazione">{{form.NumPub}}</span></td>
-                <td><span title="Edizione">{{form.Edizione}}</span></td>
-                <td><span title="Anno Edizione">{{form.AnnoEd}}</span></td>
-            </tr>
-            <tr>
-                <td>Copertina Rigida: {{form.CopertinaRigida}}</td>
-                <td>Illustrazioni: {{form.Illustrazioni}}</td>
-                <td>Curatore: {{form.Curatore}}</td>
-            </tr>
-            <tr>
-                <td><span title="Numero di Pagine">{{form.NumPagine}}</span></td>
-                <td><span title="Nome Collana">{{form.NomeCo}}</span></td>
-                <td><span title="Numero di Ristampa">{{form.nRistampa}}</span></td>
-            </tr>
-            <tr>
-                <td>Ristampa: {{form.Ristampa}}</td>
-            </tr>
-            <tr>
-                <td><span title="Nome Casa Editrice">{{form.NomeCa}}</span></td>
-                <td><span title="Sede Casa Editrice">{{form.SedeCa}}</span></td>
-                <td><span title="ISBN/ISSN">{{form.ISBN_ISSN}}</span></td>
-            </tr>
-            <tr>
-                <td><span title="Nome Traduttore">{{form.NomeTr}}</span></td>
-                <td><span title="Cognome Traduttore">{{form.CognomeTr}}</span></td>
-                <td><span title="Nazionalità Traduttore">{{form.NazioneTr}}</span></td>
-            </tr>
-            <tr>
-                <td><span title="Nome Critico">{{form.NomeCu}}</span></td>
-                <td><span title="Cognome Critico">{{form.CognomeCu}}</span></td>
-                <td><span title="Nazionalità Critico">{{form.NazioneCu}}</span></td>
-            </tr>
-            <tr>
-                <td><span title="Quntità Libri">{{form.QLibri}}</span></td>
-            </tr>
-        </table>
+            {{form.TitoloOrig}}
+            {{form.Titolo}}
+            {{form.Sottotitolo}}
+        
+            {{form.NumPub}}
+            {{form.Edizione}}
+            {{form.AnnoEd}}
+        
+        
+            {{form.NumPagine}}
+            {{form.NomeCo}}
+            {{form.nRistampa}}
+        
+        
+            {{form.NomeCa}}
+            {{form.SedeCa}}
+            {{form.ISBN_ISSN}}
+        
+        
+            {{form.NomeTr}}
+            {{form.CognomeTr}}
+            {{form.NazioneTr}}
+        
+        
+            {{form.NomeCu}}
+            {{form.CognomeCu}}
+            {{form.NazioneCu}}
+        
+            {{form.QLibri}}
+
+        </div>
+
+        <div class="selection">
+            Copertina Rigida: {{form.CopertinaRigida}}
+            Illustrazioni: {{form.Illustrazioni}}
+            Curatore: {{form.Curatore}}
+            Ristampa: {{form.Ristampa}}
+            Genere: {{form.Genere}}
+            Straniero: {{form.Straniero}}
+            Seriale: {{form.IsSerial}}
+        </div>
 
         <input type="submit" value="Inserisci Libro" class="insBtn">
     </form>

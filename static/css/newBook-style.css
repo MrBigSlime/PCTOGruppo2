@@ -13,13 +13,37 @@
 }
 
 .add-box h1 {
+    margin-top: 20px;
     text-align: center;
 }
 
 .addForm-box {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
 }
+
+.addBoxes {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.formBox {
+    border-bottom: 2px solid rgba(91, 110, 155, 0.692);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-size: 12px;
+    width: 200px;
+    text-align: center;
+    padding: 10px 10px;
+    margin: 10px;
+}
+
+.genBox {
+    margin-top: 20px;
+}
+
 .insBtn {
     width: 200px;
     margin-top: 30px;
@@ -39,33 +63,4 @@
     cursor: pointer;
     color: whitesmoke;
     transition: all .3s ease .0s;
-}
-
-.tabella {
-    margin-left: 20px;
-    font-size: 13.99px;
-    display: flex;
-    justify-content: center;
-    justify-items: center;
-}
-
-.formBox {
-    border-bottom: 2px solid rgba(91, 110, 155, 0.692);
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    font-size: 12px;
-    width: 200px;
-    text-align: center;
-    padding: 10px 10px;
-    margin-top: 20px;
-}
-
-.Checkbox {
-    margin-top: 20px;
-    width: 50px;
-}
-
-.genBox {
-    margin-top: 20px;
 }
