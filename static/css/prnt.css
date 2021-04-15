@@ -44,6 +44,7 @@
 .Slibro-box {
     display: grid;
     grid-template-columns: 1fr;
+    justify-content: center;
 }
 
 .Slibro-box h1 {
@@ -53,10 +54,11 @@
 .SlibroForm-box {
     display: flex;
     flex-direction: column;
+    justify-items: center;
+    justify-items: center;
 }
 
 .Slibro-detail {
-    margin-left: 20px;
     font-size: 13.99px;
     display: flex;
     justify-content: center;
