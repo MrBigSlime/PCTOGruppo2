@@ -1135,15 +1135,11 @@ def RegisterView(request):
             #dati dell'utente
             CodUtente = request.POST.get("CodUtente")
             Username = request.POST.get("Username")
-            NomeU = request.POST.get("NomeU")
-            CognomeU = request.POST.get("CognomeU")
             Password = request.POST.get("Password")
             #funzione per la creazione dell'utente di Django
             user = User.objects.create_user(Username,'',Password)
-            user.last_name = CognomeU
-            user.first_name = NomeU
             user.save()
-            return HomePageView(request)
+            return HttpResponseRedirect(reverse('base'))
         else:
             print(form.errors)
             return HttpResponseRedirect(reverse('register'))
