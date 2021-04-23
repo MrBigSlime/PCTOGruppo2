@@ -26,7 +26,9 @@
         <p><b>Nazione Autore Prefazione: </b>{{context.NazionePre}}</p>
         {% endif %}
 
+        {% if context.NomePre is not null %}
         <p><b>Titolo Originale:</b> {{context.TitoloOrig}}</p>
+        {% endif %}
         <p><b>Titolo: </b>{{context.Titolo}}</p>
         {% if context.Sottotitolo != "" %}
         <p><b>Sottotitolo: </b>{{context.Sottotitolo}}</p>
@@ -92,7 +94,9 @@
         {% endif %} {% if context.NazioneCu != "" %}
         <p><b>Nazione Curatore: </b>{{context.NazioneCu}}</p>
         {% endif %}
+        {% if context.NomePost is not null %}
         <p><b>Quantità Libri:</b>{{context.QLibri}}</p>
+        {% endif %}
     </div>
 
 </div>
