@@ -48,6 +48,7 @@ class InserimentoLibro(forms.Form):
         ('Divulgazione','Divulgazione'),
         ('Scolastico','Scolastico'),
         ('Tragedia','Tragedia'),
+        ('Monologo','Monologo'),
         ))
     IsSerial = forms.ChoiceField(choices = (('on','Si'),('off','No')))
     #Info Edizione
