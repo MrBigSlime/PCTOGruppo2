@@ -236,7 +236,7 @@ def in_Utenti(dati):
         if check(cod):
             break                                                                                           #CHECK
     cursor = connection.cursor()
-    cursor.execute(query,[cod,dati["CognomeUt"],dati["NomeUt"],dati["Email"],dati["NumTelefono"]])
+    cursor.execute(query,[cod,dati["NomeUt"],dati["CognomeUt"],dati["Email"],dati["NumTelefono"]])
     return cod
 
 def inspector(dati,identificatore):                                 #funzione che gestrisce il controllo della esistenza di un dato nel database
@@ -244,6 +244,7 @@ def inspector(dati,identificatore):                                 #funzione ch
     if(identificatore=="U"):
         query="SELECT U.CodUser FROM libri_Utenti U WHERE U.NomeUt=%s AND U.CognomeUt=%s AND U.Email=%s AND U.NumTelefono=%s "
         dato=[dati["NomeUt"],dati["CognomeUt"],dati["Email"],dati["NumTelefono"]]
+        print(dato)
 
     if(identificatore=="A"):            
         query="SELECT A.CodAutore FROM libri_TradAutCur A WHERE A.NomeTr=%s AND A.CognomeTr=%s AND A.NazioneTr=%s"
@@ -262,8 +263,9 @@ def inspector(dati,identificatore):                                 #funzione ch
         return cod
 
     cursor = connection.cursor()
-    cursor.execute(query,dato)                                                                                      #si esegue la query e si controlla se ritorna un codice 
+    ras=cursor.execute(query,dato)                                                                                      #si esegue la query e si controlla se ritorna un codice 
     ris=cursor.fetchone()
+    print(ras, " " ,ris)
     
     
     if ris is None:
@@ -870,7 +872,7 @@ def PrenotazioneView(request):
             return render(request, 'index.html',{'form':form,'context_list':context})
 
         cursor=connection.cursor()
-        query="SELECT P.CodPrestito FROM libri_Prestito P, libri_SingoliLibri S WHERE S.CodLibro=%s"
+        query="SELECT P.CodPrestito FROM libri_Prestito P WHERE P.IDLibro_id=%s"
         #dati del libro e dell'utente per la prenotazione
         ritardo=False
         UtentiIn(request)
@@ -894,7 +896,7 @@ def PrenotazioneView(request):
             
             cursor.execute(query,dati)
             cursor.close()
-            return HttpResponseRedirect(reverse('base')) 
+            return HttpResponseRedirect(reverse('ritardi')) 
         else:
             return HttpResponseRedirect(reverse('delS')) 
 
@@ -925,6 +927,7 @@ def inData(request):
             DataFineM = request.POST.get("DataFineM")
             DataFineA = request.POST.get("DataFineA")
         #controllo delle date
+            """
             if DataInizioA>DataFineA:
                 return None
 
@@ -941,7 +944,7 @@ def inData(request):
                 if DataInizioM==DataFineM:
                     if DataFineG==DataInizioG:
                         return None
-            
+            """    
             DataInizio =  DataInizioA + "-" + DataInizioM + "-" + DataInizioG
             DataFine = DataFineA + "-" + DataFineM + "-" + DataFineG
             return [DataFine,DataInizio]
@@ -980,7 +983,6 @@ def RitardiPageView(request):
         
 
         for record in Prestito.objects.raw(query):
-            context=[]
             elemento = listaPrestiti()
             elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
             context.append(elemento)
@@ -1103,7 +1105,7 @@ def del_singoloView(request):
 def ResetSingolo(request,Cod):
     cursor = connection.cursor()
     if request.method =='GET':
-        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"                   #eliminazione del0itardo di un singolo libro 
+        query = "DELETE FROM libri_Prestito WHERE CodPrestito=%s"                   #eliminazione del0itardo di un singolo libro 
         cursor.execute(query,[Cod,])
         cursor.close()
         return HttpResponseRedirect(reverse('ritardi'))
@@ -1111,10 +1113,12 @@ def ResetSingolo(request,Cod):
 def del_singololibro(request, Cod):
     cursor = connection.cursor()
     if request.method =='GET':
-        query = "DELETE FROM libri_Prestito P libri_SingoliLibri S WHERE P.IDLibro = S.CodLibro AND P.IDLibro=%s"                       #eliminazione del ritardo di un singolo libro
+        cursor.execute("SELECT IDLibro_id,CodPrestito FROM libri_Prestito WHERE CodPrestito=%s",[Cod,])
+        CodL=cursor.fetchone()
+        query = "DELETE FROM libri_Prestito WHERE CodPrestito=%s"                       #eliminazione del ritardo di un singolo libro
         cursor.execute(query,[Cod,])
         query="DELETE FROM libri_SingoliLibri WHERE CodLibro=%s"                                                                        #eliminazione del singolo libro stesso
-        cursor.execute(query,[Cod,])
+        cursor.execute(query,[CodL[0],])
         cursor.close()
         return HttpResponseRedirect(reverse('ritardi'))
     else:
