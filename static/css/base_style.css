@@ -154,8 +154,19 @@ form .lente {
 }
 
 .footer {
+    display: grid;
+    grid-template-columns: 1fr;
     min-height: 10vh;
+    background-color: #1d3557;
+    margin-top: 20px;
+    align-items: center;
 }
+
+.footer p {
+    text-align: center;
+    color: whitesmoke;
+}
+
 .buttons {
     display: flex;
     flex-direction: column;
