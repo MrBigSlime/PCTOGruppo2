@@ -99,9 +99,8 @@ class listaPrestiti():
         self.CognomeUt = ""
         self.NumTelefono = ""
         self.Ritardo = False
-        self.ISBN = ""
 
-    def inserimento(self,CodLibro,DataInizio, DataFine, NomeUt, CognomeUt, NumTelefono, Ritardo, ISBN):
+    def inserimento(self,CodLibro,DataInizio, DataFine, NomeUt, CognomeUt, NumTelefono, Ritardo):
         self.CodLibro=CodLibro
         self.DataInizio = DataInizio
         self.DataFine = DataFine
@@ -109,7 +108,7 @@ class listaPrestiti():
         self.CognomeUt = CognomeUt
         self.NumTelefono = NumTelefono
         self.Ritardo = Ritardo
-        self.ISBN = ISBN
+
 def check(cod):
     
     if cod[0]=='N':
@@ -691,27 +690,11 @@ def del_libroView(request, Cod):
     if request.method =='GET':
 
         if Cod[0]=='N':
-
-            query="SELECT CodLibro FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
-            cursor.execute(query,[Cod,])
-            ris=cursor.fetchall()
-            print(ris)
-            for record in ris:
-                print(record)
-                query = "DELETE FROM libri_Prestito WHERE IDLibro_id=%s"
-                cursor.execute(query,[record[0],])
-
             query="DELETE FROM libri_SingoliLibri WHERE IDNonseriale_id=%s"
             cursor.execute(query,[Cod,])
             query="DELETE FROM libri_NonSeriale WHERE CodLibro=%s"
             cursor.execute(query,[Cod,])
         if Cod[0]=='S':
-            query="SELECT CodLibro FROM libri_SingoliLibri WHERE IDSeriale_id=%s"
-            cursor.execute(query,[Cod,])
-            ris=cursor.fetchmany()
-            for record in ris:
-                query = "DELETE FROM libro_Prestito WHERE IDLibro_id=%s"
-                cursor.execute(query,[record[0],])
             query="DELETE FROM libri_SingoliLibri WHERE IDSeriale_id=%s"
             cursor.execute(query,[Cod,])
             query="DELETE FROM libri_Seriale WHERE CodLibro=%s"
@@ -997,31 +980,29 @@ def RitardiPageView(request):
     if request.method == 'GET':
         context = []
         
-        query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo,N.ISBN FROM libri_Prestito P, libri_Utenti U, libri_SingoliLibri S,libri_NonSeriale N WHERE P.IDUtente_id = U.CodUser AND P.IDLibro_id=S.CodLibro AND S.IDNonseriale_id=N.CodLibro ORDER BY P.Datafine"
+        query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo,N.ISBN FROM libri_Prestito P, libri_Utenti U, libri_SingoliLibri S,libri_NonSeriale N WHERE P.IDUtente_id = U.CodUser AND P.IDLibro_id=S.CodLibro AND IDNonseriale_id=CodLibro ORDER BY P.Datafine"
         for record in Prestito.objects.raw(query):
-            if record.Ritardo:
+            if record.ritardo:
                 elemento = listaPrestiti()
-                elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo,record.ISBN)
+                elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
                 context.append(elemento)
-        query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo,N.ISSN FROM libri_Prestito P, libri_Utenti U, libri_SingoliLibri S,libri_Seriale N WHERE P.IDUtente_id = U.CodUser AND P.IDLibro_id=S.CodLibro AND S.IDSeriale_id=N.CodLibro ORDER BY P.Datafine"
+        query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo,N.ISSN FROM libri_Prestito P, libri_Utenti U, libri_SingoliLibri S,libri_Seriale N WHERE P.IDUtente_id = U.CodUser AND P.IDLibro_id=S.CodLibro AND IDSeriale_id=CodLibro ORDER BY P.Datafine"
         for record in Prestito.objects.raw(query):
-            if record.Ritardo:
+            if record.ritardo:
                 elemento = listaPrestiti()
-                elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo,record.ISSN)
+                elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
                 context.append(elemento)
 
-        query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo,N.ISBN FROM libri_Prestito P, libri_Utenti U, libri_SingoliLibri S,libri_NonSeriale N WHERE P.IDUtente_id = U.CodUser AND P.IDLibro_id=S.CodLibro AND S.IDNonseriale_id=N.CodLibro ORDER BY P.Datafine"
+        query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo,N.ISBN FROM libri_Prestito P, libri_Utenti U, libri_SingoliLibri S,libri_NonSeriale N WHERE P.IDUtente_id = U.CodUser AND P.IDLibro_id=S.CodLibro AND IDNonseriale_id=CodLibro ORDER BY P.Datafine"
         for record in Prestito.objects.raw(query):
-            if record.Ritardo is False:
-                elemento = listaPrestiti()
-                elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo,record.ISBN)
-                context.append(elemento)
-        query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo,N.ISSN FROM libri_Prestito P, libri_Utenti U, libri_SingoliLibri S,libri_Seriale N WHERE P.IDUtente_id = U.CodUser AND P.IDLibro_id=S.CodLibro AND S.IDSeriale_id=N.CodLibro ORDER BY P.Datafine"
+            elemento = listaPrestiti()
+            elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
+            context.append(elemento)
+        query = "SELECT P.CodPrestito, P.DateInizio, P.Datafine, U.NomeUt, U.CognomeUt, U.NumTelefono, P.Ritardo,N.ISSN FROM libri_Prestito P, libri_Utenti U, libri_SingoliLibri S,libri_Seriale N WHERE P.IDUtente_id = U.CodUser AND P.IDLibro_id=S.CodLibro AND IDSeriale_id=CodLibro ORDER BY P.Datafine"
         for record in Prestito.objects.raw(query):
-            if record.Ritardo is False:
-                elemento = listaPrestiti()
-                elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo,record.ISSN)
-                context.append(elemento)
+            elemento = listaPrestiti()
+            elemento.inserimento(record.CodPrestito,str(record.Dateinizio), str(record.DataFine), record.NomeUt, record.CognomeUt, record.NumTelefono, record.Ritardo)
+            context.append(elemento)
             
         return render(request, 'ritardi.html',{'context_list':context}) 
     else:
