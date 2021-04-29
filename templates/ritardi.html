@@ -22,12 +22,14 @@
             </ul>
         </div>
 
-        {% if record.Ritardo is True %}
+        
         <div class="buttons">
             <a href="{% url 'reset' record.CodLibro %}"><button type="submit">Reset</button></a> 
+        {% if record.Ritardo is True %}
             <a href="{% url 'delrit' record.CodLibro %}"><button type="submit" style="background: #c22509;">Elimina</button></a>
-        </div>
         {% endif %}
+        </div>
+        
 
     </div>
     {% endfor %}
