@@ -145,6 +145,16 @@ form .lente {
     grid-template-columns: 1fr;
 }
 
+.codici-box ul{
+    margin-top: 10px;
+    display: grid;
+    justify-content: center;
+    list-style: none;
+}
+
+.footer {
+    min-height: 10vh;
+}
 .buttons {
     display: flex;
     flex-direction: column;
